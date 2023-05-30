@@ -5,7 +5,7 @@ import Image from 'next/image'
 
 function Header() {
   return (
-    <header className='flex gap-y-4 items-center justify-between xl:px-6 py-3 max-xl:grid max-xl:grid-cols-header'>
+    <header className='flex gap-y-4 items-center justify-between xl:px-6 py-3 max-xl:grid max-xl:grid-cols-header xl:border-b-2'>
       <div className='max-xl:pl-3'>
         <Brand />
       </div>

@@ -1,10 +1,9 @@
-import Brand from '@/components/brand'
-import Header from '@/components/ui/Header'
+import FiltersList from '@/components/ui/FiltersList'
 
 export default function Home() {
   return (
     <main>
-      <Header />
+      <FiltersList />
     </main>
   )
 }
