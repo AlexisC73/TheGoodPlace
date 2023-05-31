@@ -37,11 +37,11 @@ const ProductBookPresentation = ({
 
   return (
     <div className='xl:flex gap-8 max-xl:justify-center'>
-      <div className='w-auto flex aspect-square max-xl:w-[500px] mx-auto'>
+      <div className='flex aspect-square sm:max-xl:w-[500px] mx-auto flex-1 xl:h-[500px]'>
         <img className='object-cover' src={imageUrl} alt='product' />
       </div>
 
-      <div className='flex flex-col gap-1 mt-4 p-4 xl:max-w-[700px]'>
+      <div className='flex flex-col gap-1 mt-4 p-4'>
         <div className='sm:order-1'>
           <h1 className='text-[24px] font-bold'>{title}</h1>
           <div className='text-[15px] flex gap-1 items-center text-[#5A5A5A]'>
@@ -70,7 +70,15 @@ const ProductBookPresentation = ({
         </div>
         <div className='py-12 sm:order-3 xl:flex-1'>
           <p className='text-justify'>
-            {readMore ? description : description.slice(0, 200) + '...'}
+            {readMore
+              ? description +
+                description +
+                description +
+                description +
+                description +
+                description +
+                description
+              : description.slice(0, 200) + '...'}
           </p>
           <button onClick={toggleReadMore} className='underline text-primary'>
             En voir {readMore ? 'moins' : 'plus'}
