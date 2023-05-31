@@ -8,7 +8,7 @@ type BookCardInfo = {
   author: string
   publishedDate: Date
   price: number
-  note: number
+  rate: number
   imageUrl: string
 }
 
@@ -17,7 +17,7 @@ type BookCardProps = {
 }
 
 const BookCard = ({ bookInfo }: BookCardProps) => {
-  const { id, title, author, publishedDate, price, note, imageUrl } = bookInfo
+  const { id, title, author, publishedDate, price, rate, imageUrl } = bookInfo
   return (
     <div className='rounded-[5px] overflow-hidden sm:w-[239px] h-48 sm:h-auto border flex sm:block w-full border-[#E9EDF3] relative'>
       <Link
@@ -42,7 +42,7 @@ const BookCard = ({ bookInfo }: BookCardProps) => {
         </div>
         <div className='flex justify-between items-center'>
           <div className='sm:absolute top-2 right-2'>
-            <Rating note={note} />
+            <Rating rate={rate} />
           </div>
           <Link href={`/product/${id}`} className='font-bold text-[20px]'>
             {price.toFixed(2)}€
