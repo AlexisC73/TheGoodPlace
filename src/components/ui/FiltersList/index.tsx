@@ -1,4 +1,4 @@
-import { PriceFilter, AuthorsFilter } from '@/components/Filters'
+import { PriceFilter, GendersFilter } from '@/components/Filters'
 
 function FiltersList() {
   return (
@@ -7,15 +7,21 @@ function FiltersList() {
         <p>Filtrer par</p>
       </div>
       <PriceFilter />
-      <CustomAuthorFilter />
+      <CustomGenderFilter />
     </div>
   )
 }
 
 export default FiltersList
 
-const CustomAuthorFilter = () => {
-  const fetchAuthors = ['J.K Rowling', 'Tolkien', 'Victor Hugo', 'Stephen King']
+const CustomGenderFilter = () => {
+  const fetchGenders = [
+    'Fantaisie',
+    'Policier',
+    'Romance',
+    'Science-fiction',
+    'Thriller',
+  ]
 
-  return <AuthorsFilter authors={fetchAuthors} />
+  return <GendersFilter authors={fetchGenders} />
 }

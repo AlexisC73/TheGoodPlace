@@ -1,2 +1,2 @@
 export { default as PriceFilter } from './PriceFilter'
-export { default as AuthorsFilter } from './AuthorsFilter'
+export { default as GendersFilter } from './GendersFilter'
