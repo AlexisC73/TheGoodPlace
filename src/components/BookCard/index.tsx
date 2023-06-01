@@ -2,7 +2,7 @@ import AddCartIcon from '@/assets/AddCart'
 import Link from 'next/link'
 import Rating from '../Rating'
 
-type BookCardInfo = {
+export type BookCardInfo = {
   id: number
   title: string
   author: string
@@ -19,15 +19,15 @@ type BookCardProps = {
 const BookCard = ({ bookInfo }: BookCardProps) => {
   const { id, title, author, publishedDate, price, rate, imageUrl } = bookInfo
   return (
-    <div className='rounded-[5px] overflow-hidden sm:w-[239px] h-48 sm:h-auto border flex sm:block w-full border-[#E9EDF3] relative'>
+    <div className='rounded-[5px] overflow-hidden h-48 sm:h-full sm:w-[239px] border flex sm:flex-col w-full border-[#E9EDF3] relative'>
       <Link
         href={`/product/${id}`}
-        className='sm:h-[183px] w-2/3 sm:w-auto flex overflow-hidden'
+        className='sm:h-[183px] w-[150px] sm:w-auto flex overflow-hidden items-center'
       >
         <img src={imageUrl} alt='book cover' className='object-cover' />
       </Link>
-      <div className='py-5 px-3 sm:p-2 flex flex-col gap-4 w-full justify-between sm:justify-normal'>
-        <div>
+      <div className='py-5 px-3 sm:p-2 flex flex-col gap-4 w-full flex-1 justify-between sm:justify-normal'>
+        <div className='flex-1'>
           <Link
             href={`/product/${id}`}
             className='text-[1.1rem] sm:text-[15px] hover:text-red-300 hover:underline'
