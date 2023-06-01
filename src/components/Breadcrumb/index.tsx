@@ -10,7 +10,10 @@ function Breadcrumbs({
 }) {
   return (
     <nav aria-label='Breadcrumb'>
-      <ol role='list' className='flex items-center gap-1 text-sm text-gray-600'>
+      <ol
+        role='list'
+        className='flex items-center gap-1 text-base sm:text-sm text-gray-600'
+      >
         <li>
           <Link href='/' className='block transition hover:text-primary'>
             <span className='sr-only'> Home </span>
