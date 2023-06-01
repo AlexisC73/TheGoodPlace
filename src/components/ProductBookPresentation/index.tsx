@@ -70,15 +70,7 @@ const ProductBookPresentation = ({
         </div>
         <div className='py-12 sm:order-3 xl:flex-1'>
           <p className='text-justify'>
-            {readMore
-              ? description +
-                description +
-                description +
-                description +
-                description +
-                description +
-                description
-              : description.slice(0, 200) + '...'}
+            {readMore ? description : description.slice(0, 200) + '...'}
           </p>
           <button onClick={toggleReadMore} className='underline text-primary'>
             En voir {readMore ? 'moins' : 'plus'}
