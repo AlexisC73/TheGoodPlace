@@ -1,5 +1,9 @@
 import ProductBookPresentation from '@/components/ProductBookPresentation'
 
+export const metadata = {
+  title: 'The Lean Startup',
+}
+
 export default function ProductPage() {
   return (
     <main className='sm:mt-5 xl:mt-10 max-w-[1200px] mx-auto'>
