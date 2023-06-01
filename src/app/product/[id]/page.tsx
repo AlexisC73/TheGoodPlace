@@ -1,7 +1,9 @@
+import Breadcrumbs from '@/components/Breadcrumb'
 import ProductBookPresentation, {
   ProductBookInfo,
 } from '@/components/ProductBookPresentation'
 import { fakeBookInfo } from '@/fake/book'
+import Link from 'next/link'
 
 export const metadata = {
   title: 'The Lean Startup',
@@ -18,11 +20,26 @@ export default function ProductPage({ params }: { params: { id: string } }) {
     rate: bookInfo.rate,
     title: bookInfo.title,
   }))
+
+  const actualBookInfo = bookInfo.find((book) => book.id === params.id)!
+  const breadcrumbs = [
+    {
+      name: 'Livre',
+      href: '/',
+    },
+    {
+      name: actualBookInfo.title,
+      href: `/product/${params.id}`,
+    },
+  ]
+
+  const actual = [{ name: actualBookInfo.title, href: `/product/${params.id}` }]
   return (
     <main className='sm:mt-5 xl:mt-10 max-w-[1200px] mx-auto'>
-      <ProductBookPresentation
-        productBookInfo={bookInfo.find((book) => book.id === params.id)!}
-      />
+      <div className='flex flex-col gap-10'>
+        <Breadcrumbs breadcrumbs={breadcrumbs} />
+        <ProductBookPresentation productBookInfo={actualBookInfo} />
+      </div>
     </main>
   )
 }
