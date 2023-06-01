@@ -7,7 +7,7 @@ type ProductBookPresentationProps = {
   productBookInfo: ProductBookInfo
 }
 
-type ProductBookInfo = {
+export type ProductBookInfo = {
   id: string
   imageUrl: string
   title: string
