@@ -37,8 +37,12 @@ const ProductBookPresentation = ({
 
   return (
     <div className='xl:flex gap-8 max-xl:justify-center'>
-      <div className='flex aspect-square sm:max-xl:w-[500px] mx-auto flex-1 xl:h-[500px]'>
-        <img className='object-cover' src={imageUrl} alt='product' />
+      <div className='flex xl:aspect-square sm:max-xl:w-[500px] mx-auto flex-1 xl:h-[500px] px-10'>
+        <img
+          className='object-cover mx-auto h-[500px] xl:w-auto'
+          src={imageUrl}
+          alt='product'
+        />
       </div>
 
       <div className='flex flex-col gap-1 mt-4 p-4'>

@@ -24,7 +24,11 @@ const BookCard = ({ bookInfo }: BookCardProps) => {
         href={`/product/${id}`}
         className='sm:h-[183px] w-[150px] sm:w-auto flex overflow-hidden items-center sm:justify-center sm:bg-blue-100'
       >
-        <img src={imageUrl} alt='book cover' className='object-cover h-full' />
+        <img
+          src={imageUrl}
+          alt='book cover'
+          className='object-cover w-full h-full'
+        />
       </Link>
       <div className='py-5 px-3 sm:p-2 flex flex-col gap-4 w-full flex-1 justify-between sm:justify-normal'>
         <div className='flex-1'>

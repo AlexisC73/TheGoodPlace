@@ -86,18 +86,6 @@ export const fakeBookInfo = [
       "A Million to One est un récit captivant qui explore l'incroyable pouvoir du destin et les moments de synchronicité qui peuvent changer une vie. Plongez dans cette histoire palpitante où les chemins de deux personnes, en apparence éloignés, se croisent de manière improbable. Alors que les circonstances les confrontent à des défis extraordinaires, ils découvrent que parfois, le hasard peut jouer en leur faveur. Une aventure époustouflante où le destin et la chance se mêlent pour offrir des retournements inattendus et des leçons de vie inoubliables.",
   },
   {
-    id: 7,
-    title: 'Percy Jackson and the Olympians: The Lightning Thief',
-    author: 'Rick Riordan',
-    publishedDate: new Date('1954-07-29'),
-    price: 19.99,
-    rate: 4.5,
-    imageUrl:
-      'https://readriordan.com/wp-content/uploads/2022/02/Lightning-Thief-flat-cover.png',
-    description:
-      "Percy Jackson and the Olympians: The Lightning Thief est un roman captivant qui explore le monde fascinant de la mythologie grecque. Plongez dans cette histoire épique où les dieux et les héros de l'Olympe se mêlent aux mortels dans une aventure palpitante. Alors que Percy Jackson découvre qu'il est le fils d'un dieu grec, il se retrouve entraîné dans une quête périlleuse pour récupérer l'éclair de Zeus et empêcher une guerre entre les dieux. Une aventure époustouflante où les héros et les monstres de la mythologie grecque prennent vie sous vos yeux.",
-  },
-  {
     id: 8,
     title: 'Harry Potter and the Goblet of Fire',
     author: 'J.K. Rowling',

@@ -10,7 +10,7 @@ function Breadcrumbs({
   breadcrumbs: { name: string; href: string }[]
 }) {
   return (
-    <nav aria-label='Breadcrumb'>
+    <nav aria-label='Breadcrumb' className='pl-4 xl:pl-0'>
       <ol
         role='list'
         className='flex items-center gap-1 text-base sm:text-sm text-gray-600'
