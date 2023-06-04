@@ -1,9 +1,18 @@
+'use client'
+
 import Brand from '@/components/brand'
 import SearchBar from './SearchBar'
 import CartLogo from '@/assets/CartLogo'
 import Image from 'next/image'
+import SignupSigninModal from '../Signup-signin'
+import { useState } from 'react'
 
 function Header() {
+  const [showLoginModal, setShowLoginModal] = useState(true)
+
+  const closeLoginModal = () => {
+    setShowLoginModal(false)
+  }
   return (
     <header className='flex gap-y-4 items-center justify-between xl:px-6 py-3 max-xl:grid max-xl:grid-cols-header xl:border-b-2'>
       <div className='max-xl:pl-3'>
@@ -18,6 +27,9 @@ function Header() {
         <div className='separator h-7 w-[2px] hidden sm:block bg-[#E9EDF3]'></div>
         <AvatarImage />
       </div>
+      {showLoginModal && (
+        <SignupSigninModal closeLoginModal={closeLoginModal} />
+      )}
     </header>
   )
 }

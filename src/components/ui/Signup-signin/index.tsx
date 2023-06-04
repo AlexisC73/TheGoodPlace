@@ -5,8 +5,13 @@ import SigninWithGooogle from './SignWithGoogleIcon/SignWithGoogleIcon'
 import SigninForm from './SigninForm'
 import SignupForm from './SignupForm'
 import { CrossIcon } from '@/assets/Cross'
+import withOverlay from '@/components/Overlay/overlay'
 
-export default function SignupSigninModal() {
+interface SigninModalProps {
+  closeLoginModal: () => void
+}
+
+function Modal({ closeLoginModal }: SigninModalProps) {
   const [isSignin, setIsSignin] = useState(true)
 
   const toggleSignin = () => {
@@ -16,7 +21,10 @@ export default function SignupSigninModal() {
   const content = isSignin ? <SigninForm /> : <SignupForm />
   return (
     <div className='bg-white relative z-10 p-8 rounded w-[500px]'>
-      <button className='close-btn absolute text-[24px] right-4 text-[#B6B6B6] top-4'>
+      <button
+        className='close-btn absolute text-[24px] right-4 text-[#B6B6B6] top-4'
+        onClick={closeLoginModal}
+      >
         <CrossIcon />
       </button>
       <header className='pb-4 text-center text-[20px] text-black font-bold'>
@@ -44,3 +52,7 @@ export default function SignupSigninModal() {
     </div>
   )
 }
+
+const SignupSigninModal = withOverlay<SigninModalProps>(Modal)
+
+export default SignupSigninModal
