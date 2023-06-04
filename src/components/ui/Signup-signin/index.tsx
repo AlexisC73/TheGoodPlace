@@ -32,13 +32,13 @@ function Modal({ closeLoginModal }: SigninModalProps) {
       </header>
       {content}
       <div className='flex justify-between py-8'>
-        <p>Vous n'avez pas encore de compte ?</p>
+        <p>Vous n&apos;avez pas encore de compte ?</p>
         <button className='underline font-bold' onClick={toggleSignin}>
           {isSignin ? "M'inscrire" : 'Me connecter'}
         </button>
       </div>
       <div>
-        <div className='flex items-center'>
+        <div className='flex items-center py-5'>
           <span className='bg-[#D9D9D9] h-px flex-1'></span>
           <p className='px-7 text-[#545454] font-bold'>OU</p>
           <span className='bg-[#D9D9D9] h-px flex-1'></span>

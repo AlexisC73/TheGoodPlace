@@ -20,7 +20,7 @@ export default function SignupForm() {
         className='bg-primary h-[40px] self-center px-20 rounded mt-6 text-white'
         type='submit'
       >
-        M'inscrire
+        M&apos;inscrire
       </button>
     </form>
   )
