@@ -1,10 +1,26 @@
+'use client'
+import { FormEventHandler } from 'react'
 import FormElement from '../FormElement'
+import { signIn } from 'next-auth/react'
 
-export default function SigninForm() {
+export default function SigninForm({
+  closeSigninModal,
+}: {
+  closeSigninModal: () => void
+}) {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+    signIn('credentials', {
+      email: formData.get('email'),
+      password: formData.get('password'),
+      redirect: false,
+    }).then(() => closeSigninModal())
+  }
   return (
-    <form className='flex flex-col'>
+    <form className='flex flex-col' onSubmit={handleSubmit}>
       <div className='flex flex-col gap-[20px]'>
-        <FormElement label="Nom d'utilisateur" name='username' />
+        <FormElement label='Addresse email' name='email' type='email' />
         <FormElement label='Mot de passe' name='password' type='password' />
       </div>
 

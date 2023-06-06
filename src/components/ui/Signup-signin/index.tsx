@@ -9,16 +9,21 @@ import withOverlay from '@/components/Overlay/overlay'
 
 interface SigninModalProps {
   closeLoginModal: () => void
+  showOtherProvider?: boolean
 }
 
-function Modal({ closeLoginModal }: SigninModalProps) {
+function Modal({ closeLoginModal, showOtherProvider }: SigninModalProps) {
   const [isSignin, setIsSignin] = useState(true)
 
   const toggleSignin = () => {
     setIsSignin((prev) => !prev)
   }
 
-  const content = isSignin ? <SigninForm /> : <SignupForm />
+  const content = isSignin ? (
+    <SigninForm closeSigninModal={() => closeLoginModal()} />
+  ) : (
+    <SignupForm switchToSignin={() => setIsSignin(true)} />
+  )
   return (
     <div className='bg-white relative z-10 p-8 rounded w-[500px]'>
       <button
@@ -37,18 +42,20 @@ function Modal({ closeLoginModal }: SigninModalProps) {
           {isSignin ? "M'inscrire" : 'Me connecter'}
         </button>
       </div>
-      <div>
-        <div className='flex items-center py-5'>
-          <span className='bg-[#D9D9D9] h-px flex-1'></span>
-          <p className='px-7 text-[#545454] font-bold'>OU</p>
-          <span className='bg-[#D9D9D9] h-px flex-1'></span>
+      {showOtherProvider && (
+        <div>
+          <div className='flex items-center py-5'>
+            <span className='bg-[#D9D9D9] h-px flex-1'></span>
+            <p className='px-7 text-[#545454] font-bold'>OU</p>
+            <span className='bg-[#D9D9D9] h-px flex-1'></span>
+          </div>
+          <ul className='flex items-center justify-center pt-4'>
+            <li>
+              <SigninWithGooogle />
+            </li>
+          </ul>
         </div>
-        <ul className='flex items-center justify-center pt-4'>
-          <li>
-            <SigninWithGooogle />
-          </li>
-        </ul>
-      </div>
+      )}
     </div>
   )
 }

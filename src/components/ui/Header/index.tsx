@@ -6,9 +6,15 @@ import CartLogo from '@/assets/CartLogo'
 import Image from 'next/image'
 import SignupSigninModal from '../Signup-signin'
 import { useState } from 'react'
+import { useSession } from 'next-auth/react'
+import UserConnection from './UserInfo'
 
 function Header() {
-  const [showLoginModal, setShowLoginModal] = useState(true)
+  const [showLoginModal, setShowLoginModal] = useState(false)
+  const { data: session, status } = useSession()
+
+  if (status === 'loading') return <div>...loading</div>
+  console.log(session)
 
   const closeLoginModal = () => {
     setShowLoginModal(false)
@@ -22,11 +28,7 @@ function Header() {
       <div className='max-xl:order-1 col-span-2'>
         <SearchBar />
       </div>
-      <div className='flex items-center gap-8 min-w-[124px] justify-end max-xl:pr-3'>
-        <CartLogo className='text-[22px] text-primary' />
-        <div className='separator h-7 w-[2px] hidden sm:block bg-[#E9EDF3]'></div>
-        <AvatarImage />
-      </div>
+      <UserConnection showLoginModal={() => setShowLoginModal(true)} />
       {showLoginModal && (
         <SignupSigninModal closeLoginModal={closeLoginModal} />
       )}
@@ -35,17 +37,3 @@ function Header() {
 }
 
 export default Header
-
-const AvatarImage = () => {
-  return (
-    <div>
-      <Image
-        height={42}
-        width={42}
-        src='https://sm.ign.com/ign_fr/cover/a/avatar-gen/avatar-generations_bssq.jpg'
-        alt='avatar'
-        className='rounded-full'
-      />
-    </div>
-  )
-}
