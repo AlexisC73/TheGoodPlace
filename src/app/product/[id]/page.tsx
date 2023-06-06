@@ -1,7 +1,7 @@
 import Breadcrumbs from '@/components/Breadcrumb/Breadcrumbs'
 import ProductBookPresentation, {
   ProductBookInfo,
-} from '@/pages/product/[id]/ProductBookPresentation/ProductBookPresentation'
+} from '@/app/product/[id]/components/ProductBookPresentation/ProductBookPresentation'
 import { fakeBookInfo } from '@/fake/book'
 
 export const metadata = {

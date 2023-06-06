@@ -1,4 +1,4 @@
-import { BookCard, BookCardInfo } from '@/pages/home/BookCard'
+import { BookCard, BookCardInfo } from '@/app/components/BookCard'
 import { fakeBookInfo } from '@/fake/book'
 
 export default function Home() {
