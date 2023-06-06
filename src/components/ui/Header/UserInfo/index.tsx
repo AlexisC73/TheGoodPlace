@@ -7,11 +7,7 @@ const UserConnection = ({ showLoginModal }: { showLoginModal: () => void }) => {
   const { data: session, status } = useSession()
   if (status === 'loading') return null
 
-  return (
-    <div className='xl:w-[200px]'>
-      {session ? <UserInfo /> : <ConnectionLink action={showLoginModal} />}
-    </div>
-  )
+  return session ? <UserInfo /> : <ConnectionLink action={showLoginModal} />
 }
 
 export default UserConnection

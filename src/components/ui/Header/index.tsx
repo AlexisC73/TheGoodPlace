@@ -4,15 +4,10 @@ import Brand from '@/components/brand'
 import SearchBar from './SearchBar'
 import { SigninModal } from '../SigninModal'
 import { useState } from 'react'
-import { useSession } from 'next-auth/react'
 import UserConnection from './UserInfo'
 
 function Header() {
   const [showLoginModal, setShowLoginModal] = useState(false)
-  const { data: session, status } = useSession()
-
-  if (status === 'loading') return <div>...loading</div>
-  console.log(session)
 
   const closeLoginModal = () => {
     setShowLoginModal(false)
@@ -26,7 +21,9 @@ function Header() {
       <div className='max-xl:order-1 col-span-2'>
         <SearchBar />
       </div>
-      <UserConnection showLoginModal={() => setShowLoginModal(true)} />
+      <div className='xl:w-[200px]'>
+        <UserConnection showLoginModal={() => setShowLoginModal(true)} />
+      </div>
       {showLoginModal && <SigninModal closeLoginModal={closeLoginModal} />}
     </header>
   )
