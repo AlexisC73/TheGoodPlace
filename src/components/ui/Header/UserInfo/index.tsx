@@ -17,5 +17,5 @@ const UserConnection = ({ showLoginModal }: { showLoginModal: () => void }) => {
 export default UserConnection
 
 const ConnectionLink = ({ action }: { action: () => void }) => {
-  return <button onClick={action}>Me connecter / M'inscrire</button>
+  return <button onClick={action}>Me connecter / M&apos;inscrire</button>
 }

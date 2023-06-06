@@ -24,7 +24,6 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
           role: 'CLIENT',
         }),
       })
-      console.log('RESPONSE => ', signupRequest.ok)
       if (signupRequest.ok) {
         res.status(200).json({ message: 'User created' })
       } else {

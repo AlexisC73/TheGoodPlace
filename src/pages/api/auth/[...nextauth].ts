@@ -25,12 +25,15 @@ const authOptions: AuthOptions = {
           }),
         })
 
-        const user = await fetchConnect.json()
-        if (user) {
-          return user
-        } else {
-          return null
+        if (fetchConnect.ok) {
+          const user = await fetchConnect.json()
+          if (user) {
+            return user
+          } else {
+            return null
+          }
         }
+        return null
       },
     }),
   ],

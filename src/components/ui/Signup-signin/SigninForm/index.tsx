@@ -15,7 +15,11 @@ export default function SigninForm({
       email: formData.get('email'),
       password: formData.get('password'),
       redirect: false,
-    }).then(() => closeSigninModal())
+    }).then((res) => {
+      if (res?.ok) {
+        closeSigninModal()
+      }
+    })
   }
   return (
     <form className='flex flex-col' onSubmit={handleSubmit}>
