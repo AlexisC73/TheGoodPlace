@@ -1,6 +1,8 @@
 import NextAuth, { AuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
+const apiUrl = process.env.NEXTAUTH_URL
+
 const authOptions: AuthOptions = {
   providers: [
     CredentialsProvider({
@@ -14,7 +16,7 @@ const authOptions: AuthOptions = {
           email: string
           password: string
         }
-        const fetchConnect = await fetch('http://localhost:5500/auth/signin', {
+        const fetchConnect = await fetch(apiUrl + '/auth/signin', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

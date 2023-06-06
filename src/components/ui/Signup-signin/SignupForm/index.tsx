@@ -55,9 +55,6 @@ export default function SignupForm({
           type='password'
         />
       </div>
-      <span className='underline text-[#606060] text-[14px] mt-2'>
-        Mot de passe oublié ?
-      </span>
       <button
         className='bg-primary h-[40px] self-center px-20 rounded mt-6 text-white'
         type='submit'
