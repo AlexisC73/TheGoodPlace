@@ -2,12 +2,15 @@
 
 import { FormEventHandler } from 'react'
 import FormElement from '../FormElement'
+import { useNotifications } from '@/context/NotificationContext'
 
 export default function SignupForm({
   switchToSignin,
 }: {
   switchToSignin: () => void
 }) {
+  const { pushNotification } = useNotifications()
+
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
@@ -15,9 +18,19 @@ export default function SignupForm({
     const email = formData.get('email')?.toString()!
     const password = formData.get('password')?.toString()!
     const passwordVerif = formData.get('password-verif')?.toString()!
-    signup({ username, email, password, passwordVerif }).then(() =>
-      switchToSignin()
-    )
+    signup({ username, email, password, passwordVerif }).then(async (res) => {
+      if (res.ok) {
+        switchToSignin()
+        return
+      }
+      const data = await res.json()
+      pushNotification({
+        title: 'Erreur',
+        content: data.message || 'Une erreur est survenue',
+        type: 'error',
+        duration: 2,
+      })
+    })
   }
   const signup = ({
     username,
@@ -41,7 +54,7 @@ export default function SignupForm({
         password,
         passwordVerif,
       }),
-    }).then(async (res) => console.log(await res.json()))
+    })
 
   return (
     <form className='flex flex-col' onSubmit={handleSubmit}>
