@@ -2,9 +2,7 @@
 
 import Brand from '@/components/brand'
 import SearchBar from './SearchBar'
-import CartLogo from '@/assets/CartLogo'
-import Image from 'next/image'
-import SignupSigninModal from '../Signup-signin'
+import { SigninModal } from '../SigninModal'
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import UserConnection from './UserInfo'
@@ -29,9 +27,7 @@ function Header() {
         <SearchBar />
       </div>
       <UserConnection showLoginModal={() => setShowLoginModal(true)} />
-      {showLoginModal && (
-        <SignupSigninModal closeLoginModal={closeLoginModal} />
-      )}
+      {showLoginModal && <SigninModal closeLoginModal={closeLoginModal} />}
     </header>
   )
 }

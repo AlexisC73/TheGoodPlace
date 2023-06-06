@@ -1,7 +1,7 @@
-import Breadcrumbs from '@/components/Breadcrumb'
+import Breadcrumbs from '@/components/Breadcrumb/Breadcrumbs'
 import ProductBookPresentation, {
   ProductBookInfo,
-} from '@/components/ProductBookPresentation'
+} from '@/pages/product/[id]/ProductBookPresentation/ProductBookPresentation'
 import { fakeBookInfo } from '@/fake/book'
 
 export const metadata = {
@@ -23,7 +23,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
   const actualBookInfo = bookInfo.find((book) => book.id === params.id)!
   const breadcrumbs = [
     {
-      name: 'Livre',
+      name: 'Livres',
       href: '/',
     },
     {

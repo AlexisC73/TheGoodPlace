@@ -1,6 +1,6 @@
 import AddCartIcon from '@/assets/AddCart'
 import Link from 'next/link'
-import Rating from '../Rating'
+import Rating from '../../../components/Rating'
 
 export type BookCardInfo = {
   id: number

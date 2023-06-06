@@ -1,6 +1,6 @@
 'use client'
 
-import Rating from '../Rating'
+import Rating from '../../../../components/Rating'
 import { useState } from 'react'
 
 type ProductBookPresentationProps = {

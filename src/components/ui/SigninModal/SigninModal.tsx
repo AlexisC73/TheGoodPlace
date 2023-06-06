@@ -1,9 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import SigninWithGooogle from './SignWithGoogleIcon/SignWithGoogleIcon'
-import SigninForm from './SigninForm'
-import SignupForm from './SignupForm'
+import SigninWithGooogle from './SignWithGoogle/SignWithGoogle'
+import SigninForm from '../../Form/SigninForm'
+import SignupForm from '../../Form/SignupForm'
 import { CrossIcon } from '@/assets/Cross'
 import withOverlay from '@/components/Overlay/overlay'
 
