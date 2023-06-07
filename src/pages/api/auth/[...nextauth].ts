@@ -16,26 +16,30 @@ const authOptions: AuthOptions = {
           email: string
           password: string
         }
-        const fetchConnect = await fetch(apiUrl + '/auth/signin', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email,
-            password,
-          }),
-        })
+        try {
+          const fetchConnect = await fetch(apiUrl + '/auth/signin', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email,
+              password,
+            }),
+          })
 
-        if (fetchConnect.ok) {
-          const user = await fetchConnect.json()
-          if (user) {
-            return user
-          } else {
-            return null
+          if (fetchConnect.ok) {
+            const user = await fetchConnect.json()
+            if (user) {
+              return user
+            } else {
+              return null
+            }
           }
+          return null
+        } catch (err) {
+          throw new Error('Problème de liaison avec le server.')
         }
-        return null
       },
     }),
   ],
