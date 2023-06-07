@@ -4,4 +4,5 @@ export interface User {
   email?: string | null
   access_token?: string | null
   role?: string | null
+  avatarUrl?: string | null
 }

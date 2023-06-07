@@ -1,33 +1,44 @@
+'use client'
+
 import CartLogo from '@/assets/CartLogo'
 import React from 'react'
 import Image from 'next/image'
-import { signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 
 function UserInfo() {
+  const { data: session } = useSession()
+  if (!session) return null
   return (
     <div className='flex items-center gap-8 min-w-[124px] justify-end max-xl:pr-3'>
       <CartLogo className='text-[22px] text-primary' />
       <div className='separator h-7 w-[2px] hidden sm:block bg-[#E9EDF3]'></div>
-      <AvatarImage />
+      <AvatarImage src={session.user.avatarUrl} />
     </div>
   )
 }
 
 export default UserInfo
 
-const AvatarImage = () => {
+const AvatarImage = ({ src }: { src: string | null | undefined }) => {
   const logout = () =>
     signOut({
       redirect: false,
     })
+
+  const imageLink = src
+    ? src.length <= 0
+      ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
+      : src
+    : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
+
   return (
     <div onClick={logout} className='cursor-pointer'>
       <Image
         height={42}
         width={42}
-        src='https://sm.ign.com/ign_fr/cover/a/avatar-gen/avatar-generations_bssq.jpg'
+        src={imageLink}
         alt='avatar'
-        className='rounded-full'
+        className='rounded-full object-cover'
       />
     </div>
   )
