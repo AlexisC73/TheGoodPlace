@@ -3,7 +3,8 @@
 import CartLogo from '@/assets/CartLogo'
 import React from 'react'
 import Image from 'next/image'
-import { signOut, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
+import Link from 'next/link'
 
 function UserInfo() {
   const { data: session } = useSession()
@@ -20,11 +21,6 @@ function UserInfo() {
 export default UserInfo
 
 const AvatarImage = ({ src }: { src: string | null | undefined }) => {
-  const logout = () =>
-    signOut({
-      redirect: false,
-    })
-
   const imageLink = src
     ? src.length <= 0
       ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
@@ -32,14 +28,17 @@ const AvatarImage = ({ src }: { src: string | null | undefined }) => {
     : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
 
   return (
-    <div onClick={logout} className='cursor-pointer'>
+    <Link
+      href={'/user/profile'}
+      className='cursor-pointer w-[42px] h-[42px] rounded-full overflow-hidden flex items-center justify-center'
+    >
       <Image
         height={42}
         width={42}
         src={imageLink}
         alt='avatar'
-        className='rounded-full object-cover'
+        className='object-cover h-full w-full'
       />
-    </div>
+    </Link>
   )
 }
