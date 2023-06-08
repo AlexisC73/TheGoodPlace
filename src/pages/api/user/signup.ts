@@ -1,3 +1,4 @@
+import env from '@/utils/config'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
@@ -12,7 +13,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
       return
     }
     try {
-      const signupRequest = await fetch('http://localhost:5500/user/signup', {
+      const signupRequest = await fetch(`${env.API_URL}/user/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

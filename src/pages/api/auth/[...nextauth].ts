@@ -1,7 +1,6 @@
+import env from '@/utils/config'
 import NextAuth, { AuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-
-const apiUrl = process.env.NEXTAUTH_URL
 
 const authOptions: AuthOptions = {
   providers: [
@@ -17,7 +16,7 @@ const authOptions: AuthOptions = {
           password: string
         }
         try {
-          const fetchConnect = await fetch(apiUrl + '/auth/signin', {
+          const fetchConnect = await fetch(env.API_URL + '/auth/signin', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -44,10 +43,16 @@ const authOptions: AuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
+      if (trigger === 'update' && session?.avatarUrl) {
+        token.avatarUrl = session.avatarUrl
+      }
       return { ...token, ...user }
     },
-    async session({ session, token }) {
+    async session({ session, token, trigger, newSession }) {
+      if (trigger === 'update' && newSession?.avatarUrl) {
+        session.user.avatarUrl = newSession.avatarUrl
+      }
       session.user = token
       return session
     },
