@@ -68,7 +68,7 @@ function Notifications() {
   }
 
   return (
-    <ul className='z-40 flex flex-col gap-4 right-0 top-20 absolute'>
+    <ul className='z-40 flex flex-col gap-4 right-5 top-5 fixed'>
       {notifications.map((notification) => (
         <li key={notification.title} onClick={() => handleRemove(notification)}>
           <Notification {...notification} />
