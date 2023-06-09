@@ -13,15 +13,13 @@ const roboto = Roboto({ weight: '400', style: 'normal', subsets: ['latin'] })
 
 export default function RootLayout({
   children,
-  session,
 }: {
   children: React.ReactNode
-  session: any
 }) {
   return (
     <html lang='en'>
       <body className={roboto.className}>
-        <NextAuthProvider session={session}>
+        <NextAuthProvider>
           <NotificationContextProvider>
             <Header />
             {children}

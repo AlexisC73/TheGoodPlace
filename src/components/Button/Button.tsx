@@ -13,8 +13,7 @@ export default function Button({
     <button
       type={role}
       className={
-        'px-4 py-2 text-[14px] h-10 text-white bg-primary rounded-md ' +
-        className
+        'px-4 py-2 text-[14px] text-white bg-primary rounded-md ' + className
       }
     >
       {children}
