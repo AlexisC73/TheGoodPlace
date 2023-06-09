@@ -27,19 +27,16 @@ export const authOptions: AuthOptions = {
             }),
           })
 
-          if (fetchConnect.ok) {
+          if (fetchConnect.status === 200) {
             const user = await fetchConnect.json()
             if (user) {
               return user
             } else {
               return null
             }
+          } else {
+            throw new Error("L'identifiant ou le mot de passe sont incorrects.")
           }
-
-          if (!fetchConnect.ok) {
-            throw new Error('Il y a eu un problème lors de la connexion.')
-          }
-          return null
         } catch (err: any) {
           if (err.message === 'fetch failed')
             throw new Error('Problème de liaison avec le server.')

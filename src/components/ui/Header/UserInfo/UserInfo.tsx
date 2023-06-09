@@ -3,15 +3,23 @@
 import CartLogo from '@/assets/CartLogo'
 import React from 'react'
 import Image from 'next/image'
-import { useSession } from 'next-auth/react'
+import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
+import LogoutIcon from '@/assets/LogoutIcon/LogoutIcon'
 
 function UserInfo() {
   const { data: session } = useSession()
   if (!session) return null
+  const handleLogout = () => {
+    signOut()
+  }
   return (
     <div className='flex items-center gap-8 min-w-[124px] justify-end max-xl:pr-3'>
       <CartLogo className='text-[22px] text-primary' />
+      <LogoutIcon
+        onClick={handleLogout}
+        className='text-primary text-[22px] cursor-pointer'
+      />
       <div className='separator h-7 w-[2px] hidden sm:block bg-[#E9EDF3]'></div>
       <AvatarImage src={session.user.avatarUrl} />
     </div>

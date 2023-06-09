@@ -20,29 +20,28 @@ export default function SigninForm({
       redirect: false,
     })
       .then((res) => {
-        if (res?.ok) {
+        if (!res?.error) {
           closeSigninModal()
           pushNotification({
             title: 'Connexion réussie',
             content: 'Vous êtes maintenant connecté',
-            duration: 2,
+            duration: 1,
           })
-          return
+        } else {
+          pushNotification({
+            title: 'Erreur',
+            content: res?.error || 'Une erreur est survenue',
+            type: 'error',
+            duration: 1,
+          })
         }
-        pushNotification({
-          title: 'Erreur',
-          content: res?.error || 'Une erreur est survenue',
-          type: 'error',
-          duration: 2,
-        })
-        return
       })
       .catch((err) => {
         pushNotification({
           title: 'Erreur',
-          content: err.message,
+          content: 'Il y a un problème de liaison avec le server',
           type: 'error',
-          duration: 2,
+          duration: 1,
         })
         return
       })
