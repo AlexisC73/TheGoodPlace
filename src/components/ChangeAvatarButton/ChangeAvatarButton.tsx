@@ -1,6 +1,6 @@
 'use client'
 
-import { getAvatarUrl } from '@/utils/avatar'
+import { fetchAvatarUrl } from '@/utils/avatar'
 import { useSession } from 'next-auth/react'
 import { ChangeEvent, FormEventHandler, useRef } from 'react'
 
@@ -47,7 +47,7 @@ export default function ChangeAvatarButton({
     }).then(async (res) => {
       if (res.ok) {
         update({
-          avatarUrl: await getAvatarUrl(),
+          avatarUrl: await fetchAvatarUrl(),
         })
       }
     })

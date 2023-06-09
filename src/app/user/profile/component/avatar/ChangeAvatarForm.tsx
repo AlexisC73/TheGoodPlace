@@ -52,7 +52,7 @@ const DeleteAvatarButton = () => {
       <div className='text-[20px]'>
         <DeleteIcon />
       </div>
-      Supprimer l'avatar
+      Supprimer l&apos;avatar
     </button>
   )
 }
