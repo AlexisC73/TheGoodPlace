@@ -8,7 +8,7 @@ const FormElement = ({
   type?: string
 }) => {
   return (
-    <div className='flex flex-col'>
+    <div className='flex flex-col w-full'>
       <label htmlFor={name}>{label}</label>
       <input
         className='bg-white border outline-none w-full h-[40px] rounded px-4'

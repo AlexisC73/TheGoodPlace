@@ -18,11 +18,11 @@ const ChangeAvatarForm = () => {
   if (status === 'loading') return null
 
   return (
-    <div className='flex flex-col items-center gap-14 bg-gray-100 p-10 rounded-2xl'>
-      <div className='w-20 h-20 rounded-full overflow-hidden flex items-center justify-center'>
+    <div className='flex flex-col items-center gap-y-8 h-[250px] bg-[#F6F7F9] p-10 rounded-2xl'>
+      <div className='w-[88px] h-[88px] rounded-full overflow-hidden flex items-center justify-center'>
         <Image
-          height={80}
-          width={80}
+          height={88}
+          width={88}
           src={
             avatarUrl ??
             'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
@@ -32,9 +32,9 @@ const ChangeAvatarForm = () => {
         />
       </div>
 
-      <div className='flex gap-10'>
-        <ChangeAvatarButton icon={<UploadIcon />} text="Modifier l'avatar" />
+      <div className='flex gap-x-10'>
         <DeleteAvatarButton />
+        <ChangeAvatarButton icon={<UploadIcon />} text="Modifier l'avatar" />
       </div>
     </div>
   )
