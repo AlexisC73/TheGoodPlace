@@ -2,7 +2,7 @@ import env from '@/utils/config'
 import NextAuth, { AuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
-const authOptions: AuthOptions = {
+export const authOptions: AuthOptions = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -35,9 +35,17 @@ const authOptions: AuthOptions = {
               return null
             }
           }
+
+          if (!fetchConnect.ok) {
+            throw new Error('Il y a eu un problème lors de la connexion.')
+          }
           return null
-        } catch (err) {
-          throw new Error('Problème de liaison avec le server.')
+        } catch (err: any) {
+          if (err.message === 'fetch failed')
+            throw new Error('Problème de liaison avec le server.')
+          else {
+            throw new Error(err.message)
+          }
         }
       },
     }),
@@ -59,4 +67,6 @@ const authOptions: AuthOptions = {
   },
 }
 
-export default NextAuth(authOptions)
+const handler = NextAuth(authOptions)
+
+export { handler as GET, handler as POST }
