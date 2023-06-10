@@ -3,6 +3,7 @@ import ChangeInformationForm from '../ChangeInformationForm/ChangeInformationFor
 import CheckIcon from '@/assets/CheckIcon'
 import FormElement from '@/components/Form/FormElement'
 import { useNotifications } from '@/context/NotificationContext'
+import { ApiResponse } from '@/utils/api-response'
 import { useSession } from 'next-auth/react'
 import { FormEventHandler } from 'react'
 
@@ -28,15 +29,21 @@ function ChangeUserInfoForm() {
       body: JSON.stringify(body),
     })
       .then(async (res) => {
-        const newInfo = await res.json()
-        if (newInfo?.user) {
+        const response: ApiResponse = await res.json()
+        if (response.success) {
           form.reset()
           pushNotification({
             title: 'Information modifié',
-            content: 'Vos informations ont bien été modifié',
+            content: response.data.message,
             duration: 1,
           })
-          update(newInfo.user)
+          update(body)
+        } else {
+          pushNotification({
+            title: 'Erreur',
+            content: response.error,
+            duration: 1,
+          })
         }
       })
       .catch((err) => {

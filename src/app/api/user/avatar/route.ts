@@ -1,9 +1,9 @@
 import env from '@/utils/config'
 import { getServerSession } from 'next-auth'
-import { NextRequest, NextResponse } from 'next/server'
 import { authOptions } from '../../auth/[...nextauth]/route'
+import { sendApiResponse } from '@/utils/api-response'
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   const session = await getServerSession(authOptions)
   const request = await fetch(`${env.API_URL}/user/avatar`, {
     method: 'GET',
@@ -12,6 +12,18 @@ export async function GET(req: NextRequest) {
       Authorization: `Bearer ${session?.user.access_token}`,
     },
   })
-  const response = await request.json()
-  return NextResponse.json(response, { status: 200 })
+
+  if (request.ok) {
+    const result = await request.json()
+    console.log(result)
+    return sendApiResponse({
+      success: request.ok,
+      data: { ...result.data, message: 'Avatar récupéré avec succès.' },
+    })
+  } else {
+    return sendApiResponse({
+      success: request.ok,
+      error: "Erreur lors de la récupération de l'avatar.",
+    })
+  }
 }

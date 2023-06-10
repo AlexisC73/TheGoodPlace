@@ -5,7 +5,7 @@ import { UploadIcon } from '@/assets/UploadIcon'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import FormButton from './FormButton/FormButton'
-import { ChangeEvent, FormEventHandler, useRef } from 'react'
+import { ChangeEvent, useRef } from 'react'
 import { fetchAvatarUrl } from '@/utils/avatar'
 
 const ChangeAvatarForm = () => {

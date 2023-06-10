@@ -1,7 +1,8 @@
 import env from '@/utils/config'
 import { getServerSession } from 'next-auth'
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { authOptions } from '../auth/[...nextauth]/route'
+import { sendApiResponse } from '@/utils/api-response'
 
 export async function PATCH(req: NextRequest) {
   const session = await getServerSession(authOptions)
@@ -15,5 +16,15 @@ export async function PATCH(req: NextRequest) {
     body: JSON.stringify(body),
   })
 
-  return NextResponse.json({ user: body }, { status: 200 })
+  if (request.ok) {
+    return sendApiResponse({
+      success: request.ok,
+      data: { message: request.statusText },
+    })
+  } else {
+    return sendApiResponse({
+      success: request.ok,
+      error: request.statusText,
+    })
+  }
 }

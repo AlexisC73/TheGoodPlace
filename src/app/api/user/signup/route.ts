@@ -1,38 +1,47 @@
+import { sendApiResponse } from '@/utils/api-response'
 import env from '@/utils/config'
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 
 export async function POST(req: NextRequest) {
-  const { username, email, password, passwordVerif } = await req.json()
+  const { name, email, password, passwordVerif } = await req.json()
 
-  if (!password || !passwordVerif || !username || !email) {
-    return NextResponse.json({ message: 'Missing fields' }, { status: 400 })
+  if (!password || !passwordVerif || !name || !email) {
+    return sendApiResponse({
+      success: false,
+      error: 'Veuillez remplir tous les champs.',
+    })
   }
   if (password !== passwordVerif) {
-    return NextResponse.json(
-      { message: 'Passwords do not match' },
-      { status: 400 }
-    )
-  }
-  try {
-    const signupRequest = await fetch(`${env.API_URL}/user/signup`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: username,
-        email: email,
-        password,
-        role: 'CLIENT',
-      }),
+    return sendApiResponse({
+      success: false,
+      error: 'Les mots de passe ne correspondent pas.',
     })
-    if (signupRequest.ok) {
-      return NextResponse.json({ message: 'User created' }, { status: 200 })
-    } else {
-      const signupRes = await signupRequest.json()
-      return NextResponse.json(signupRes, { status: signupRequest.status })
-    }
-  } catch (err: any) {
-    return NextResponse.json({ message: err.message }, { status: 500 })
+  }
+
+  const signupRequest = await fetch(`${env.API_URL}/user/signup`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      name,
+      email,
+      password,
+      role: 'CLIENT',
+    }),
+  })
+
+  if (signupRequest.ok) {
+    return sendApiResponse({
+      success: true,
+      data: {
+        message: 'Utilisateur créé avec succès.',
+      },
+    })
+  } else {
+    return sendApiResponse({
+      success: false,
+      error: "Une erreur s'est produite ou alors l'email utilisé existe déjà.",
+    })
   }
 }

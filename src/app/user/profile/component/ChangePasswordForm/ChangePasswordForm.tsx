@@ -35,6 +35,12 @@ function ChangePasswordForm() {
           content: 'Votre mot de passe a bien été modifié',
           duration: 1,
         })
+      } else {
+        pushNotification({
+          title: 'Erreur',
+          content: data.error,
+          duration: 1,
+        })
       }
     })
   }

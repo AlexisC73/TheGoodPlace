@@ -3,6 +3,7 @@
 import { FormEventHandler } from 'react'
 import FormElement from '../FormElement'
 import { useNotifications } from '@/context/NotificationContext'
+import { ApiResponse } from '@/utils/api-response'
 
 export default function SignupForm({
   switchToSignin,
@@ -14,52 +15,57 @@ export default function SignupForm({
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
-    const username = formData.get('username')?.toString()!
+    const name = formData.get('name')?.toString()!
     const email = formData.get('email')?.toString()!
     const password = formData.get('password')?.toString()!
     const passwordVerif = formData.get('password-verif')?.toString()!
-    signup({ username, email, password, passwordVerif }).then(async (res) => {
-      if (res.ok) {
-        switchToSignin()
-        return
-      }
-      const data = await res.json()
-      pushNotification({
-        title: 'Erreur',
-        content: data.message || 'Une erreur est survenue',
-        type: 'error',
-        duration: 2,
-      })
-    })
+    signup({ name, email, password, passwordVerif })
   }
-  const signup = ({
-    username,
+  const signup = async ({
+    name,
     email,
     password,
     passwordVerif,
   }: {
-    username: string
+    name: string
     email: string
     password: string
     passwordVerif: string
-  }) =>
-    fetch('http://localhost:3000/api/user/signup', {
+  }) => {
+    const request = await fetch('/api/user/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        username,
+        name,
         email,
         password,
         passwordVerif,
       }),
     })
+    const response: ApiResponse = await request.json()
+    if (response.success) {
+      pushNotification({
+        title: 'Utilisateur créé',
+        content: response.data.message,
+        duration: 1,
+      })
+      switchToSignin()
+    } else {
+      pushNotification({
+        title: 'Erreur',
+        type: 'error',
+        content: response.error,
+        duration: 5,
+      })
+    }
+  }
 
   return (
     <form className='flex flex-col' onSubmit={handleSubmit}>
       <div className='flex flex-col gap-[20px]'>
-        <FormElement label="Nom d'utilisateur" name='username' />
+        <FormElement label="Nom d'utilisateur" name='name' />
         <FormElement label='Addresse email' name='email' type='email' />
         <FormElement label='Mot de passe' name='password' type='password' />
         <FormElement

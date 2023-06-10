@@ -2,27 +2,40 @@ import { getServerSession } from 'next-auth'
 import { NextRequest, NextResponse } from 'next/server'
 import { authOptions } from '../../auth/[...nextauth]/route'
 import env from '@/utils/config'
+import { sendApiResponse } from '@/utils/api-response'
 
 export async function PATCH(req: NextRequest) {
   const session = await getServerSession(authOptions)
   const user = session?.user
   if (!user)
-    return NextResponse.json({ error: 'not authenticated' }, { status: 401 })
+    return sendApiResponse({
+      success: !!user,
+      error: 'Vous semblez ne pas être connecté.',
+    })
 
   const { oldPassword, newPassword, newPasswordConfirmation } = await req.json()
-  console.log({ oldPassword, newPassword, newPasswordConfirmation })
-  if (!oldPassword || !newPassword || !newPasswordConfirmation) {
-    return NextResponse.json(
-      { success: false, error: 'missing fields' },
-      { status: 400 }
-    )
+
+  const missinfFields = ![
+    oldPassword,
+    newPassword,
+    newPasswordConfirmation,
+  ].every(Boolean)
+
+  if (missinfFields) {
+    return sendApiResponse({
+      success: !missinfFields,
+      error: 'Certains champs ne sont pas remplis.',
+    })
   }
-  if (newPassword !== newPasswordConfirmation) {
-    return NextResponse.json(
-      { success: false, error: 'passwords do not match' },
-      { status: 400 }
-    )
+
+  const passwordMatch = newPassword !== newPasswordConfirmation
+  if (!passwordMatch) {
+    return sendApiResponse({
+      success: passwordMatch,
+      error: 'Erreur de confirmation du nouveau mot de passe.',
+    })
   }
+
   const request = await fetch(`${env.API_URL}/user/password`, {
     method: 'PATCH',
     headers: {
@@ -32,14 +45,12 @@ export async function PATCH(req: NextRequest) {
     body: JSON.stringify({ oldPassword, newPassword }),
   })
 
-  if (request.status !== 200) {
-    return NextResponse.json(
-      { success: false, error: request.statusText },
-      { status: request.status }
-    )
+  if (request.ok) {
+    return sendApiResponse({
+      success: request.ok,
+      data: { message: 'Votre mot de passe a bien été modifié.' },
+    })
+  } else {
+    return sendApiResponse({ success: request.ok, error: request.statusText })
   }
-  return NextResponse.json(
-    { success: true, message: request.statusText },
-    { status: 200 }
-  )
 }
