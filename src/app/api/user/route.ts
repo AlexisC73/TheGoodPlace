@@ -7,24 +7,31 @@ import { sendApiResponse } from '@/utils/api-response'
 export async function PATCH(req: NextRequest) {
   const session = await getServerSession(authOptions)
   const body = await req.json()
-  const request = await fetch(`${env.API_URL}/user`, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${session?.user.access_token}`,
-    },
-    body: JSON.stringify(body),
-  })
-
-  if (request.ok) {
-    return sendApiResponse({
-      success: true,
-      data: { message: request.statusText },
+  try {
+    const request = await fetch(`${env.API_URL}/user`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${session?.user.access_token}`,
+      },
+      body: JSON.stringify(body),
     })
-  } else {
+
+    if (request.ok) {
+      return sendApiResponse({
+        success: true,
+        data: { message: request.statusText },
+      })
+    } else {
+      return sendApiResponse({
+        success: false,
+        error: request.statusText,
+      })
+    }
+  } catch (err) {
     return sendApiResponse({
       success: false,
-      error: request.statusText,
+      error: "'Problème de liaison avec le serveur d'authentification.",
     })
   }
 }

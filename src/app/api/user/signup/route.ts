@@ -17,31 +17,38 @@ export async function POST(req: NextRequest) {
       error: 'Les mots de passe ne correspondent pas.',
     })
   }
-
-  const signupRequest = await fetch(`${env.API_URL}/user/signup`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      name,
-      email,
-      password,
-      role: 'CLIENT',
-    }),
-  })
-
-  if (signupRequest.ok) {
-    return sendApiResponse({
-      success: true,
-      data: {
-        message: 'Utilisateur créé avec succès.',
+  try {
+    const signupRequest = await fetch(`${env.API_URL}/user/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+        role: 'CLIENT',
+      }),
     })
-  } else {
+
+    if (signupRequest.ok) {
+      return sendApiResponse({
+        success: true,
+        data: {
+          message: 'Utilisateur créé avec succès.',
+        },
+      })
+    } else {
+      return sendApiResponse({
+        success: false,
+        error:
+          "Une erreur s'est produite ou alors l'email utilisé existe déjà.",
+      })
+    }
+  } catch (err) {
     return sendApiResponse({
       success: false,
-      error: "Une erreur s'est produite ou alors l'email utilisé existe déjà.",
+      error: "'Problème de liaison avec le serveur d'authentification.",
     })
   }
 }

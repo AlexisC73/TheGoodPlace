@@ -36,21 +36,28 @@ export async function PATCH(req: NextRequest) {
     })
   }
 
-  const request = await fetch(`${env.API_URL}/user/password`, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${session?.user.access_token}`,
-    },
-    body: JSON.stringify({ oldPassword, newPassword }),
-  })
-
-  if (request.ok) {
-    return sendApiResponse({
-      success: request.ok,
-      data: { message: 'Votre mot de passe a bien été modifié.' },
+  try {
+    const request = await fetch(`${env.API_URL}/user/password`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${session?.user.access_token}`,
+      },
+      body: JSON.stringify({ oldPassword, newPassword }),
     })
-  } else {
-    return sendApiResponse({ success: request.ok, error: request.statusText })
+
+    if (request.ok) {
+      return sendApiResponse({
+        success: request.ok,
+        data: { message: 'Votre mot de passe a bien été modifié.' },
+      })
+    } else {
+      return sendApiResponse({ success: request.ok, error: request.statusText })
+    }
+  } catch (err) {
+    return sendApiResponse({
+      success: false,
+      error: "'Problème de liaison avec le serveur d'authentification.",
+    })
   }
 }
