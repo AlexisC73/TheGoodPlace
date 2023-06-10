@@ -28,7 +28,7 @@ export async function PATCH(req: NextRequest) {
     })
   }
 
-  const passwordMatch = newPassword !== newPasswordConfirmation
+  const passwordMatch = newPassword === newPasswordConfirmation
   if (!passwordMatch) {
     return sendApiResponse({
       success: passwordMatch,

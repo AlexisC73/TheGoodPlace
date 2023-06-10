@@ -38,6 +38,7 @@ function ChangePasswordForm() {
       } else {
         pushNotification({
           title: 'Erreur',
+          type: 'error',
           content: data.error,
           duration: 1,
         })

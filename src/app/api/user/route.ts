@@ -18,12 +18,12 @@ export async function PATCH(req: NextRequest) {
 
   if (request.ok) {
     return sendApiResponse({
-      success: request.ok,
+      success: true,
       data: { message: request.statusText },
     })
   } else {
     return sendApiResponse({
-      success: request.ok,
+      success: false,
       error: request.statusText,
     })
   }

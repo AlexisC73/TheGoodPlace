@@ -41,6 +41,7 @@ function ChangeUserInfoForm() {
         } else {
           pushNotification({
             title: 'Erreur',
+            type: 'error',
             content: response.error,
             duration: 1,
           })
