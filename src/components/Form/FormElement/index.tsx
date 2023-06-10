@@ -17,7 +17,7 @@ const FormElement = ({
         type={type}
         name={name}
         id={name}
-        placeholder={currentValue ?? label}
+        placeholder={currentValue ?? ''}
       />
     </div>
   )
