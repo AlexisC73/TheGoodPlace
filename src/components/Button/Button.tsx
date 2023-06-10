@@ -3,15 +3,15 @@ import { ReactNode } from 'react'
 export default function Button({
   children,
   className,
-  role = 'button',
+  type = 'button',
 }: {
   children: ReactNode
   className?: string
-  role?: 'button' | 'submit' | 'reset'
+  type?: 'button' | 'submit' | 'reset'
 }) {
   return (
     <button
-      type={role}
+      type={type}
       className={
         'px-4 py-2 text-[14px] text-white bg-primary rounded-md ' + className
       }

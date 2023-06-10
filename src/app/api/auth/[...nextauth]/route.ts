@@ -52,6 +52,10 @@ export const authOptions: AuthOptions = {
       if (trigger === 'update' && session?.avatarUrl) {
         token.avatarUrl = session.avatarUrl
       }
+      if (trigger === 'update' && (session?.name || session?.email)) {
+        token.name = session.name ?? token.name
+        token.email = session.email ?? token.email
+      }
       return { ...token, ...user }
     },
     async session({ session, token, trigger, newSession }) {

@@ -2,10 +2,12 @@ const FormElement = ({
   label,
   name,
   type = 'text',
+  currentValue,
 }: {
   label: string
   name: string
   type?: string
+  currentValue?: string | null
 }) => {
   return (
     <div className='flex flex-col gap-y-2 w-full'>
@@ -15,6 +17,7 @@ const FormElement = ({
         type={type}
         name={name}
         id={name}
+        placeholder={currentValue ?? label}
       />
     </div>
   )
