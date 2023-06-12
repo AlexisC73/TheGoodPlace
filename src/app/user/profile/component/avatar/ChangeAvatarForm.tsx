@@ -7,10 +7,14 @@ import Image from 'next/image'
 import FormButton from './FormButton/FormButton'
 import { ChangeEvent, useRef } from 'react'
 import { fetchAvatarUrl } from '@/utils/avatar'
+import { ApiResponse } from '@/utils/api-response'
+import { useNotifications } from '@/context/NotificationContext'
 
 const ChangeAvatarForm = () => {
   const { data: session, status, update } = useSession()
   const hiddenInputFile = useRef<HTMLInputElement>(null)
+
+  const { pushNotification } = useNotifications()
 
   const avatarUrl = session
     ? session.user
@@ -53,6 +57,26 @@ const ChangeAvatarForm = () => {
     })
   }
 
+  const handleDeleteAvatar = () => {
+    fetch('/api/user/avatar', {
+      method: 'DELETE',
+    }).then(async (res) => {
+      const result: ApiResponse = await res.json()
+      if (result.success) {
+        update({
+          avatarUrl: await fetchAvatarUrl(),
+        })
+      } else {
+        pushNotification({
+          title: 'Erreur',
+          content: result.error,
+          type: 'error',
+          duration: 2,
+        })
+      }
+    })
+  }
+
   return (
     <div className='flex flex-col items-center gap-y-8 sm:h-[250px] bg-[#F6F7F9] p-10 rounded-2xl'>
       <div className='w-[88px] h-[88px] rounded-full overflow-hidden flex items-center justify-center'>
@@ -73,9 +97,7 @@ const ChangeAvatarForm = () => {
           className='order-2 sm:order-1'
           style={'danger'}
           icon={<DeleteIcon />}
-          action={() => {
-            console.log('delete')
-          }}
+          action={handleDeleteAvatar}
         >
           Supprimer l&apos;avatar
         </FormButton>

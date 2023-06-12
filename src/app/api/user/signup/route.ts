@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     return sendApiResponse({
       success: false,
-      error: "'Problème de liaison avec le serveur d'authentification.",
+      error: "Problème de liaison avec le serveur d'authentification.",
     })
   }
 }

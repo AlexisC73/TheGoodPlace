@@ -34,3 +34,32 @@ export async function GET() {
     })
   }
 }
+
+export async function DELETE() {
+  const session = await getServerSession(authOptions)
+  try {
+    const request = await fetch(`${env.API_URL}/user/avatar`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${session?.user.access_token}`,
+      },
+    })
+    if (request.ok) {
+      return sendApiResponse({
+        success: request.ok,
+        data: { message: 'Avatar supprimé avec succès.' },
+      })
+    } else {
+      return sendApiResponse({
+        success: request.ok,
+        error: "Erreur lors de la suppression de l'avatar.",
+      })
+    }
+  } catch (err) {
+    return sendApiResponse({
+      success: false,
+      error: 'Problème de liaison avec le serveur.',
+    })
+  }
+}
