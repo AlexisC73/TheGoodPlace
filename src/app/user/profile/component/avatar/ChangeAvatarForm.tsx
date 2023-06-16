@@ -42,10 +42,10 @@ const ChangeAvatarForm = () => {
     const sendImage = new FormData()
     sendImage.append('image', e.target.files[0], e.target.files[0].name)
 
-    fetch('http://localhost:5500/user/avatar', {
+    fetch('/api/user/avatar', {
       method: 'PATCH',
       headers: {
-        Authorization: `Bearer ${session?.user?.access_token}`,
+        Accept: 'application/json',
       },
       body: sendImage,
     }).then(async (res) => {

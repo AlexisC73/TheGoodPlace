@@ -2,6 +2,7 @@ import env from '@/utils/config'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../../auth/[...nextauth]/route'
 import { sendApiResponse } from '@/utils/api-response'
+import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET() {
   const session = await getServerSession(authOptions)
@@ -54,6 +55,38 @@ export async function DELETE() {
       return sendApiResponse({
         success: request.ok,
         error: "Erreur lors de la suppression de l'avatar.",
+      })
+    }
+  } catch (err) {
+    return sendApiResponse({
+      success: false,
+      error: 'Problème de liaison avec le serveur.',
+    })
+  }
+}
+
+export async function PATCH(req: NextRequest, res: NextResponse) {
+  try {
+    const formData = await req.formData()
+    const session = await getServerSession(authOptions)
+
+    const request = await fetch(`${env.API_URL}/user/avatar`, {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${session?.user.access_token}`,
+      },
+      body: formData,
+    })
+
+    if (request.ok) {
+      return sendApiResponse({
+        success: true,
+        data: { message: 'Avatar mis à jour avec succès.' },
+      })
+    } else {
+      return sendApiResponse({
+        success: false,
+        error: request.statusText,
       })
     }
   } catch (err) {

@@ -16,16 +16,19 @@ export const authOptions: AuthOptions = {
           password: string
         }
         try {
-          const fetchConnect = await fetch(env.API_URL + '/auth/signin', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              email,
-              password,
-            }),
-          })
+          const fetchConnect = await fetch(
+            env.API_URL + '/auth/signin/client',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                email,
+                password,
+              }),
+            }
+          )
 
           if (fetchConnect.status === 200) {
             const user = await fetchConnect.json()

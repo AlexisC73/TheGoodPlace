@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     })
   }
   try {
-    const signupRequest = await fetch(`${env.API_URL}/user/signup`, {
+    const signupRequest = await fetch(`${env.API_URL}/user/signup/client`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
