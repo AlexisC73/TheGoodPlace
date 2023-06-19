@@ -8,7 +8,11 @@ export const metadata = {
   title: 'The Lean Startup',
 }
 
-export default function ProductPage({ params }: { params: { id: string } }) {
+export default async function ProductPage({
+  params,
+}: {
+  params: { id: string }
+}) {
   const bookInfo: ProductBookInfo[] = fakeBookInfo.map((bookInfo) => ({
     author: bookInfo.author,
     description: bookInfo.description,

@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Rating from '../../../components/Rating'
 
 export type BookCardInfo = {
-  id: number
+  id: string
   title: string
   author: string
   publishedDate: Date

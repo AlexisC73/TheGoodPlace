@@ -1,8 +1,19 @@
 import { BookCard, BookCardInfo } from '@/app/components/BookCard'
-import { fakeBookInfo } from '@/fake/book'
+import { getPublishedBooks } from '@/utils/api-request'
+import { Book } from '../../types/interfaces'
 
-export default function Home() {
-  const products: BookCardInfo[] = fakeBookInfo
+export default async function Home() {
+  const books = (await getPublishedBooks()) as Book[]
+  const products: BookCardInfo[] = books.map((book) => ({
+    id: book.id,
+    title: book.title,
+    author: book.author,
+    imageUrl: book.imageUrl,
+    price: book.price,
+    publishedDate: new Date(book.publicationDate),
+    rate: 3.8,
+  }))
+  // const products: BookCardInfo[] = fakeBookInfo
 
   return (
     <main className='xl:w-full xl:flex xl:justify-center mt-4 sm:mt-10'>

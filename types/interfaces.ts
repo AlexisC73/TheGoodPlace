@@ -6,3 +6,16 @@ export interface User {
   role?: string | null
   avatarUrl?: string | null
 }
+
+export interface Book {
+  id: string
+  title: string
+  author: string
+  price: number
+  imageUrl: string
+  publicationDate: string
+  description: string
+  createdAt: string
+  published: boolean
+  seller: string
+}
