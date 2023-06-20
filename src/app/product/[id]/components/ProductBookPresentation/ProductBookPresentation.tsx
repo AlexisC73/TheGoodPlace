@@ -24,16 +24,8 @@ const ProductBookPresentation = ({
   const [readMore, setReadMore] = useState(false)
   const toggleReadMore = () => setReadMore((prev) => !prev)
 
-  const {
-    id,
-    imageUrl,
-    title,
-    author,
-    publicationDate,
-    rate,
-    price,
-    description,
-  } = productBookInfo
+  const { imageUrl, title, author, publicationDate, rate, price, description } =
+    productBookInfo
 
   return (
     <div className='xl:flex gap-8 max-xl:justify-center'>
@@ -45,7 +37,7 @@ const ProductBookPresentation = ({
         />
       </div>
 
-      <div className='flex flex-col gap-1 mt-4 p-4'>
+      <div className='flex flex-col gap-1 mt-4 p-4 xl:w-[600px]'>
         <div className='sm:order-1'>
           <h1 className='text-[24px] font-bold'>{title}</h1>
           <div className='text-[15px] flex gap-1 items-center text-[#5A5A5A]'>
@@ -66,6 +58,7 @@ const ProductBookPresentation = ({
           <input
             className='border-2 w-14 h-16 rounded-md text-center'
             value={1}
+            onChange={(e) => console.log(e.target.value)}
             type='number'
           />
           <button className='h-16 w-full bg-primary text-white rounded-md'>

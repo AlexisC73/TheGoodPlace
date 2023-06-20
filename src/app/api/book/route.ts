@@ -3,13 +3,11 @@ import env from '@/utils/config'
 
 export async function GET() {
   try {
-    console.log('ici')
     const request = await fetch(`${env.API_URL}/book`, {
       next: { revalidate: 0 },
     })
     const response = await request.json()
     if (request.ok) {
-      console.log(response)
       return sendApiResponse({
         success: true,
         data: response,

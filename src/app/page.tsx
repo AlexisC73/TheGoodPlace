@@ -13,7 +13,6 @@ export default async function Home() {
     publishedDate: new Date(book.publicationDate),
     rate: 3.8,
   }))
-  // const products: BookCardInfo[] = fakeBookInfo
 
   return (
     <main className='xl:w-full xl:flex xl:justify-center mt-4 sm:mt-10'>

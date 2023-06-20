@@ -1,8 +1,9 @@
 import Breadcrumbs from '@/components/Breadcrumb/Breadcrumbs'
-import ProductBookPresentation, {
-  ProductBookInfo,
-} from '@/app/product/[id]/components/ProductBookPresentation/ProductBookPresentation'
-import { fakeBookInfo } from '@/fake/book'
+import { getForSaleBook } from '@/utils/api-request'
+import { Book } from '../../../../types/interfaces'
+import { ProductBookPresentation } from './components/ProductBookPresentation'
+import { ProductBookInfo } from './components/ProductBookPresentation/ProductBookPresentation'
+import Link from 'next/link'
 
 export const metadata = {
   title: 'The Lean Startup',
@@ -13,18 +14,31 @@ export default async function ProductPage({
 }: {
   params: { id: string }
 }) {
-  const bookInfo: ProductBookInfo[] = fakeBookInfo.map((bookInfo) => ({
-    author: bookInfo.author,
-    description: bookInfo.description,
-    id: bookInfo.id.toString(),
-    imageUrl: bookInfo.imageUrl,
-    price: bookInfo.price,
-    publicationDate: bookInfo.publishedDate,
-    rate: bookInfo.rate,
-    title: bookInfo.title,
-  }))
+  const book = (await getForSaleBook(params.id)) as Book
 
-  const actualBookInfo = bookInfo.find((book) => book.id === params.id)!
+  if (!book) {
+    return (
+      <div>
+        <p>
+          Ce livre n'existe pas...
+          <Link className='text-primary underline' href={'/'}>
+            Revenir à la liste des livres
+          </Link>
+        </p>
+      </div>
+    )
+  }
+  const actualBookInfo: ProductBookInfo = {
+    author: book.author,
+    description: book.description,
+    id: book.id,
+    imageUrl: book.imageUrl,
+    price: book.price,
+    publicationDate: new Date(book.publicationDate),
+    rate: 3.8,
+    title: book.title,
+  }
+
   const breadcrumbs = [
     {
       name: 'Livres',
@@ -32,7 +46,7 @@ export default async function ProductPage({
     },
     {
       name: actualBookInfo.title,
-      href: `/product/${params.id}`,
+      href: `/product/${actualBookInfo.id}`,
     },
   ]
 
