@@ -5,21 +5,23 @@ export class BookModel {
     public id: string,
     public title: string,
     public author: string,
-    public publishedYear: string,
-    public price: string,
-    public rate: number,
-    public cover: string
+    public description: string,
+    public cover: string,
+    public price: number,
+    public publicationYear: string,
+    public rate: number
   ) {}
 
   get data() {
     return {
-      id: this.id,
-      title: this.title,
       author: this.author,
-      publishedYear: this.publishedYear,
-      price: this.price,
-      rate: this.rate,
+      description: this.description,
+      id: this.id,
       cover: this.cover,
+      price: this.price,
+      publicationYear: this.publicationYear,
+      rate: this.rate,
+      title: this.title,
     }
   }
 
@@ -28,10 +30,11 @@ export class BookModel {
       book.id,
       book.title,
       book.author,
+      book.description,
+      book.cover,
+      book.price,
       new Date(book.publicationDate).getFullYear().toString(),
-      book.price.toFixed(2),
-      3.4,
-      book.cover
+      3.8
     )
   }
 }
