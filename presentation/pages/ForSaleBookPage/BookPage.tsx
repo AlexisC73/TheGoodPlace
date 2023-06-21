@@ -1,6 +1,6 @@
 'use client'
 import Breadcrumbs from '@/components/Breadcrumb/Breadcrumbs'
-import { ProductBookPresentation } from '@/app/product/[id]/components/ProductBookPresentation'
+import { ProductBookPresentation } from './ProductBookPresentation'
 import { useContext, useEffect, useState } from 'react'
 import BookFetcherContext, {
   FetchStatus,

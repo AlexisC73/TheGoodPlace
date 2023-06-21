@@ -1,11 +1,11 @@
 'use client'
 
-import { BookPresentationModel } from '../../../../../../application/models/bookPresentationModel'
-import Rating from '../../../../../components/Rating'
+import { BookModel } from '../../../../application/models/bookModel'
+import Rating from '../../../../src/components/Rating'
 import { useState } from 'react'
 
 type ProductBookPresentationProps = {
-  productBookInfo: BookPresentationModel['data']
+  productBookInfo: BookModel['data']
 }
 
 const ProductBookPresentation = ({
