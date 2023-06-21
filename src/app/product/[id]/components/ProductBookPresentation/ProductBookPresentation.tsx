@@ -1,21 +1,11 @@
 'use client'
 
+import { BookPresentationModel } from '../../../../../../application/models/bookPresentationModel'
 import Rating from '../../../../../components/Rating'
 import { useState } from 'react'
 
 type ProductBookPresentationProps = {
-  productBookInfo: ProductBookInfo
-}
-
-export type ProductBookInfo = {
-  id: string
-  imageUrl: string
-  title: string
-  author: string
-  publicationDate: Date
-  rate: number
-  price: number
-  description: string
+  productBookInfo: BookPresentationModel['data']
 }
 
 const ProductBookPresentation = ({
@@ -24,7 +14,7 @@ const ProductBookPresentation = ({
   const [readMore, setReadMore] = useState(false)
   const toggleReadMore = () => setReadMore((prev) => !prev)
 
-  const { imageUrl, title, author, publicationDate, rate, price, description } =
+  const { cover, title, author, publicationYear, rate, price, description } =
     productBookInfo
 
   return (
@@ -32,7 +22,7 @@ const ProductBookPresentation = ({
       <div className='flex xl:aspect-square sm:max-xl:w-[500px] mx-auto flex-1 xl:h-[500px] px-10'>
         <img
           className='object-cover mx-auto h-[500px] xl:w-auto'
-          src={imageUrl}
+          src={cover}
           alt='product'
         />
       </div>
@@ -43,7 +33,7 @@ const ProductBookPresentation = ({
           <div className='text-[15px] flex gap-1 items-center text-[#5A5A5A]'>
             <span>{author}</span>
             <div className='dot-separator h-[6px] w-[6px] rounded-full bg-[#8E8E8E]'></div>
-            <span>{publicationDate.getFullYear()}</span>
+            <span>{publicationYear}</span>
           </div>
         </div>
         <div className='py-4 sm:order-2'>

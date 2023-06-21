@@ -1,9 +1,7 @@
 import Breadcrumbs from '@/components/Breadcrumb/Breadcrumbs'
-import { getForSaleBook } from '@/utils/api-request'
-import { Book } from '../../../../types/interfaces'
 import { ProductBookPresentation } from './components/ProductBookPresentation'
-import { ProductBookInfo } from './components/ProductBookPresentation/ProductBookPresentation'
 import Link from 'next/link'
+import { forSaleBookFetcher } from '../../../../application/server-components/forSaleBookFetcher'
 
 export const metadata = {
   title: 'The Lean Startup',
@@ -14,7 +12,7 @@ export default async function ProductPage({
 }: {
   params: { id: string }
 }) {
-  const book = (await getForSaleBook(params.id)) as Book
+  const book = await forSaleBookFetcher({ bookId: params.id })
 
   if (!book) {
     return (
@@ -28,16 +26,6 @@ export default async function ProductPage({
       </div>
     )
   }
-  const actualBookInfo: ProductBookInfo = {
-    author: book.author,
-    description: book.description,
-    id: book.id,
-    imageUrl: book.imageUrl,
-    price: book.price,
-    publicationDate: new Date(book.publicationDate),
-    rate: 3.8,
-    title: book.title,
-  }
 
   const breadcrumbs = [
     {
@@ -45,8 +33,8 @@ export default async function ProductPage({
       href: '/',
     },
     {
-      name: actualBookInfo.title,
-      href: `/product/${actualBookInfo.id}`,
+      name: book.title,
+      href: `/product/${book.id}`,
     },
   ]
 
@@ -54,7 +42,7 @@ export default async function ProductPage({
     <main className='sm:mt-5 xl:mt-10 max-w-[1200px] mx-auto'>
       <div className='flex flex-col gap-10'>
         <Breadcrumbs breadcrumbs={breadcrumbs} />
-        <ProductBookPresentation productBookInfo={actualBookInfo} />
+        <ProductBookPresentation productBookInfo={book.data} />
       </div>
     </main>
   )

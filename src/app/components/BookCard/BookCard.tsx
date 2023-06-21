@@ -1,23 +1,14 @@
 import AddCartIcon from '@/assets/AddCart'
 import Link from 'next/link'
 import Rating from '../../../components/Rating'
-
-export type BookCardInfo = {
-  id: string
-  title: string
-  author: string
-  publishedDate: Date
-  price: number
-  rate: number
-  imageUrl: string
-}
+import { BookModel } from '../../../../application/models/bookModel'
 
 type BookCardProps = {
-  bookInfo: BookCardInfo
+  bookInfo: BookModel
 }
 
 const BookCard = ({ bookInfo }: BookCardProps) => {
-  const { id, title, author, publishedDate, price, rate, imageUrl } = bookInfo
+  const { id, title, author, publishedYear, price, rate, cover } = bookInfo
   return (
     <div className='rounded-[5px] overflow-hidden h-48 sm:h-full sm:w-[239px] border flex sm:flex-col w-full border-[#E9EDF3] relative'>
       <Link
@@ -25,7 +16,7 @@ const BookCard = ({ bookInfo }: BookCardProps) => {
         className='sm:h-[183px] w-[150px] sm:w-auto flex overflow-hidden items-center sm:justify-center sm:bg-blue-100'
       >
         <img
-          src={imageUrl}
+          src={cover}
           alt='book cover'
           className='object-cover w-full sm:w-auto h-full'
         />
@@ -41,7 +32,7 @@ const BookCard = ({ bookInfo }: BookCardProps) => {
           <div className='sm:text-[12px] flex items-center gap-2 text-[#5A5A5A]'>
             <p>{author}</p>
             <div className='dot-separator h-1 w-1 rounded-full bg-[#8E8E8E]'></div>
-            <p>{publishedDate.getFullYear()}</p>
+            <p>{publishedYear}</p>
           </div>
         </div>
         <div className='flex justify-between items-center'>
@@ -49,7 +40,7 @@ const BookCard = ({ bookInfo }: BookCardProps) => {
             <Rating rate={rate} />
           </div>
           <Link href={`/product/${id}`} className='font-bold text-[20px]'>
-            {price.toFixed(2)}€
+            {price}€
           </Link>
           <AddCartIcon className='hidden sm:block text-[30px] cursor-pointer text-primary' />
         </div>
