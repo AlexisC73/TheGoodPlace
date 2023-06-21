@@ -4,10 +4,10 @@ import { ProductBookPresentation } from '@/app/product/[id]/components/ProductBo
 import { useContext, useEffect, useState } from 'react'
 import BookFetcherContext, {
   FetchStatus,
-} from '../../application/contexts/getForSaleBook'
+} from '../../../application/contexts/getForSaleBook'
 import Link from 'next/link'
 
-export default function ProductPage({ bookId }: { bookId: string }) {
+export default function BookPage({ bookId }: { bookId: string }) {
   const bookFetcher = useContext(BookFetcherContext)
   const [breadcrumbs, setBreadcrumbs] = useState([
     {
