@@ -25,14 +25,10 @@ function Breadcrumbs({
 
         {!!breadcrumbs &&
           breadcrumbs.map((breadcrumb) => (
-            <>
+            <div className='flex items-center' key={breadcrumb.href}>
               <BreadcrumbSeparator />
-              <BreadcrumbLink
-                key={breadcrumb.href}
-                label={breadcrumb.name}
-                link={breadcrumb.href}
-              />
-            </>
+              <BreadcrumbLink label={breadcrumb.name} link={breadcrumb.href} />
+            </div>
           ))}
       </ol>
     </nav>
