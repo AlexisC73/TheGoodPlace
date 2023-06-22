@@ -2,9 +2,9 @@
 
 import { useState } from 'react'
 import { BookModel } from '../models/bookModel'
-import { InMemoryBookRepository } from '../../infrastructure/repositories/in-memory-book'
 import { createContext } from 'react'
 import { GetSpecificForSaleBook } from '../../domain/usecases/get-for-sale-book'
+import { config } from '../../config/repository'
 
 export enum FetchStatus {
   INITIAL,
@@ -28,7 +28,7 @@ export const BookFetcherProvider: React.FC<{ children: React.ReactNode }> = ({
   const getBook = async (id: string) => {
     setState(FetchStatus.LOADING)
     try {
-      const bookRepository = new InMemoryBookRepository()
+      const bookRepository = config.bookRepository
       const usecase = new GetSpecificForSaleBook(bookRepository)
 
       const book = await usecase.handle({ bookId: id })

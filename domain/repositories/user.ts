@@ -1,5 +1,4 @@
 import { UserConnection } from '../entities/connection'
-import { User } from '../entities/user'
 
 export interface UserRepository {
   signinClient({
@@ -10,5 +9,13 @@ export interface UserRepository {
     password: string
   }): Promise<UserConnection>
 
-  signupClient({ email, password }: User): Promise<void>
+  signupClient({
+    email,
+    password,
+    name,
+  }: {
+    email: string
+    password: string
+    name: string
+  }): Promise<void>
 }

@@ -1,6 +1,6 @@
+import { ConnectInfoDTO } from '../../../infrastructure/dtos/connectInfoDto'
 import { InMemoryUserRepository } from '../../../infrastructure/repositories/in-memory-user'
 import { UserConnection } from '../../entities/connection'
-import { User } from '../../entities/user'
 import {
   SigninClientCommand,
   SigninClientUseCase,
@@ -13,7 +13,11 @@ export const createUserConnectionFixture = () => {
   const signinUseCase = new SigninClientUseCase(userRepository)
 
   return {
-    givenUserExist(existingUsers: User[]) {
+    givenUserExist(
+      existingUsers: [
+        { connectionInformation: string; connectInfoDto: ConnectInfoDTO }
+      ]
+    ) {
       userRepository.users = existingUsers
     },
 

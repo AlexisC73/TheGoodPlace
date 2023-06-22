@@ -1,8 +1,7 @@
-import env from '@/utils/config'
 import NextAuth, { AuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { SigninClientUseCase } from '../../../../../domain/usecases/user/signin-client.usecase'
-import { InMemoryUserRepository } from '../../../../../infrastructure/repositories/in-memory-user'
+import { config } from '../../../../../config/repository'
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -17,7 +16,7 @@ export const authOptions: AuthOptions = {
           email: string
           password: string
         }
-        const userRepository = new InMemoryUserRepository()
+        const userRepository = config.userRepository
         const signinUseCase = new SigninClientUseCase(userRepository)
 
         try {

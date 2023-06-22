@@ -1,9 +1,11 @@
 import { UserConnection } from '../../domain/entities/connection'
-import { Role, User } from '../../domain/entities/user'
+import { Role } from '../../domain/entities/user'
 import { UserRepository } from '../../domain/repositories/user'
+import { ConnectInfoDTO } from '../dtos/connectInfoDto'
 
 export class InMemoryUserRepository implements UserRepository {
-  users: User[] = []
+  users: { connectionInformation: string; connectInfoDto: ConnectInfoDTO }[] =
+    []
 
   signinClient({
     email,
@@ -12,32 +14,55 @@ export class InMemoryUserRepository implements UserRepository {
     email: string
     password: string
   }): Promise<UserConnection> {
-    const user = this.users.find(
-      (user) => user.email === email && user.password === password
+    const existingUser = this.users.find(
+      (user) => user.connectionInformation === email + '-' + password
     )
-    if (!user) {
+    if (!existingUser) {
       throw new Error('User not found')
     }
-    return Promise.resolve(
-      new UserConnection(
-        user.id,
-        user.name,
-        user.email,
-        JSON.stringify(user.data),
-        user.role,
-        user.avatarUrl
-      )
-    )
+
+    return Promise.resolve(existingUser.connectInfoDto.toDomain())
   }
 
-  signupClient({ email, password, name }: User): Promise<void> {
-    const isExistUser = this.users.find((user) => user.email === email)
+  signupClient(command: {
+    email: string
+    password: string
+    name: string
+  }): Promise<void> {
+    const isExistUser = this.users.find(
+      (user) =>
+        user.connectionInformation === command.email + '-' + command.password
+    )
     if (isExistUser) {
       throw new Error('User already exists')
     }
-    this.users.push(
-      new User('1', name, email, password, 'default-avatar.png', Role.CLIENT)
+
+    const newUser = new ConnectInfoDTO(
+      Math.floor(Math.random() * 1000).toString(),
+      command.name,
+      command.email,
+      'testing-token',
+      Role.CLIENT.toString(),
+      'default-avatar.png'
     )
+
+    this.users.push({
+      connectionInformation: command.email + '-' + command.password,
+      connectInfoDto: newUser,
+    })
     return Promise.resolve()
+  }
+
+  getAccount({
+    email,
+    password,
+  }: {
+    email: string
+    password: string
+  }): ConnectInfoDTO {
+    const foundAccount = this.users.find(
+      (user) => user.connectionInformation === email + '-' + password
+    )
+    return foundAccount?.connectInfoDto!
   }
 }
