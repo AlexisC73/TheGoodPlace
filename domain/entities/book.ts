@@ -1,5 +1,3 @@
-import { isDate } from 'util/types'
-
 export class Book {
   constructor(
     public id: string,
@@ -21,7 +19,7 @@ export class Book {
       this.description !== '' &&
       this.createdAt !== null &&
       this.price > 0 &&
-      isDate(this.publicationDate) &&
+      this.publicationDate !== null &&
       this.id !== '' &&
       this.seller !== '' &&
       this.status !== null &&
