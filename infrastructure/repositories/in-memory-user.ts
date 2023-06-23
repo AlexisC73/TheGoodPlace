@@ -4,8 +4,7 @@ import { UserRepository } from '../../domain/repositories/user'
 import { ConnectInfoDTO } from '../dtos/connectInfoDto'
 
 export class InMemoryUserRepository implements UserRepository {
-  users: { connectionInformation: string; connectInfoDto: ConnectInfoDTO }[] =
-    []
+  users = new Map<string, ConnectInfoDTO>()
 
   signinClient({
     email,
@@ -14,14 +13,12 @@ export class InMemoryUserRepository implements UserRepository {
     email: string
     password: string
   }): Promise<UserConnection> {
-    const existingUser = this.users.find(
-      (user) => user.connectionInformation === email + '-' + password
-    )
+    const existingUser = this.users.get(email + '-' + password)
     if (!existingUser) {
       throw new Error('User not found')
     }
 
-    return Promise.resolve(existingUser.connectInfoDto.toDomain())
+    return Promise.resolve(existingUser.toDomain())
   }
 
   signupClient(command: {
@@ -29,10 +26,7 @@ export class InMemoryUserRepository implements UserRepository {
     password: string
     name: string
   }): Promise<void> {
-    const isExistUser = this.users.find(
-      (user) =>
-        user.connectionInformation === command.email + '-' + command.password
-    )
+    const isExistUser = this.users.get(command.email + '-' + command.password)
     if (isExistUser) {
       throw new Error('User already exists')
     }
@@ -46,10 +40,7 @@ export class InMemoryUserRepository implements UserRepository {
       'default-avatar.png'
     )
 
-    this.users.push({
-      connectionInformation: command.email + '-' + command.password,
-      connectInfoDto: newUser,
-    })
+    this.users.set(command.email + '-' + command.password, newUser)
     return Promise.resolve()
   }
 
@@ -60,9 +51,19 @@ export class InMemoryUserRepository implements UserRepository {
     email: string
     password: string
   }): ConnectInfoDTO {
-    const foundAccount = this.users.find(
-      (user) => user.connectionInformation === email + '-' + password
+    const foundAccount = this.users.get(email + '-' + password)
+    if (!foundAccount) throw new Error('User not found')
+    return foundAccount
+  }
+
+  setUsers(
+    existingUsers: {
+      connectionInformation: string
+      connectInfoDto: ConnectInfoDTO
+    }[]
+  ) {
+    existingUsers.forEach((user) =>
+      this.users.set(user.connectionInformation, user.connectInfoDto)
     )
-    return foundAccount?.connectInfoDto!
   }
 }

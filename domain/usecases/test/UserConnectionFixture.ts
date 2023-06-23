@@ -14,11 +14,12 @@ export const createUserConnectionFixture = () => {
 
   return {
     givenUserExist(
-      existingUsers: [
-        { connectionInformation: string; connectInfoDto: ConnectInfoDTO }
-      ]
+      existingUsers: {
+        connectionInformation: string
+        connectInfoDto: ConnectInfoDTO
+      }[]
     ) {
-      userRepository.users = existingUsers
+      userRepository.setUsers(existingUsers)
     },
 
     async whenUserSignin(command: SigninClientCommand) {

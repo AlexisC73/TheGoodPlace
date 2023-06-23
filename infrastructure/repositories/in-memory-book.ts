@@ -14,9 +14,11 @@ export class InMemoryBookRepository implements BookRepository {
     return Promise.resolve(forSaleBooks.map((book) => book.toDomain()))
   }
 
-  getBookById(id: string): Promise<Book | null> {
-    const book = this.books.find((book) => book.id === id)
+  getForSaleBookById(id: string): Promise<Book | null> {
+    const book = this.books.find(
+      (book) => book.id === id && book.status === BookStatus.FOR_SALE
+    )
     if (!book) return Promise.resolve(null)
-    return Promise.resolve(book?.toDomain())
+    return Promise.resolve(book.toDomain())
   }
 }
