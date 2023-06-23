@@ -1,7 +1,4 @@
-import { BookDto } from '../../../infrastructure/dtos/bookDto'
-import { InMemoryBookRepository } from '../../../infrastructure/repositories/in-memory-book'
-import { Book, BookStatus } from '../../entities/book'
-import { GetForSaleBooksUseCase } from '../get-for-sale-books'
+import { BookStatus } from '../../entities/book'
 import { bookBuilder } from './bookBuilder'
 import { BookFixture, createBookFixture } from './bookFixture'
 
@@ -20,12 +17,12 @@ describe('Feature: Should return all for sale books', () => {
       forSaleBookBuilder.withId('7').build(),
     ]
     const pendingAndSoldBooks = [
-      forSaleBookBuilder
-        .withId('2')
+      bookBuilder()
+        .withId('3')
         .withStatus(BookStatus.PENDING_VALIDATION)
         .build(),
-      forSaleBookBuilder.withId('5').withStatus(BookStatus.SOLD).build(),
-      forSaleBookBuilder
+      bookBuilder().withId('5').withStatus(BookStatus.SOLD).build(),
+      bookBuilder()
         .withId('8')
         .withStatus(BookStatus.PENDING_VALIDATION)
         .build(),

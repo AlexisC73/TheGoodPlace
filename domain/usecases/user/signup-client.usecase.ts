@@ -7,6 +7,7 @@ export class SignupClientUseCase {
       email: command.email,
       password: command.password,
       name: command.name,
+      role: 'CLIENT',
     })
   }
 }

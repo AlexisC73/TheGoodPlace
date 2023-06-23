@@ -12,21 +12,31 @@ export const bookBuilder = ({
   seller = 'seller-id',
   status = BookStatus.FOR_SALE,
 }: Partial<Book> = {}) => {
+  const props = {
+    author,
+    title,
+    cover,
+    createdAt,
+    description,
+    id,
+    price,
+    publicationDate,
+    seller,
+    status,
+  }
   return {
-    withAuthor: (author: string) => bookBuilder({ ...bookBuilder(), author }),
-    withTitle: (title: string) => bookBuilder({ ...bookBuilder(), title }),
-    withCover: (cover: string) => bookBuilder({ ...bookBuilder(), cover }),
-    withCreatedAt: (createdAt: Date) =>
-      bookBuilder({ ...bookBuilder(), createdAt }),
+    withAuthor: (author: string) => bookBuilder({ ...props, author }),
+    withTitle: (title: string) => bookBuilder({ ...props, title }),
+    withCover: (cover: string) => bookBuilder({ ...props, cover }),
+    withCreatedAt: (createdAt: Date) => bookBuilder({ ...props, createdAt }),
     withDescription: (description: string) =>
-      bookBuilder({ ...bookBuilder(), description }),
-    withId: (id: string) => bookBuilder({ ...bookBuilder(), id }),
-    withPrice: (price: number) => bookBuilder({ ...bookBuilder(), price }),
+      bookBuilder({ ...props, description }),
+    withId: (id: string) => bookBuilder({ ...props, id }),
+    withPrice: (price: number) => bookBuilder({ ...props, price }),
     withPublicationDate: (publicationDate: Date) =>
-      bookBuilder({ ...bookBuilder(), publicationDate }),
-    withSeller: (seller: string) => bookBuilder({ ...bookBuilder(), seller }),
-    withStatus: (status: BookStatus) =>
-      bookBuilder({ ...bookBuilder(), status }),
+      bookBuilder({ ...props, publicationDate }),
+    withSeller: (seller: string) => bookBuilder({ ...props, seller }),
+    withStatus: (status: BookStatus) => bookBuilder({ ...props, status }),
     build: () =>
       new Book(
         id,

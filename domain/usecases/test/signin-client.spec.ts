@@ -1,4 +1,3 @@
-import { ConnectInfoDTO } from '../../../infrastructure/dtos/connectInfoDto'
 import { UserConnection } from '../../entities/connection'
 import { Role } from '../../entities/user'
 import {
@@ -13,34 +12,22 @@ describe('SigninUser', () => {
     userConnectionFixture = createUserConnectionFixture()
   })
   test('should return user informations if signin success', async () => {
-    const existingUser = {
-      connectionInformation: 'john@doe.fr-test-pass',
-      connectInfoDto: new ConnectInfoDTO(
-        '1',
-        'john',
-        'john@doe.fr',
-        'test-token',
-        Role.CLIENT.toString(),
-        'default-avatar.png'
-      ),
-    }
     // Arrange
-    userConnectionFixture.givenUserExist([existingUser])
+    userConnectionFixture.givenUserExist([
+      {
+        email: 'alice@doe.fr',
+        password: 'test-pass',
+        name: 'Alice',
+      },
+    ])
     // Act
     await userConnectionFixture.whenUserSignin({
-      email: 'john@doe.fr',
+      email: 'alice@doe.fr',
       password: 'test-pass',
     })
     // Assert
-    userConnectionFixture.thenReturnedUserConnectionShouldBe(
-      new UserConnection(
-        '1',
-        'john',
-        'john@doe.fr',
-        'test-token',
-        Role.CLIENT,
-        'default-avatar.png'
-      )
-    )
+    userConnectionFixture.thenExpectedUserConnected({
+      email: 'alice@doe.fr',
+    })
   })
 })

@@ -1,10 +1,11 @@
 import { UserConnection } from '../../domain/entities/connection'
-import { Role } from '../../domain/entities/user'
+import { Role, User } from '../../domain/entities/user'
 import { UserRepository } from '../../domain/repositories/user'
 import { ConnectInfoDTO } from '../dtos/connectInfoDto'
+import { UserDTO } from '../dtos/userDto'
 
 export class InMemoryUserRepository implements UserRepository {
-  users = new Map<string, ConnectInfoDTO>()
+  users = new Map<string, UserDTO>()
 
   signinClient({
     email,
@@ -18,52 +19,79 @@ export class InMemoryUserRepository implements UserRepository {
       throw new Error('User not found')
     }
 
-    return Promise.resolve(existingUser.toDomain())
+    const userConnection = new ConnectInfoDTO(
+      existingUser.id,
+      existingUser.name,
+      existingUser.email,
+      existingUser.toStringJSON(),
+      existingUser.role,
+      existingUser.avatarUrl
+    )
+
+    return Promise.resolve(userConnection.toDomain())
   }
 
   signupClient(command: {
     email: string
     password: string
     name: string
+    role: string
   }): Promise<void> {
     const isExistUser = this.users.get(command.email + '-' + command.password)
     if (isExistUser) {
       throw new Error('User already exists')
     }
 
-    const newUser = new ConnectInfoDTO(
-      Math.floor(Math.random() * 1000).toString(),
-      command.name,
-      command.email,
-      'testing-token',
-      Role.CLIENT.toString(),
-      'default-avatar.png'
-    )
+    this._createUser({
+      email: command.email,
+      name: command.name,
+      role: command.role,
+      avatarUrl: 'default-avatar.png',
+      password: command.password,
+    })
 
-    this.users.set(command.email + '-' + command.password, newUser)
     return Promise.resolve()
   }
 
-  getAccount({
-    email,
-    password,
-  }: {
-    email: string
-    password: string
-  }): ConnectInfoDTO {
+  getAccount({ email, password }: { email: string; password: string }): User {
     const foundAccount = this.users.get(email + '-' + password)
     if (!foundAccount) throw new Error('User not found')
-    return foundAccount
+    return foundAccount!
   }
 
-  setUsers(
-    existingUsers: {
-      connectionInformation: string
-      connectInfoDto: ConnectInfoDTO
+  _setUsers(
+    users: {
+      email: string
+      password: string
+      name: string
     }[]
   ) {
-    existingUsers.forEach((user) =>
-      this.users.set(user.connectionInformation, user.connectInfoDto)
-    )
+    users.forEach((user) => {
+      this._createUser({
+        email: user.email,
+        name: user.name,
+        role: Role.CLIENT.toString(),
+        avatarUrl: 'default-avatar.png',
+        password: user.password,
+      })
+    })
+  }
+
+  _createUser(userInfo: {
+    email: string
+    name: string
+    role: string
+    avatarUrl: string
+    password: string
+  }) {
+    const newUser = UserDTO.fromData({
+      id: Math.floor(Math.random() * 1000).toString(),
+      email: userInfo.email,
+      name: userInfo.name,
+      role: userInfo.role,
+      avatarUrl: userInfo.avatarUrl,
+    })
+    this.users.set(userInfo.email + '-' + userInfo.password, newUser)
+    return
   }
 }

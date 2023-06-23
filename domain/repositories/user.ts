@@ -13,9 +13,11 @@ export interface UserRepository {
     email,
     password,
     name,
+    role,
   }: {
     email: string
     password: string
     name: string
+    role: string
   }): Promise<void>
 }

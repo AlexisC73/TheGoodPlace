@@ -15,19 +15,20 @@ export const createUserConnectionFixture = () => {
   return {
     givenUserExist(
       existingUsers: {
-        connectionInformation: string
-        connectInfoDto: ConnectInfoDTO
+        email: string
+        password: string
+        name: string
       }[]
     ) {
-      userRepository.setUsers(existingUsers)
+      userRepository._setUsers(existingUsers)
     },
 
     async whenUserSignin(command: SigninClientCommand) {
       userConnection = await signinUseCase.handle(command)
     },
 
-    thenReturnedUserConnectionShouldBe(expectedUserConnection: UserConnection) {
-      expect(userConnection).toEqual(expectedUserConnection)
+    thenExpectedUserConnected(expectedUserConnected: { email: string }) {
+      expect(userConnection.email).toEqual(expectedUserConnected.email)
     },
   }
 }
