@@ -33,7 +33,7 @@ export class BookModel {
       book.description,
       book.cover,
       book.price,
-      new Date(book.publicationDate).getFullYear().toString(),
+      book.publicationDate.getFullYear().toString(),
       3.8
     )
   }

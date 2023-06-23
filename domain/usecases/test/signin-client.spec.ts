@@ -1,4 +1,5 @@
 import { ConnectInfoDTO } from '../../../infrastructure/dtos/connectInfoDto'
+import { UserConnection } from '../../entities/connection'
 import { Role } from '../../entities/user'
 import {
   UserConnectionFixture,
@@ -32,12 +33,12 @@ describe('SigninUser', () => {
     })
     // Assert
     userConnectionFixture.thenReturnedUserConnectionShouldBe(
-      new ConnectInfoDTO(
+      new UserConnection(
         '1',
         'john',
         'john@doe.fr',
         'test-token',
-        Role.CLIENT.toString(),
+        Role.CLIENT,
         'default-avatar.png'
       )
     )

@@ -8,8 +8,8 @@ export const bookBuilder = ({
   description = 'Test de description',
   id = 'test',
   price = 10,
-  publicationDate = '2021-07-20',
-  seller = 'seller',
+  publicationDate = new Date('2021-07-20'),
+  seller = 'seller-id',
   status = BookStatus.FOR_SALE,
 }: Partial<Book> = {}) => {
   return {
@@ -22,7 +22,7 @@ export const bookBuilder = ({
       bookBuilder({ ...bookBuilder(), description }),
     withId: (id: string) => bookBuilder({ ...bookBuilder(), id }),
     withPrice: (price: number) => bookBuilder({ ...bookBuilder(), price }),
-    withPublicationDate: (publicationDate: string) =>
+    withPublicationDate: (publicationDate: Date) =>
       bookBuilder({ ...bookBuilder(), publicationDate }),
     withSeller: (seller: string) => bookBuilder({ ...bookBuilder(), seller }),
     withStatus: (status: BookStatus) =>
