@@ -2,7 +2,7 @@
 
 import BooksFetcherContext, {
   FetchStatus,
-} from '../../../application/contexts/getForSaleBooks'
+} from '../../../application/catalog/contexts/getForSaleBooks'
 import { useContext, useEffect } from 'react'
 import ProductList from '../../@shared/ProductList/ProductList'
 

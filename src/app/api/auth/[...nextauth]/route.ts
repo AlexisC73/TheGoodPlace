@@ -1,7 +1,8 @@
 import NextAuth, { AuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { SigninClientUseCase } from '../../../../../domain/usecases/user/signin-client.usecase'
+import { SigninClientUseCase } from '../../../../../domain/auth/usecases/signin-client.usecase'
 import { config } from '../../../../../config/repository'
+import { UserConnection } from '../../../../../domain/@shared/entities/connection'
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -25,7 +26,7 @@ export const authOptions: AuthOptions = {
             password,
           })
 
-          return userConnection
+          return userConnection.data
         } catch (err) {
           return null
         }

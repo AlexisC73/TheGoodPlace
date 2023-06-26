@@ -1,4 +1,4 @@
-import { BookFetcherProvider } from '../../../../application/contexts/getForSaleBook'
+import { BookFetcherProvider } from '../../../../application/catalog/contexts/getForSaleBook'
 import BookPage from '../../../../presentation/pages/ForSaleBookPage/BookPage'
 
 export default async function PageProduit({

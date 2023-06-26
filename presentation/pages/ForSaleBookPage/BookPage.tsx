@@ -4,7 +4,7 @@ import { ProductBookPresentation } from './ProductBookPresentation'
 import { useContext, useEffect, useState } from 'react'
 import BookFetcherContext, {
   FetchStatus,
-} from '../../../application/contexts/getForSaleBook'
+} from '../../../application/catalog/contexts/getForSaleBook'
 import Link from 'next/link'
 
 export default function BookPage({ bookId }: { bookId: string }) {

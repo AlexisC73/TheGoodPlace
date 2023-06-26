@@ -1,4 +1,4 @@
-import { UserConnection } from '../domain/entities/connection'
+import { UserConnection } from "../domain/@shared/entities/connection";
 
 export interface User
-  extends Partial<{ [T in keyof UserConnection]: string | null }> {}
+  extends Partial<{ [T in keyof UserConnection["data"]]: string | null }> {}

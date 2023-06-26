@@ -1,7 +1,7 @@
 import { sendApiResponse } from '@/utils/api-response'
 import { NextRequest } from 'next/server'
 import { config } from '../../../../../config/repository'
-import { SignupClientUseCase } from '../../../../../domain/usecases/user/signup-client.usecase'
+import { SignupClientUseCase } from '../../../../../domain/auth/usecases/signup-client.usecase'
 
 export async function POST(req: NextRequest) {
   const { name, email, password, passwordVerif } = await req.json()
@@ -27,6 +27,7 @@ export async function POST(req: NextRequest) {
       email,
       name,
       password,
+      passwordConfirmation: passwordVerif,
     })
     return sendApiResponse({
       success: true,
