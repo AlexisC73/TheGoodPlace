@@ -12,6 +12,7 @@ describe('SignupClientUseCase', () => {
       name: 'Alice',
       email: 'alice@doe.fr',
       password: 'test-pass',
+      passwordConfirmation: "test-pass"
     })
 
     userFixture.thenUserAccountShouldExist({
@@ -19,5 +20,16 @@ describe('SignupClientUseCase', () => {
       password: 'test-pass',
       name: 'Alice',
     })
+  })
+
+  test('when Alice signup with bad second password, her account should not be created', async () => {
+    await userFixture.whenUserSignup({
+      name: 'Alice',
+      email: 'alice@doe.fr',
+      password: 'test-pass',
+      passwordConfirmation: "wrong confirmation"
+    })
+
+    userFixture.thenErrorShoudBeThrown("Invalid user data")
   })
 })

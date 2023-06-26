@@ -7,7 +7,7 @@ export class SignupClientUseCase {
       email: command.email,
       password: command.password,
       name: command.name,
-      role: 'CLIENT',
+      passwordConfirmation: command.passwordConfirmation,
     })
   }
 }
@@ -16,4 +16,5 @@ export type SignupClientCommand = {
   email: string
   password: string
   name: string
+  passwordConfirmation: string
 }

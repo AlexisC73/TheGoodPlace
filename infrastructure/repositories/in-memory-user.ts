@@ -2,6 +2,8 @@ import { UserConnection } from '../../domain/entities/connection'
 import { Role, User } from '../../domain/entities/user'
 import { UserRepository } from '../../domain/repositories/user'
 import { ConnectInfoDTO } from '../dtos/connectInfoDto'
+import { SigninClientDto } from '../dtos/signinClientDto'
+import { SignupClientDTO } from '../dtos/signupDto'
 import { UserDTO } from '../dtos/userDto'
 
 export class InMemoryUserRepository implements UserRepository {
@@ -14,7 +16,12 @@ export class InMemoryUserRepository implements UserRepository {
     email: string
     password: string
   }): Promise<UserConnection> {
-    const existingUser = this.users.get(email + '-' + password)
+    const signinDto = SigninClientDto.fromData({email, password})
+    if(!signinDto.isValid()) {
+      throw new Error("Invalid user data")
+    }
+
+    const existingUser = this.users.get(signinDto.email + '-' + signinDto.password)
     if (!existingUser) {
       throw new Error('User not found')
     }
@@ -35,19 +42,28 @@ export class InMemoryUserRepository implements UserRepository {
     email: string
     password: string
     name: string
-    role: string
+    passwordConfirmation: string
   }): Promise<void> {
     const isExistUser = this.users.get(command.email + '-' + command.password)
     if (isExistUser) {
       throw new Error('User already exists')
     }
 
-    this._createUser({
+    const newUser = SignupClientDTO.fromData({
       email: command.email,
-      name: command.name,
-      role: command.role,
-      avatarUrl: 'default-avatar.png',
       password: command.password,
+      name: command.name,
+      passwordConfirmation: command.passwordConfirmation,
+    })
+
+    if(!newUser.isValid()) {
+      throw new Error('Invalid user data')
+    }
+
+    this._createUser({
+      email: newUser.email,
+      name: newUser.name,
+      password: newUser.password,
     })
 
     return Promise.resolve()
@@ -70,8 +86,6 @@ export class InMemoryUserRepository implements UserRepository {
       this._createUser({
         email: user.email,
         name: user.name,
-        role: Role.CLIENT.toString(),
-        avatarUrl: 'default-avatar.png',
         password: user.password,
       })
     })
@@ -80,16 +94,14 @@ export class InMemoryUserRepository implements UserRepository {
   _createUser(userInfo: {
     email: string
     name: string
-    role: string
-    avatarUrl: string
     password: string
   }) {
     const newUser = UserDTO.fromData({
       id: Math.floor(Math.random() * 1000).toString(),
       email: userInfo.email,
       name: userInfo.name,
-      role: userInfo.role,
-      avatarUrl: userInfo.avatarUrl,
+      role: Role.CLIENT.toString(),
+      avatarUrl: "default-avatar.png",
     })
     this.users.set(userInfo.email + '-' + userInfo.password, newUser)
     return

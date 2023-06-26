@@ -5,12 +5,19 @@ import {
 } from '../user/signup-client.usecase'
 
 export const createUserFixture = () => {
-  const userRepository = new InMemoryUserRepository()
+  let thrownError: Error
 
+  const userRepository = new InMemoryUserRepository()
   const signupClientUseCase = new SignupClientUseCase(userRepository)
+
   return {
     async whenUserSignup(command: SignupClientCommand) {
-      await signupClientUseCase.handle(command)
+      try {
+        await signupClientUseCase.handle(command)
+      } catch (err: any) {
+        thrownError = err
+      }
+      
     },
     thenUserAccountShouldExist(expectedAccount: {
       email: string
@@ -29,6 +36,10 @@ export const createUserFixture = () => {
         })
       )
     },
+
+    thenErrorShoudBeThrown(expectedErrorMessage: string) {
+      expect(thrownError.message).toBe(expectedErrorMessage)
+    }
   }
 }
 
