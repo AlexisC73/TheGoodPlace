@@ -2,11 +2,11 @@ import { User } from '../../domain/entities/user'
 
 export class UserDTO {
   private constructor(
-    public id: string,
-    public email: string,
-    public name: string,
-    public role: string,
-    public avatarUrl: string
+    private readonly _id: string,
+    private readonly _email: string,
+    private readonly _name: string,
+    private readonly _role: string,
+    private readonly _avatarUrl: string
   ) {}
 
   get data() {
@@ -35,5 +35,25 @@ export class UserDTO {
 
   toStringJSON() {
     return JSON.stringify(this)
+  }
+
+  get id() {
+    return this._id
+  }
+
+  get email() {
+    return this._email
+  }
+
+  get name() {
+    return this._name
+  }
+
+  get role() {
+    return this._role
+  }
+
+  get avatarUrl() {
+    return this._avatarUrl
   }
 }

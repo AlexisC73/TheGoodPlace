@@ -26,14 +26,14 @@ export class InMemoryUserRepository implements UserRepository {
       throw new Error('User not found')
     }
 
-    const userConnection = new ConnectInfoDTO(
-      existingUser.id,
-      existingUser.name,
-      existingUser.email,
-      existingUser.toStringJSON(),
-      existingUser.role,
-      existingUser.avatarUrl
-    )
+    const userConnection = ConnectInfoDTO.fromData({
+      id: existingUser.id,
+      name: existingUser.name,
+      email: existingUser.email,
+      access_token: existingUser.toStringJSON(),
+      role: existingUser.role,
+      avatarUrl: existingUser.avatarUrl
+    })
 
     return Promise.resolve(userConnection.toDomain())
   }

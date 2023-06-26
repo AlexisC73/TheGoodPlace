@@ -2,20 +2,20 @@ import { Book, BookStatus } from '../../domain/entities/book'
 
 export class BookDto {
   private constructor(
-    public readonly id: string,
-    public readonly title: string,
-    public readonly author: string,
-    public readonly price: number,
-    public readonly imageUrl: string,
-    public readonly publicationDate: string,
-    public readonly description: string,
-    public readonly createdAt: string,
-    public readonly status: string,
-    public readonly seller: string
+    public readonly _id: string,
+    public readonly _title: string,
+    public readonly _author: string,
+    public readonly _price: number,
+    public readonly _imageUrl: string,
+    public readonly _publicationDate: string,
+    public readonly _description: string,
+    public readonly _createdAt: string,
+    public readonly _status: string,
+    public readonly _seller: string
   ) {}
 
   isForSale() {
-    return this.status === BookStatus.FOR_SALE.toString()
+    return this._status === BookStatus.FOR_SALE.toString()
   }
 
   get data() {
@@ -76,5 +76,45 @@ export class BookDto {
       book.status,
       book.seller
     )
+  }
+
+  get id() {
+    return this._id
+  }
+
+  get title() {
+    return this._title
+  }
+
+  get author() {
+    return this._author
+  }
+
+  get price() {
+    return this._price
+  }
+
+  get imageUrl() {
+    return this._imageUrl
+  }
+
+  get publicationDate() {
+    return this._publicationDate
+  }
+
+  get description() {
+    return this._description
+  }
+
+  get createdAt() {
+    return this._createdAt
+  }
+
+  get status() {
+    return this._status
+  }
+
+  get seller() {
+    return this._seller
   }
 }

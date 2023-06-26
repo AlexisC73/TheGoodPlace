@@ -12,19 +12,6 @@ export class BookModel {
     public rate: number
   ) {}
 
-  get data() {
-    return {
-      author: this.author,
-      description: this.description,
-      id: this.id,
-      cover: this.cover,
-      price: this.price,
-      publicationYear: this.publicationYear,
-      rate: this.rate,
-      title: this.title,
-    }
-  }
-
   static fromDomain(book: Book) {
     return new BookModel(
       book.id,
