@@ -1,7 +1,7 @@
 import NextAuth, { AuthOptions, User } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { SigninClientUseCase } from '../../../../../domain/auth/usecases/signin-client.usecase'
-import { config } from '../../../../../config/repository'
+import { Dependencies } from '../../../../../config/dependencies'
 import { JWT } from 'next-auth/jwt'
 
 export const authOptions: AuthOptions = {
@@ -13,11 +13,11 @@ export const authOptions: AuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
+        const {userRepository} = Dependencies()
         const { email, password } = credentials as {
           email: string
           password: string
         }
-        const userRepository = config.userRepository
         const signinUseCase = new SigninClientUseCase(userRepository)
 
         try {

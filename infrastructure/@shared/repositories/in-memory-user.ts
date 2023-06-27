@@ -66,7 +66,6 @@ export class InMemoryUserRepository implements UserRepository {
       name: signupClientDTO.name,
       password: signupClientDTO.password,
     })
-
     return Promise.resolve()
   }
 

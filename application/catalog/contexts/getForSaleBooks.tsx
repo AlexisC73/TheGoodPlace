@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { BookModel } from '../models/bookModel'
 import { GetForSaleBooksUseCase } from '../../../domain/catalog/usecases/get-for-sale-books'
 import { createContext } from 'react'
-import { config } from '../../../config/repository'
+import { Dependencies } from '../../../config/dependencies'
 
 export enum FetchStatus {
   INITIAL,
@@ -24,11 +24,11 @@ export const BooksFetcherProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [books, setBooks] = useState<BookModel[] | null>(null)
   const [state, setState] = useState<FetchStatus>(FetchStatus.INITIAL)
+  const {bookRepository} = Dependencies()
 
   const getBooks = async () => {
     setState(FetchStatus.LOADING)
     try {
-      const bookRepository = config.bookRepository
       const usecase = new GetForSaleBooksUseCase(bookRepository)
 
       const books = await usecase.handle()

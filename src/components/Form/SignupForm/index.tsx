@@ -3,7 +3,7 @@
 import { FormEventHandler } from 'react'
 import FormElement from '../FormElement'
 import { useNotifications } from '@/context/NotificationContext'
-import { ApiResponse } from '@/utils/api-response'
+import { State, useSignup } from '../../../../application/auth/hook/useSignup'
 
 export default function SignupForm({
   switchToSignin,
@@ -11,6 +11,7 @@ export default function SignupForm({
   switchToSignin: () => void
 }) {
   const { pushNotification } = useNotifications()
+  const {state, signupUser} = useSignup()
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
@@ -18,48 +19,27 @@ export default function SignupForm({
     const name = formData.get('name')?.toString()!
     const email = formData.get('email')?.toString()!
     const password = formData.get('password')?.toString()!
-    const passwordVerif = formData.get('password-verif')?.toString()!
-    signup({ name, email, password, passwordVerif })
+    const passwordConfirmation = formData.get('password-confirmation')?.toString()!
+    signupUser({ name, email, password, passwordConfirmation })
   }
-  const signup = async ({
-    name,
-    email,
-    password,
-    passwordVerif,
-  }: {
-    name: string
-    email: string
-    password: string
-    passwordVerif: string
-  }) => {
-    const request = await fetch('/api/user/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name,
-        email,
-        password,
-        passwordVerif,
-      }),
+
+  if(state === State.ERROR) {
+    pushNotification({
+      title: 'Inscription manquée',
+      content: 'Problème lors de l\'inscription',
+      type: 'error',
+      duration: 2,
     })
-    const response: ApiResponse = await request.json()
-    if (response.success) {
-      pushNotification({
-        title: 'Utilisateur créé',
-        content: response.data.message,
-        duration: 1,
-      })
-      switchToSignin()
-    } else {
-      pushNotification({
-        title: 'Erreur',
-        type: 'error',
-        content: response.error,
-        duration: 5,
-      })
-    }
+  }
+
+  if(state === State.SUCCESS) {
+    pushNotification({
+      title: 'Inscription réussie',
+      content: 'Votre compte a bien été créé',
+      type: 'success',
+      duration: 2,
+    })
+    switchToSignin()
   }
 
   return (
@@ -70,12 +50,13 @@ export default function SignupForm({
         <FormElement label='Mot de passe' name='password' type='password' />
         <FormElement
           label='Vérification du mot de passe'
-          name='password-verif'
+          name='password-confirmation'
           type='password'
         />
       </div>
       <button
-        className='bg-primary h-[40px] self-center px-20 rounded mt-6 text-white'
+        className={`bg-primary h-[40px] self-center px-20 rounded mt-6 text-white`}
+        disabled={state === State.LOADING}
         type='submit'
       >
         M&apos;inscrire
