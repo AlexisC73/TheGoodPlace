@@ -1,8 +1,8 @@
-import NextAuth, { AuthOptions } from 'next-auth'
+import NextAuth, { AuthOptions, User } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { SigninClientUseCase } from '../../../../../domain/auth/usecases/signin-client.usecase'
 import { config } from '../../../../../config/repository'
-import { UserConnection } from '../../../../../domain/@shared/entities/connection'
+import { JWT } from 'next-auth/jwt'
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -21,12 +21,12 @@ export const authOptions: AuthOptions = {
         const signinUseCase = new SigninClientUseCase(userRepository)
 
         try {
-          const userConnection = await signinUseCase.handle({
+          const auth = await signinUseCase.handle({
             email,
             password,
           })
 
-          return userConnection.data
+          return auth.data
         } catch (err) {
           return null
         }
@@ -38,17 +38,14 @@ export const authOptions: AuthOptions = {
       if (trigger === 'update' && session?.avatarUrl) {
         token.avatarUrl = session.avatarUrl
       }
-      if (trigger === 'update' && (session?.name || session?.email)) {
-        token.name = session.name ?? token.name
-        token.email = session.email ?? token.email
-      }
-      return { ...token, ...user }
+      return {...token, ...user}
     },
     async session({ session, token, trigger, newSession }) {
       if (trigger === 'update' && newSession?.avatarUrl) {
         session.user.avatarUrl = newSession.avatarUrl
       }
-      session.user = token
+      session.user = token as any
+      console.log(session)
       return session
     },
   },

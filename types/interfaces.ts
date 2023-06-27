@@ -1,4 +1,4 @@
-import { UserConnection } from "../domain/@shared/entities/connection";
+import { Auth } from "../domain/auth/entities/auth";
 
-export interface User
-  extends Partial<{ [T in keyof UserConnection["data"]]: string | null }> {}
+export interface AuthUser
+  extends Partial<{ [T in keyof Auth["data"]]: string | null }> {}

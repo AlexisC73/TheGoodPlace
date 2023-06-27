@@ -1,6 +1,6 @@
-import { Auth } from '../../auth/entities/auth'
+import { Auth } from "../entities/auth"
 
-export interface UserRepository {
+export interface AuthRepository {
   signinClient({
     email,
     password,

@@ -1,5 +1,5 @@
 import React from 'react'
-import { BookModel } from '../../../application/models/bookModel'
+import { BookModel } from '../../../application/catalog/models/bookModel'
 import BookCard from './BookCard/BookCard'
 
 function ProductList({ books }: { books: BookModel[] | null }) {

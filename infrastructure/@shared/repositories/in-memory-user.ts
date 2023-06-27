@@ -1,42 +1,41 @@
-import { UserConnection } from '../../../domain/@shared/entities/connection'
-import { Role } from '../../../domain/@shared/entities/role'
+import { Role } from '../../../domain/auth/entities/role'
 import { User } from '../../../domain/user/entities/user'
 import { UserRepository } from '../../../domain/@shared/repositories/user'
-import { ConnectInfoDTO } from '../../@shared/dtos/connectInfoDto'
-import { SigninClientDto } from '../../@shared/dtos/signinClientDto'
-import { SignupClientDTO } from '../../@shared/dtos/signupDto'
-import { UserDTO } from '../dtos/userDto'
+import { AuthDTO } from '../../auth/dtos/authDto'
+import { UserDTO } from '../../user/dtos/userDto'
+import { SigninClientDto } from '../../auth/dtos/signinClientDto'
+import { SignupClientDTO } from '../../auth/dtos/signupDto'
+import {Auth} from "../../../domain/auth/entities/auth"
 
 export class InMemoryUserRepository implements UserRepository {
   users = new Map<string, UserDTO>()
 
-  signinClient({
-    email,
-    password,
-  }: {
+  signinClient(command: {
     email: string
     password: string
-  }): Promise<UserConnection> {
-    const signinDto = SigninClientDto.fromData({email, password})
-    if(!signinDto.isValid()) {
+  }): Promise<Auth> {
+    const signinClientDto = SigninClientDto.fromData({
+      email: command.email,
+      password: command.password,
+    })
+
+    if(!signinClientDto.isValid()) {
       throw new Error("Invalid user data")
     }
 
-    const existingUser = this.users.get(signinDto.email + '-' + signinDto.password)
+    const existingUser = this.users.get(signinClientDto.email + '-' + signinClientDto.password)
     if (!existingUser) {
       throw new Error('User not found')
     }
 
-    const userConnection = ConnectInfoDTO.fromData({
+    const auth = AuthDTO.fromData({
       id: existingUser.id,
-      name: existingUser.name,
-      email: existingUser.email,
-      access_token: existingUser.toStringJSON(),
-      role: existingUser.role,
-      avatarUrl: existingUser.avatarUrl
+      access_token: JSON.stringify(existingUser.data),
+      role: Role[existingUser.role as keyof typeof Role],
+      avatarUrl: existingUser.avatarUrl,
     })
 
-    return Promise.resolve(userConnection.toDomain())
+    return Promise.resolve(auth.toDomain())
   }
 
   signupClient(command: {
@@ -45,26 +44,27 @@ export class InMemoryUserRepository implements UserRepository {
     name: string
     passwordConfirmation: string
   }): Promise<void> {
-    const isExistUser = this.users.get(command.email + '-' + command.password)
-    if (isExistUser) {
-      throw new Error('User already exists')
-    }
 
-    const newUser = SignupClientDTO.fromData({
+    const signupClientDTO = SignupClientDTO.fromData({
       email: command.email,
       password: command.password,
       name: command.name,
       passwordConfirmation: command.passwordConfirmation,
     })
-
-    if(!newUser.isValid()) {
+    
+    if(!signupClientDTO.isValid()) {
       throw new Error('Invalid user data')
     }
 
+    const isExistUser = this.users.get(signupClientDTO.email + '-' + signupClientDTO.password)
+    if (isExistUser) {
+      throw new Error('User already exists')
+    }
+
     this._createUser({
-      email: newUser.email,
-      name: newUser.name,
-      password: newUser.password,
+      email: signupClientDTO.email,
+      name: signupClientDTO.name,
+      password: signupClientDTO.password,
     })
 
     return Promise.resolve()

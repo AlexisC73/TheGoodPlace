@@ -1,6 +1,6 @@
 'use client'
 
-import { BookModel } from '../../../../application/models/bookModel'
+import { BookModel } from '../../../../application/catalog/models/bookModel'
 import Rating from '../../../../src/components/Rating'
 import { useState } from 'react'
 

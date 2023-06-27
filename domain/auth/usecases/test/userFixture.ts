@@ -1,4 +1,4 @@
-import { InMemoryUserRepository } from '../../../../infrastructure/user/repositories/in-memory-user'
+import { InMemoryUserRepository } from '../../../../infrastructure/@shared/repositories/in-memory-user'
 import {
   SignupClientCommand,
   SignupClientUseCase,
