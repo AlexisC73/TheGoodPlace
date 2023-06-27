@@ -1,7 +1,7 @@
 'use client'
 
 import BooksFetcherContext, {
-  FetchStatus,
+  FetchStatus
 } from '../../../application/catalog/contexts/getForSaleBooks'
 import { useContext, useEffect } from 'react'
 import ProductList from '../../@shared/ProductList/ProductList'

@@ -3,17 +3,17 @@ import Breadcrumbs from '@/components/Breadcrumb/Breadcrumbs'
 import { ProductBookPresentation } from './ProductBookPresentation'
 import { useContext, useEffect, useState } from 'react'
 import BookFetcherContext, {
-  FetchStatus,
+  FetchStatus
 } from '../../../application/catalog/contexts/getForSaleBook'
 import Link from 'next/link'
 
-export default function BookPage({ bookId }: { bookId: string }) {
+export default function BookPage ({ bookId }: { bookId: string }) {
   const bookFetcher = useContext(BookFetcherContext)
   const [breadcrumbs, setBreadcrumbs] = useState([
     {
       name: 'Livres',
-      href: '/',
-    },
+      href: '/'
+    }
   ])
 
   useEffect(() => {
@@ -30,12 +30,12 @@ export default function BookPage({ bookId }: { bookId: string }) {
       setBreadcrumbs([
         {
           name: 'Livres',
-          href: '/',
+          href: '/'
         },
         {
           name: bookFetcher.book.title,
-          href: `/product/${bookFetcher.book.id}`,
-        },
+          href: `/book/${bookFetcher.book.id}`
+        }
       ])
     }
   }, [bookFetcher.state])
@@ -45,7 +45,7 @@ export default function BookPage({ bookId }: { bookId: string }) {
       ? bookFetcher.book !== null
         ? {
             name: bookFetcher.book.title,
-            href: `/product/${bookFetcher.book.id}`,
+            href: `/product/${bookFetcher.book.id}`
           }
         : null
       : null

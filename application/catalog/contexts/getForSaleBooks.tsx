@@ -10,29 +10,30 @@ export enum FetchStatus {
   INITIAL,
   LOADING,
   SUCCESS,
-  FAILURE,
+  FAILURE
 }
 
 const BooksFetcherContext = createContext({
   books: null as BookModel[] | null,
   state: FetchStatus.INITIAL,
-  getBooks: () => {},
+  getBooks: () => {}
 })
 
 export const BooksFetcherProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
+  children
 }) => {
   const [books, setBooks] = useState<BookModel[] | null>(null)
   const [state, setState] = useState<FetchStatus>(FetchStatus.INITIAL)
-  const {bookRepository} = Dependencies()
+  const { bookRepository } = Dependencies()
 
   const getBooks = async () => {
     setState(FetchStatus.LOADING)
     try {
-      const usecase = new GetForSaleBooksUseCase(bookRepository)
+      const getForSaleBooksUseCase = new GetForSaleBooksUseCase(bookRepository)
 
-      const books = await usecase.handle()
-      const bookModel = books.map((book) => BookModel.fromDomain(book))
+      const books = await getForSaleBooksUseCase.handle()
+
+      const bookModel = books.map(book => BookModel.fromDomain(book))
       setBooks(bookModel)
       setState(FetchStatus.SUCCESS)
     } catch (err) {
@@ -45,7 +46,7 @@ export const BooksFetcherProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         books,
         state,
-        getBooks,
+        getBooks
       }}
     >
       {children}

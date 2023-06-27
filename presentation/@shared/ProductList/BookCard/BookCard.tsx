@@ -12,7 +12,7 @@ const BookCard = ({ bookInfo }: BookCardProps) => {
   return (
     <div className='rounded-[5px] overflow-hidden h-48 sm:h-full sm:w-[239px] border flex sm:flex-col w-full border-[#E9EDF3] relative'>
       <Link
-        href={`/product/${id}`}
+        href={`/book/${id}`}
         className='sm:h-[183px] w-[150px] sm:w-auto flex overflow-hidden items-center sm:justify-center sm:bg-blue-100'
       >
         <img
@@ -24,7 +24,7 @@ const BookCard = ({ bookInfo }: BookCardProps) => {
       <div className='py-5 px-3 sm:p-2 flex flex-col gap-4 w-full flex-1 justify-between sm:justify-normal'>
         <div className='flex-1'>
           <Link
-            href={`/product/${id}`}
+            href={`/book/${id}`}
             className='text-[1.1rem] sm:text-[15px] hover:text-red-300 hover:underline'
           >
             {title}
@@ -39,7 +39,7 @@ const BookCard = ({ bookInfo }: BookCardProps) => {
           <div className='sm:absolute top-2 right-2'>
             <Rating rate={rate} />
           </div>
-          <Link href={`/product/${id}`} className='font-bold text-[20px]'>
+          <Link href={`/book/${id}`} className='font-bold text-[20px]'>
             {price}€
           </Link>
           <AddCartIcon className='hidden sm:block text-[30px] cursor-pointer text-primary' />

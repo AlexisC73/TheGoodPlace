@@ -2,7 +2,7 @@ import Logo from '@/assets/Logo'
 import Link from 'next/link'
 import React from 'react'
 
-function Brand() {
+function Brand () {
   return (
     <Link href={'/'} className='flex items-center gap-3'>
       <div className='h-[42px] w-[42px] rounded-full flex items-center justify-center bg-primary'>
