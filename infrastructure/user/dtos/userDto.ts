@@ -1,7 +1,7 @@
 import { User } from '../../../domain/user/entities/user'
 
 export class UserDTO {
-  private constructor(
+  private constructor (
     private readonly _id: string,
     private readonly _email: string,
     private readonly _name: string,
@@ -9,17 +9,17 @@ export class UserDTO {
     private readonly _avatarUrl: string
   ) {}
 
-  get data() {
+  get data () {
     return {
       id: this.id,
       email: this.email,
       name: this.name,
       role: this.role,
-      avatarUrl: this.avatarUrl,
+      avatarUrl: this.avatarUrl
     }
   }
 
-  static fromData(data: UserDTO['data']) {
+  static fromData (data: UserDTO['data']) {
     return new UserDTO(
       data.id,
       data.email,
@@ -29,31 +29,36 @@ export class UserDTO {
     )
   }
 
-  toDomain() {
-    return new User(this.email, this.name)
+  toDomain () {
+    return User.fromData({
+      id: this.id,
+      email: this.email,
+      name: this.name,
+      avatarUrl: this.avatarUrl
+    })
   }
 
-  toStringJSON() {
+  toStringJSON () {
     return JSON.stringify(this)
   }
 
-  get id() {
+  get id () {
     return this._id
   }
 
-  get email() {
+  get email () {
     return this._email
   }
 
-  get name() {
+  get name () {
     return this._name
   }
 
-  get role() {
+  get role () {
     return this._role
   }
 
-  get avatarUrl() {
+  get avatarUrl () {
     return this._avatarUrl
   }
 }

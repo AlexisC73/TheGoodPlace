@@ -69,7 +69,13 @@ export class InMemoryUserRepository implements UserRepository {
     return Promise.resolve()
   }
 
-  getAccount ({ email, password }: { email: string; password: string }): User {
+  getAccount ({
+    email,
+    password
+  }: {
+    email: string
+    password: string
+  }): UserDTO {
     const foundAccount = this.users.get(email + '-' + password)
     if (!foundAccount) throw new Error('User not found')
     return foundAccount!
