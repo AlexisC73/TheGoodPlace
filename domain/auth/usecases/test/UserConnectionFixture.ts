@@ -2,7 +2,7 @@ import { InMemoryUserRepository } from '../../../../infrastructure/@shared/repos
 import { Auth } from '../../entities/auth'
 import {
   SigninClientCommand,
-  SigninClientUseCase,
+  SigninClientUseCase
 } from '../signin-client.usecase'
 
 export const createUserConnectionFixture = () => {
@@ -12,7 +12,7 @@ export const createUserConnectionFixture = () => {
   const signinUseCase = new SigninClientUseCase(userRepository)
 
   return {
-    givenUserExist(
+    givenUserExist (
       existingUsers: {
         email: string
         password: string
@@ -22,13 +22,15 @@ export const createUserConnectionFixture = () => {
       userRepository._setUsers(existingUsers)
     },
 
-    async whenUserSignin(command: SigninClientCommand) {
+    async whenUserSignin (command: SigninClientCommand) {
       authInfo = await signinUseCase.handle(command)
     },
 
-    thenExpectedUserConnected(expectedUserConnected: { email: string }) {
-      expect(true).toBe(true) // TODO: modifier pour prendre en compte le changement pour le auth
-    },
+    thenExpectedUserConnected (expectedUserConnected: { email: string }) {
+      const user = userRepository.getUserById(authInfo.id)
+      expect(user).not.toBeNull()
+      expect(user?.email).toEqual(expectedUserConnected.email)
+    }
   }
 }
 

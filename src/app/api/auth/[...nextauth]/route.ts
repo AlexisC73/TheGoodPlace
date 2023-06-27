@@ -2,7 +2,6 @@ import NextAuth, { AuthOptions, User } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { SigninClientUseCase } from '../../../../../domain/auth/usecases/signin-client.usecase'
 import { Dependencies } from '../../../../../config/dependencies'
-import { JWT } from 'next-auth/jwt'
 
 export const authOptions: AuthOptions = {
   providers: [

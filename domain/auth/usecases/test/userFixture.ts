@@ -1,7 +1,7 @@
 import { InMemoryUserRepository } from '../../../../infrastructure/@shared/repositories/in-memory-user'
 import {
   SignupClientCommand,
-  SignupClientUseCase,
+  SignupClientUseCase
 } from '../signup-client.usecase'
 
 export const createUserFixture = () => {
@@ -11,33 +11,32 @@ export const createUserFixture = () => {
   const signupClientUseCase = new SignupClientUseCase(userRepository)
 
   return {
-    async whenUserSignup(command: SignupClientCommand) {
+    async whenUserSignup (command: SignupClientCommand) {
       try {
         await signupClientUseCase.handle(command)
       } catch (err: any) {
         thrownError = err
       }
-      
     },
-    thenUserAccountShouldExist(expectedAccount: {
+    thenUserAccountShouldExist (expectedAccount: {
       email: string
       password: string
       name: string
     }) {
       const foundAccount = userRepository.getAccount({
         email: expectedAccount.email,
-        password: expectedAccount.password,
+        password: expectedAccount.password
       })
 
       expect(foundAccount).toEqual(
         expect.objectContaining({
           email: expectedAccount.email,
-          name: expectedAccount.name,
+          name: expectedAccount.name
         })
       )
     },
 
-    thenErrorShoudBeThrown(expectedErrorMessage: string) {
+    thenErrorShoudBeThrown (expectedErrorMessage: string) {
       expect(thrownError.message).toBe(expectedErrorMessage)
     }
   }
