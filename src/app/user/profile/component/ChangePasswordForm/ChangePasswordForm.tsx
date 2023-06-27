@@ -1,48 +1,54 @@
 'use client'
+
 import CheckIcon from '@/assets/CheckIcon'
 import ChangeInformationForm from '../ChangeInformationForm/ChangeInformationForm'
 import FormElement from '@/components/Form/FormElement'
 import { FormEventHandler } from 'react'
 import { useNotifications } from '@/context/NotificationContext'
+import { useUpdatePassword } from '../../../../../../application/user/hook/useUpdatePassword'
+import { useSession } from 'next-auth/react'
 
-function ChangePasswordForm() {
+function ChangePasswordForm () {
   const { pushNotification } = useNotifications()
+  const { state, updateUserPassword } = useUpdatePassword()
+  const { data: session } = useSession()
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault()
     const form = e.currentTarget
     const formData = new FormData(form)
-    const oldPassword = formData.get('old-password')
-    const newPassword = formData.get('new-password')
-    const newPasswordConfirmation = formData.get('confirmPassword')
+    const oldPassword = formData.get('old-password')?.toString()
+    const newPassword = formData.get('new-password')?.toString()
+    const newPasswordConfirmation = formData.get('confirmPassword')?.toString()
+    if (
+      !oldPassword ||
+      !newPassword ||
+      !newPasswordConfirmation ||
+      !session?.user.id
+    ) {
+      pushNotification({
+        title: 'Erreur',
+        content: 'Veuillez remplir tous les champs',
+        type: 'error',
+        duration: 2
+      })
+      return
+    }
 
-    fetch('/api/user/password', {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        oldPassword,
-        newPassword,
-        newPasswordConfirmation,
-      }),
-    }).then(async (res) => {
-      const data = await res.json()
-      if (data.success) {
-        form.reset()
-        pushNotification({
-          title: 'Mot de passe modifié',
-          content: 'Votre mot de passe a bien été modifié',
-          duration: 1,
-        })
-      } else {
-        pushNotification({
-          title: 'Erreur',
-          type: 'error',
-          content: data.error,
-          duration: 1,
-        })
-      }
+    updateUserPassword({
+      id: session.user.id,
+      newPassword,
+      newPasswordConfirmation,
+      oldPassword
+    })
+  }
+
+  if (state === 'SUCCESS') {
+    pushNotification({
+      title: 'Mot de passe modifié',
+      content: 'Votre mot de passe a bien été modifié',
+      type: 'success',
+      duration: 1
     })
   }
 
@@ -52,6 +58,7 @@ function ChangePasswordForm() {
       submitLabel='Modifier le mot de passe'
       icon={<CheckIcon />}
       onSubmit={handleSubmit}
+      canSubmit={state === 'LOADING'}
     >
       <FormElement
         label='Mot de passe (actuel)'

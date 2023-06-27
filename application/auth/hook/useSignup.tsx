@@ -29,6 +29,7 @@ export const useSignup = () => {
     setState(State.LOADING)
     signupClientUseCase
       .handle({
+        id: 'newId', // TODO: generate an id
         email,
         name,
         password,

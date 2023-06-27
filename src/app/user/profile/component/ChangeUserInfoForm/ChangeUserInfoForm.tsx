@@ -7,11 +7,11 @@ import { ApiResponse } from '@/utils/api-response'
 import { useSession } from 'next-auth/react'
 import { FormEventHandler } from 'react'
 
-function ChangeUserInfoForm() {
+function ChangeUserInfoForm () {
   const { data: session, update } = useSession()
   const { pushNotification } = useNotifications()
 
-  const handleSubmitForm: FormEventHandler<HTMLFormElement> = (e) => {
+  const handleSubmitForm: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault()
     const form = e.currentTarget
     const formData = new FormData(form)
@@ -19,23 +19,23 @@ function ChangeUserInfoForm() {
     const email = formData.get('email')
     const body = {
       name: !!name ? name : undefined,
-      email: !!email ? email : undefined,
+      email: !!email ? email : undefined
     }
     fetch('/api/user', {
       method: 'PATCH',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify(body),
+      body: JSON.stringify(body)
     })
-      .then(async (res) => {
+      .then(async res => {
         const response: ApiResponse = await res.json()
         if (response.success) {
           form.reset()
           pushNotification({
             title: 'Information modifié',
             content: response.data.message,
-            duration: 1,
+            duration: 1
           })
           update(body)
         } else {
@@ -43,11 +43,11 @@ function ChangeUserInfoForm() {
             title: 'Erreur',
             type: 'error',
             content: response.error,
-            duration: 1,
+            duration: 1
           })
         }
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err)
       })
   }
@@ -58,16 +58,8 @@ function ChangeUserInfoForm() {
       icon={<CheckIcon />}
       onSubmit={handleSubmitForm}
     >
-      <FormElement
-        label="Nom d'utilisateur"
-        name='name'
-        currentValue={session?.user.name}
-      />
-      <FormElement
-        label='Addresse Email'
-        name='email'
-        currentValue={session?.user.email}
-      />
+      <FormElement label="Nom d'utilisateur" name='name' />
+      <FormElement label='Addresse Email' name='email' />
     </ChangeInformationForm>
   )
 }
