@@ -1,18 +1,16 @@
 import { Auth } from '../entities/auth'
 import { UserRepository } from '../../@shared/repositories/user'
+import { Role } from '../entities/role'
 
 export class SigninClientUseCase {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor (private readonly userRepository: UserRepository) {}
 
-  async handle(command: SigninClientCommand): Promise<Auth> {
-    const client = await this.userRepository.signinClient({
-      email: command.email,
-      password: command.password,
-    })
-    if (!client) {
+  async handle (command: SigninClientCommand): Promise<Auth> {
+    const auth = await this.userRepository.signinClient(command)
+    if (!auth) {
       throw new Error('User not found')
     }
-    return client
+    return auth
   }
 }
 

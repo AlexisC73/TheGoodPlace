@@ -5,7 +5,6 @@ export class UserDTO {
     private readonly _id: string,
     private readonly _email: string,
     private readonly _name: string,
-    private readonly _role: string,
     private readonly _avatarUrl: string
   ) {}
 
@@ -14,19 +13,12 @@ export class UserDTO {
       id: this.id,
       email: this.email,
       name: this.name,
-      role: this.role,
       avatarUrl: this.avatarUrl
     }
   }
 
   static fromData (data: UserDTO['data']) {
-    return new UserDTO(
-      data.id,
-      data.email,
-      data.name,
-      data.role,
-      data.avatarUrl
-    )
+    return new UserDTO(data.id, data.email, data.name, data.avatarUrl)
   }
 
   toDomain () {
@@ -36,6 +28,10 @@ export class UserDTO {
       name: this.name,
       avatarUrl: this.avatarUrl
     })
+  }
+
+  static fromDomain (user: User) {
+    return new UserDTO(user.id, user.email, user.name, user.avatarUrl)
   }
 
   toStringJSON () {
@@ -52,10 +48,6 @@ export class UserDTO {
 
   get name () {
     return this._name
-  }
-
-  get role () {
-    return this._role
   }
 
   get avatarUrl () {

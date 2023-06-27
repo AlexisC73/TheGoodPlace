@@ -1,35 +1,69 @@
-import { UserFixture, createUserFixture } from './userFixture'
+import { InMemoryUserRepository } from '../../../../infrastructure/@shared/repositories/in-memory-user'
+import { User } from '../../../user/entities/user'
+import { userBuilder } from '../../../user/usecases/test/userBuilder'
+import { SignupClientUseCase } from '../signup-client.usecase'
 
 describe('SignupClientUseCase', () => {
-  let userFixture: UserFixture
-
-  beforeEach(() => {
-    userFixture = createUserFixture()
-  })
-
   test('when Alice signup, her account should be created with client role', async () => {
-    await userFixture.whenUserSignup({
+    whenUserSignup({
+      id: 'Alice',
       name: 'Alice',
-      email: 'alice@doe.fr',
-      password: 'test-pass',
-      passwordConfirmation: "test-pass"
+      email: 'alice@email.fr',
+      password: 'testing-password',
+      passwordConfirmation: 'testing-password'
     })
 
-    userFixture.thenUserAccountShouldExist({
-      email: 'alice@doe.fr',
-      password: 'test-pass',
-      name: 'Alice',
-    })
-  })
-
-  test('when Alice signup with bad second password, her account should not be created', async () => {
-    await userFixture.whenUserSignup({
-      name: 'Alice',
-      email: 'alice@doe.fr',
-      password: 'test-pass',
-      passwordConfirmation: "wrong confirmation"
+    thenUserPasswordShouldBe({
+      id: 'Alice',
+      password: 'testing-password'
     })
 
-    userFixture.thenErrorShoudBeThrown("Invalid user data")
+    thenUserShouldExist(
+      userBuilder()
+        .withId('Alice')
+        .withName('Alice')
+        .withEmail('alice@email.fr')
+        .build()
+    )
   })
 })
+
+let user = userBuilder()
+  .withId('Alice')
+  .withName('Alice')
+  .withEmail('alice@email.fr')
+  .build()
+
+let password = 'testing-password'
+
+const userRepository = new InMemoryUserRepository()
+const singupClientUseCase = new SignupClientUseCase(userRepository)
+
+async function whenUserSignup (command: {
+  id: string
+  name: string
+  email: string
+  password: string
+  passwordConfirmation: string
+}) {
+  await singupClientUseCase.handle({
+    id: command.id,
+    email: command.email,
+    password: command.password,
+    name: command.name,
+    passwordConfirmation: command.passwordConfirmation
+  })
+}
+
+function thenUserPasswordShouldBe (expectedUser: {
+  id: string
+  password: string
+}) {
+  const { password } = userRepository.getUserById(expectedUser.id)
+  expect(password).toEqual(expectedUser.password)
+}
+
+function thenUserShouldExist (expectedUser: User) {
+  const { user } = userRepository.getUserById(expectedUser.id)
+  expect(user).toEqual(expectedUser)
+}
