@@ -1,6 +1,5 @@
 import { Auth } from '../entities/auth'
 import { UserRepository } from '../../@shared/repositories/user'
-import { Role } from '../entities/role'
 
 export class SigninClientUseCase {
   constructor (private readonly userRepository: UserRepository) {}

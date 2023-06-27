@@ -20,4 +20,10 @@ export interface UserRepository {
     password: string
     name: string
   }): Promise<void>
+
+  updateUserPassword(data: {
+    id: string
+    newPassword: string
+    oldPassword: string
+  }): Promise<void>
 }

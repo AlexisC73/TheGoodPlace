@@ -1,43 +1,30 @@
 import { InMemoryUserRepository } from '../../../../infrastructure/@shared/repositories/in-memory-user'
+import { User } from '../../../user/entities/user'
 import {
-  SignupClientCommand,
-  SignupClientUseCase
-} from '../signup-client.usecase'
+  UpdateUserPasswordCommand,
+  UpdateUserPasswordUseCase
+} from '../../../user/usecases/update-password.usecase'
 
-export const createUserFixture = () => {
-  let thrownError: Error
-
-  const userRepository = new InMemoryUserRepository()
-  const signupClientUseCase = new SignupClientUseCase(userRepository)
-
+export const createUserFixture = ({
+  userRepository = new InMemoryUserRepository()
+}: { userRepository?: any } = {}) => {
+  const updateUserPasswordUseCase = new UpdateUserPasswordUseCase(
+    userRepository
+  )
   return {
-    async whenUserSignup (command: SignupClientCommand) {
-      try {
-        await signupClientUseCase.handle(command)
-      } catch (err: any) {
-        thrownError = err
-      }
+    givenUsersExist (users: { data: User; password: string }[]) {
+      userRepository.setUsers(users)
     },
-    thenUserAccountShouldExist (expectedAccount: {
-      email: string
-      password: string
-      name: string
-    }) {
-      const foundAccount = userRepository.getAccount({
-        email: expectedAccount.email,
-        password: expectedAccount.password
-      })
-
-      expect(foundAccount).toEqual(
-        expect.objectContaining({
-          email: expectedAccount.email,
-          name: expectedAccount.name
-        })
-      )
+    async whenUserUpdateHisPassword (command: UpdateUserPasswordCommand) {
+      await updateUserPasswordUseCase.handle(command)
     },
-
-    thenErrorShoudBeThrown (expectedErrorMessage: string) {
-      expect(thrownError.message).toBe(expectedErrorMessage)
+    thenUserPasswordShouldBe (expectedUser: { id: string; password: string }) {
+      const { password } = userRepository.getUserById(expectedUser.id)
+      expect(password).toEqual(expectedUser.password)
+    },
+    thenUserShouldExist (expectedUser: User) {
+      const { data: user } = userRepository.getUserById(expectedUser.id)
+      expect(user).toEqual(expectedUser)
     }
   }
 }

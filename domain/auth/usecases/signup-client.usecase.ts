@@ -1,5 +1,4 @@
 import { UserRepository } from '../../@shared/repositories/user'
-import { userBuilder } from '../../user/usecases/test/userBuilder'
 
 export class SignupClientUseCase {
   constructor (private readonly userRepository: UserRepository) {}

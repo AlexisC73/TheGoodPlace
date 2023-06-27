@@ -2,10 +2,21 @@ import { InMemoryUserRepository } from '../../../../infrastructure/@shared/repos
 import { User } from '../../../user/entities/user'
 import { userBuilder } from '../../../user/usecases/test/userBuilder'
 import { SignupClientUseCase } from '../signup-client.usecase'
+import { AuthFixture, createAuthFixture } from './AuthFixture'
+import { UserFixture, createUserFixture } from './userFixture'
 
 describe('SignupClientUseCase', () => {
+  let authFixture: AuthFixture
+  let userFixture: UserFixture
+  const userRepository = new InMemoryUserRepository()
+
+  beforeEach(() => {
+    authFixture = createAuthFixture({ userRepository })
+    userFixture = createUserFixture({ userRepository })
+  })
+
   test('when Alice signup, her account should be created with client role', async () => {
-    whenUserSignup({
+    authFixture.whenUserSignup({
       id: 'Alice',
       name: 'Alice',
       email: 'alice@email.fr',
@@ -13,12 +24,12 @@ describe('SignupClientUseCase', () => {
       passwordConfirmation: 'testing-password'
     })
 
-    thenUserPasswordShouldBe({
+    userFixture.thenUserPasswordShouldBe({
       id: 'Alice',
       password: 'testing-password'
     })
 
-    thenUserShouldExist(
+    userFixture.thenUserShouldExist(
       userBuilder()
         .withId('Alice')
         .withName('Alice')
@@ -27,43 +38,3 @@ describe('SignupClientUseCase', () => {
     )
   })
 })
-
-let user = userBuilder()
-  .withId('Alice')
-  .withName('Alice')
-  .withEmail('alice@email.fr')
-  .build()
-
-let password = 'testing-password'
-
-const userRepository = new InMemoryUserRepository()
-const singupClientUseCase = new SignupClientUseCase(userRepository)
-
-async function whenUserSignup (command: {
-  id: string
-  name: string
-  email: string
-  password: string
-  passwordConfirmation: string
-}) {
-  await singupClientUseCase.handle({
-    id: command.id,
-    email: command.email,
-    password: command.password,
-    name: command.name,
-    passwordConfirmation: command.passwordConfirmation
-  })
-}
-
-function thenUserPasswordShouldBe (expectedUser: {
-  id: string
-  password: string
-}) {
-  const { password } = userRepository.getUserById(expectedUser.id)
-  expect(password).toEqual(expectedUser.password)
-}
-
-function thenUserShouldExist (expectedUser: User) {
-  const { user } = userRepository.getUserById(expectedUser.id)
-  expect(user).toEqual(expectedUser)
-}

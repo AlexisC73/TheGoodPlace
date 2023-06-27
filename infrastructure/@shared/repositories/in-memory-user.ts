@@ -54,14 +54,34 @@ export class InMemoryUserRepository implements UserRepository {
     return Promise.resolve()
   }
 
+  updateUserPassword ({
+    id,
+    newPassword,
+    oldPassword
+  }: {
+    id: string
+    newPassword: string
+    oldPassword: string
+  }): Promise<void> {
+    const user = this.getUserById(id)
+    if (!user) {
+      throw new Error('User not found')
+    }
+    if (user.password !== oldPassword) {
+      throw new Error('Wrong password')
+    }
+    this._save({ user: UserDTO.fromDomain(user.data), password: newPassword })
+    return Promise.resolve()
+  }
+
   _save ({ user, password }: { user: UserDTO; password: string }) {
     this.users.set(user.id, { data: user, password })
   }
 
-  getUserById (id: string): { user: User; password: string } {
+  getUserById (id: string): { data: User; password: string } {
     const { data, password } = this.users.get(id)!
 
-    return { user: data.toDomain(), password }
+    return { data: data.toDomain(), password }
   }
 
   getUserByEmail (email: string): { data: UserDTO; password: string } | null {
