@@ -2,9 +2,9 @@
 
 import BooksFetcherContext, {
   FetchStatus
-} from '../../../application/catalog/contexts/getForSaleBooks'
+} from '@/application/catalog/contexts/getForSaleBooks'
 import { useContext, useEffect } from 'react'
-import ProductList from '../../@shared/ProductList/ProductList'
+import ProductList from './components/ProductList/ProductList'
 
 const ForSaleBooksPage: React.FC = () => {
   const bookFetcher = useContext(BooksFetcherContext)
