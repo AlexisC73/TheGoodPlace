@@ -1,5 +1,5 @@
 import { Auth } from '../entities/auth'
-import { SignInPayload } from '../entities/signInPayload'
+import { SignInPayload } from '../entities/payload/signInPayload'
 import { AuthRepository } from '../repositories/auth'
 
 export class SignInUseCase {

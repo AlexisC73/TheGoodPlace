@@ -6,7 +6,7 @@ import {
   AuthProviderContext,
   FetchStatus
 } from '@/application/auth/contexts/AuthProvider'
-import { SignInPayload } from '@/domain/auth/entities/signInPayload'
+import { SignInPayload } from '@/domain/auth/entities/payload/signInPayload'
 
 export default function SigninForm ({
   closeSigninModal

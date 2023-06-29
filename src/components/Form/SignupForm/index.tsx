@@ -7,7 +7,7 @@ import {
   AuthProviderContext,
   FetchStatus
 } from '@/application/auth/contexts/AuthProvider'
-import { SignUpClientPayload } from '@/domain/auth/entities/signUpClientPayload'
+import { SignUpClientPayload } from '@/domain/auth/entities/payload/signUpClientPayload'
 
 export default function SignupForm ({
   switchToSignin

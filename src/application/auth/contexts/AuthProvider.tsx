@@ -2,8 +2,8 @@
 
 import { Dependencies } from '@/config/dependencies'
 import { Auth } from '@/domain/auth/entities/auth'
-import { SignInPayload } from '@/domain/auth/entities/signInPayload'
-import { SignUpClientPayload } from '@/domain/auth/entities/signUpClientPayload'
+import { SignInPayload } from '@/domain/auth/entities/payload/signInPayload'
+import { SignUpClientPayload } from '@/domain/auth/entities/payload/signUpClientPayload'
 import { createContext, useState } from 'react'
 
 export enum FetchStatus {

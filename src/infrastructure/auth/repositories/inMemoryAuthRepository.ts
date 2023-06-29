@@ -1,9 +1,9 @@
 import { Auth } from '@/domain/auth/entities/auth'
-import { SignUpClientPayload } from '@/domain/auth/entities/signUpClientPayload'
+import { SignUpClientPayload } from '@/domain/auth/entities/payload/signUpClientPayload'
 import { AuthRepository } from '@/domain/auth/repositories/auth'
 import { AuthDTO } from '../dtos/auth'
 import { Role } from '@/domain/auth/entities/role'
-import { SignInPayload } from '@/domain/auth/entities/signInPayload'
+import { SignInPayload } from '@/domain/auth/entities/payload/signInPayload'
 
 export class InMemoryAuthRepository implements AuthRepository {
   auths: AuthDTO[] = [

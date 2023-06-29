@@ -1,4 +1,4 @@
-import { SignInPayload } from '@/domain/auth/entities/signInPayload'
+import { SignInPayload } from '@/domain/auth/entities/payload/signInPayload'
 import { AuthFixture, createAuthFixture } from '../authFixture'
 import { authDTOBuilder } from '../authDTOBuilder'
 import { Role } from '@/domain/auth/entities/role'

@@ -1,6 +1,6 @@
 import { Role } from '@/domain/auth/entities/role'
 import { authBuilder } from '../authBuilder'
-import { SignUpClientPayload } from '@/domain/auth/entities/signUpClientPayload'
+import { SignUpClientPayload } from '@/domain/auth/entities/payload/signUpClientPayload'
 import { AuthFixture, createAuthFixture } from '../authFixture'
 
 describe('SignupClientUseCase', () => {

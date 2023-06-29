@@ -1,4 +1,4 @@
-import { SignUpClientPayload } from '../entities/signUpClientPayload'
+import { SignUpClientPayload } from '../entities/payload/signUpClientPayload'
 import { AuthRepository } from '../repositories/auth'
 
 export class SignupClientUseCase {
