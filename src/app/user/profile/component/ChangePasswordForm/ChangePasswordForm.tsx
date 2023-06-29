@@ -3,11 +3,19 @@
 import CheckIcon from '@/assets/CheckIcon'
 import ChangeInformationForm from '../ChangeInformationForm/ChangeInformationForm'
 import FormElement from '@/components/Form/FormElement'
-import { FormEventHandler } from 'react'
+import { FormEventHandler, useContext } from 'react'
 import { useNotifications } from '@/context/NotificationContext'
+import {
+  AuthProviderContext,
+  FetchStatus
+} from '@/application/auth/contexts/AuthProvider'
+import { UpdatePasswordPayload } from '@/domain/auth/entities/payload/updatePassword'
+import { Password } from '@/domain/auth/valueObjects/password'
+import { Id } from '@/domain/auth/valueObjects/id'
 
 function ChangePasswordForm () {
   const { pushNotification } = useNotifications()
+  const { updatePassword, auth, state } = useContext(AuthProviderContext)
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault()
@@ -26,17 +34,18 @@ function ChangePasswordForm () {
       return
     }
 
-    console.log('update password')
-  }
+    if (!auth) {
+      return
+    }
 
-  if (false) {
-    //TODO : update when updatePassword is implemented
-    pushNotification({
-      title: 'Mot de passe modifié',
-      content: 'Votre mot de passe a bien été modifié',
-      type: 'success',
-      duration: 1
-    })
+    updatePassword(
+      new UpdatePasswordPayload(
+        new Id({ value: auth.id }),
+        new Password({ value: oldPassword }),
+        new Password({ value: newPassword }),
+        new Password({ value: newPasswordConfirmation })
+      )
+    )
   }
 
   return (
@@ -45,7 +54,7 @@ function ChangePasswordForm () {
       submitLabel='Modifier le mot de passe'
       icon={<CheckIcon />}
       onSubmit={handleSubmit}
-      canSubmit={false} //TODO : update when updatePassword is implemented
+      canSubmit={state === FetchStatus.LOADING}
     >
       <FormElement
         label='Mot de passe (actuel)'

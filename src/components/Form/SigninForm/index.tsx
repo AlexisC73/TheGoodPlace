@@ -7,6 +7,7 @@ import {
   FetchStatus
 } from '@/application/auth/contexts/AuthProvider'
 import { SignInPayload } from '@/domain/auth/entities/payload/signInPayload'
+import { Email } from '@/domain/auth/valueObjects/email'
 
 export default function SigninForm ({
   closeSigninModal
@@ -22,19 +23,10 @@ export default function SigninForm ({
 
     signIn(
       new SignInPayload(
-        formData.get('email') as string,
+        new Email({ value: formData.get('email') as string }),
         formData.get('password') as string
       )
     )
-  }
-
-  if (state === FetchStatus.SUCCESS) {
-    pushNotification({
-      title: 'Connexion réussie',
-      content: 'Vous êtes maintenant connecté',
-      type: 'success',
-      duration: 2
-    })
   }
 
   if (auth) {
@@ -54,6 +46,7 @@ export default function SigninForm ({
       <button
         className='bg-primary h-[40px] self-center px-20 rounded mt-6 text-white'
         type='submit'
+        disabled={state === FetchStatus.LOADING}
       >
         Me connecter
       </button>

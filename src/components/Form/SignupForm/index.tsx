@@ -8,6 +8,9 @@ import {
   FetchStatus
 } from '@/application/auth/contexts/AuthProvider'
 import { SignUpClientPayload } from '@/domain/auth/entities/payload/signUpClientPayload'
+import { Id } from '@/domain/auth/valueObjects/id'
+import { Email } from '@/domain/auth/valueObjects/email'
+import { Password } from '@/domain/auth/valueObjects/password'
 
 export default function SignupForm ({
   switchToSignin
@@ -26,26 +29,14 @@ export default function SignupForm ({
     const passwordConfirmation = formData
       .get('password-confirmation')
       ?.toString()!
-    signUp(new SignUpClientPayload('1', email, password, passwordConfirmation))
-  }
-
-  if (state === FetchStatus.FAILURE) {
-    pushNotification({
-      title: 'Inscription manquée',
-      content: "Problème lors de l'inscription",
-      type: 'error',
-      duration: 2
-    })
-  }
-
-  if (state === FetchStatus.SUCCESS) {
-    pushNotification({
-      title: 'Inscription réussie',
-      content: 'Votre compte a bien été créé',
-      type: 'success',
-      duration: 2
-    })
-    switchToSignin()
+    signUp(
+      new SignUpClientPayload(
+        new Id({ value: '1' }),
+        new Email({ value: email }),
+        new Password({ value: password }),
+        new Password({ value: passwordConfirmation })
+      )
+    )
   }
 
   return (

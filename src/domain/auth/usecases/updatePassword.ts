@@ -9,7 +9,7 @@ export class UpdatePassword {
     if (!payload._newPassword.equals(payload._newPasswordConfirmation)) {
       throw new Error('New password and confirmation do not match')
     }
-    return this.authRepository.updatePassword(payload)
+    await this.authRepository.updatePassword(payload)
   }
 }
 

@@ -4,6 +4,10 @@ import { Dependencies } from '@/config/dependencies'
 import { Auth } from '@/domain/auth/entities/auth'
 import { SignInPayload } from '@/domain/auth/entities/payload/signInPayload'
 import { SignUpClientPayload } from '@/domain/auth/entities/payload/signUpClientPayload'
+import { UpdatePasswordPayload } from '@/domain/auth/entities/payload/updatePassword'
+import { SignInUseCase } from '@/domain/auth/usecases/signIn'
+import { SignupClientUseCase } from '@/domain/auth/usecases/signupClient'
+import { UpdatePassword } from '@/domain/auth/usecases/updatePassword'
 import { createContext, useState } from 'react'
 
 export enum FetchStatus {
@@ -16,9 +20,10 @@ export enum FetchStatus {
 export const AuthProviderContext = createContext({
   auth: null as Auth | null,
   state: FetchStatus.INITIAL,
-  signIn: (payload: SignInPayload) => {},
-  signUp: (payload: SignUpClientPayload) => {},
-  signOut: () => {}
+  signIn: async (payload: SignInPayload) => {},
+  signUp: async (payload: SignUpClientPayload) => {},
+  signOut: () => {},
+  updatePassword: async (payload: UpdatePasswordPayload) => {}
 })
 
 export const AuthContext: React.FC<{ children: React.ReactNode }> = ({
@@ -28,10 +33,14 @@ export const AuthContext: React.FC<{ children: React.ReactNode }> = ({
   const [state, setState] = useState<FetchStatus>(FetchStatus.INITIAL)
   const { authRepository } = Dependencies()
 
-  const signIn = async (payload: SignInPayload) => {
+  const signInUseCase = new SignInUseCase(authRepository)
+  const signUpClientUseCase = new SignupClientUseCase(authRepository)
+  const updatePasswordUseCase = new UpdatePassword(authRepository)
+
+  const signIn = async (payload: SignInPayload): Promise<void> => {
     setState(FetchStatus.LOADING)
     try {
-      const auth = await authRepository.signIn(payload)
+      const auth = await signInUseCase.handle({ payload })
       setAuth(auth)
       setState(FetchStatus.SUCCESS)
     } catch (error) {
@@ -42,7 +51,7 @@ export const AuthContext: React.FC<{ children: React.ReactNode }> = ({
   const signUp = async (payload: SignUpClientPayload) => {
     setState(FetchStatus.LOADING)
     try {
-      const auth = await authRepository.signupClient(payload)
+      const auth = await signUpClientUseCase.handle({ payload })
       setAuth(auth)
       setState(FetchStatus.SUCCESS)
     } catch (error) {
@@ -56,9 +65,19 @@ export const AuthContext: React.FC<{ children: React.ReactNode }> = ({
     setState(FetchStatus.SUCCESS)
   }
 
+  const updatePassword = async (payload: UpdatePasswordPayload) => {
+    setState(FetchStatus.LOADING)
+    try {
+      await updatePasswordUseCase.handle({ payload })
+      setState(FetchStatus.SUCCESS)
+    } catch (error) {
+      setState(FetchStatus.FAILURE)
+    }
+  }
+
   return (
     <AuthProviderContext.Provider
-      value={{ auth, signIn, signUp, state, signOut }}
+      value={{ auth, signIn, signUp, state, signOut, updatePassword }}
     >
       {children}
     </AuthProviderContext.Provider>

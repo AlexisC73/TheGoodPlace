@@ -44,7 +44,6 @@ export class InMemoryAuthRepository implements AuthRepository {
     if (foundUser.password !== payload.password) {
       throw new Error('Wrong password')
     }
-
     return foundUser.toDomain()
   }
 
