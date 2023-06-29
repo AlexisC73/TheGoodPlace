@@ -2,8 +2,6 @@
 import ChangeInformationForm from '../ChangeInformationForm/ChangeInformationForm'
 import CheckIcon from '@/assets/CheckIcon'
 import FormElement from '@/components/Form/FormElement'
-import { useNotifications } from '@/context/NotificationContext'
-import { useSession } from 'next-auth/react'
 import { FormEventHandler } from 'react'
 
 function ChangeUserInfoForm () {

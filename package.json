@@ -20,7 +20,6 @@
     "formidable": "^2.1.1",
     "market-place": "link:",
     "next": "13.4.4",
-    "next-auth": "^4.22.1",
     "postcss": "8.4.24",
     "react": "18.2.0",
     "react-dom": "18.2.0",
