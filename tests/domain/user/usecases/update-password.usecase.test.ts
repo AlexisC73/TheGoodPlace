@@ -1,5 +1,5 @@
-import { InMemoryUserRepository } from '../../../../infrastructure/@shared/repositories/in-memory-user'
-import { UserFixture, createUserFixture } from '@/tests/domain/auth/userFixture'
+import { InMemoryUserRepository } from '@/infrastructure/@shared/repositories/in-memory-user'
+import { UserFixture, createUserFixture } from '@tests/domain/auth/userFixture'
 import { userBuilder } from '../userBuilder'
 
 describe('Update Password Use Case', () => {

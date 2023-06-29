@@ -1,5 +1,5 @@
-import { InMemoryUserRepository } from '../../../../infrastructure/@shared/repositories/in-memory-user'
-import { userBuilder } from '@/tests/domain/user/userBuilder'
+import { InMemoryUserRepository } from '@/infrastructure/@shared/repositories/in-memory-user'
+import { userBuilder } from '@tests/domain/user/userBuilder'
 import { Auth } from '@/domain/auth/entities/auth'
 import { Role } from '@/domain/auth/entities/role'
 import { AuthFixture, createAuthFixture } from '../AuthFixture'
