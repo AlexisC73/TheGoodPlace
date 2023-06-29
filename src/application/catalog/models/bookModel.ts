@@ -1,18 +1,18 @@
-import { Book } from '../../../domain/catalog/entities/book'
+import { Book } from '@/domain/catalog/entities/book'
 
 export class BookModel {
-  constructor(
-    private readonly _id: string,
-    private readonly _title: string,
-    private readonly _author: string,
-    private readonly _description: string,
-    private readonly _cover: string,
-    private readonly _price: number,
-    private readonly _publicationYear: string,
-    private readonly _rate: number
+  constructor (
+    public readonly id: string,
+    public readonly title: string,
+    public readonly author: string,
+    public readonly description: string,
+    public readonly cover: string,
+    public readonly price: number,
+    public readonly publicationYear: string,
+    public readonly rate: number
   ) {}
 
-  static fromDomain(book: Book) {
+  static fromDomain (book: Book) {
     return new BookModel(
       book.id,
       book.title,
@@ -25,48 +25,16 @@ export class BookModel {
     )
   }
 
-  get data() {
+  get data () {
     return {
-      id: this._id,
-      title: this._title,
-      author: this._author,
-      description: this._description,
-      cover: this._cover,
-      price: this._price,
-      publicationYear: this._publicationYear,
-      rate: this._rate,
+      id: this.id,
+      title: this.title,
+      author: this.author,
+      description: this.description,
+      cover: this.cover,
+      price: this.price,
+      publicationYear: this.publicationYear,
+      rate: this.rate
     }
-  }
-
-  get id() {
-    return this._id
-  }
-
-  get title() {
-    return this._title
-  }
-
-  get author() {
-    return this._author
-  }
-
-  get description() {
-    return this._description
-  }
-
-  get cover() {
-    return this._cover
-  }
-
-  get price() {
-    return this._price
-  }
-
-  get publicationYear() {
-    return this._publicationYear
-  }
-
-  get rate() {
-    return this._rate
   }
 }

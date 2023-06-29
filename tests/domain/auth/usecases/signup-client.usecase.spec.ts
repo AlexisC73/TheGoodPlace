@@ -1,38 +1,57 @@
-import { InMemoryUserRepository } from '@/infrastructure/@shared/repositories/in-memory-user'
-import { userBuilder } from '@tests/domain/user/userBuilder'
-import { AuthFixture, createAuthFixture } from '../AuthFixture'
-import { UserFixture, createUserFixture } from '../userFixture'
+import { Role } from '@/domain/auth/entities/role'
+import { authBuilder } from '../authBuilder'
+import { Auth } from '@/domain/auth/entities/auth'
+import { SignUpClientPayload } from '@/domain/auth/entities/signUpClientPayload'
+import { SignupClientUseCase } from '@/domain/auth/usecases/signup-client'
+import { SignUpClientParams } from '@/domain/auth/usecases/signup-client'
+import { InMemoryAuthRepository } from '@/infrastructure/auth/repositories/inMemoryAuthRepository'
 
 describe('SignupClientUseCase', () => {
-  let authFixture: AuthFixture
-  let userFixture: UserFixture
-  const userRepository = new InMemoryUserRepository()
-
+  let fixture: Fixture
   beforeEach(() => {
-    authFixture = createAuthFixture({ userRepository })
-    userFixture = createUserFixture({ userRepository })
+    fixture = createFixture()
   })
 
-  test('when Alice signup, her account should be created with client role', async () => {
-    authFixture.whenUserSignup({
-      id: 'Alice',
-      name: 'Alice',
-      email: 'alice@email.fr',
-      password: 'testing-password',
-      passwordConfirmation: 'testing-password'
+  test('when Alice signup, a auth should be returned with her information', async () => {
+    fixture.givenAuthAccounts([])
+
+    await fixture.whenUserSignUpWithCredentials({
+      payload: new SignUpClientPayload(
+        'alice-id',
+        'alice@test.fr',
+        'password',
+        'password'
+      )
     })
 
-    userFixture.thenUserPasswordShouldBe({
-      id: 'Alice',
-      password: 'testing-password'
-    })
-
-    userFixture.thenUserShouldExist(
-      userBuilder()
-        .withId('Alice')
-        .withName('Alice')
-        .withEmail('alice@email.fr')
+    fixture.thenreturnedAuthShouldBe(
+      authBuilder()
+        .withRole(Role.CLIENT)
+        .withEmail('alice@test.fr')
+        .withId('alice-id')
         .build()
     )
   })
 })
+
+const createFixture = () => {
+  let auths: Auth[] = []
+  let currentAuth: Auth
+
+  const authRepository = new InMemoryAuthRepository()
+  const signUpClientUseCase = new SignupClientUseCase(authRepository)
+
+  return {
+    givenAuthAccounts (givenAuth: Auth[]) {
+      auths = givenAuth
+    },
+    async whenUserSignUpWithCredentials (credentials: SignUpClientParams) {
+      currentAuth = await signUpClientUseCase.handle(credentials)
+    },
+    thenreturnedAuthShouldBe (expectedAuth: Auth) {
+      expect(currentAuth).toEqual(expectedAuth)
+    }
+  }
+}
+
+type Fixture = ReturnType<typeof createFixture>
