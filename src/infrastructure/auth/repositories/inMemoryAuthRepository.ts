@@ -3,6 +3,7 @@ import { SignUpClientPayload } from '@/domain/auth/entities/signUpClientPayload'
 import { AuthRepository } from '@/domain/auth/repositories/auth'
 import { AuthDTO } from '../dtos/auth'
 import { Role } from '@/domain/auth/entities/role'
+import { SignInPayload } from '@/domain/auth/entities/signInPayload'
 
 export class InMemoryAuthRepository implements AuthRepository {
   auths: AuthDTO[] = []
@@ -20,16 +21,44 @@ export class InMemoryAuthRepository implements AuthRepository {
       payload.password
     )
 
-    this._save(auth)
+    this.save(auth)
     return Promise.resolve(auth.toDomain())
   }
 
-  _save (auth: AuthDTO) {
+  async signIn (payload: SignInPayload): Promise<Auth> {
+    const foundUser = this.findUserByEmail(payload.email)
+
+    if (!foundUser) {
+      throw new Error('User not found')
+    }
+
+    if (foundUser.password !== payload.password) {
+      throw new Error('Wrong password')
+    }
+
+    return foundUser.toDomain()
+  }
+
+  private save (auth: AuthDTO) {
     const foundIndex = this.auths.findIndex(auth => auth.id === auth.id)
     if (foundIndex !== -1) {
       this.auths[foundIndex] = auth
     } else {
       this.auths.push(auth)
     }
+  }
+
+  private findUserByEmail (email: string): AuthDTO | undefined {
+    return this.auths.find(auth => auth.email === email)
+  }
+
+  private findUserById (id: string): AuthDTO | undefined {
+    return this.auths.find(auth => auth.id === id)
+  }
+
+  // For tests
+
+  setAuths (auths: AuthDTO[]) {
+    this.auths = auths
   }
 }

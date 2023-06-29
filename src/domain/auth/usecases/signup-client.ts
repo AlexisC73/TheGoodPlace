@@ -1,7 +1,5 @@
-import { authBuilder } from '@tests/domain/auth/authBuilder'
 import { SignUpClientPayload } from '../entities/signUpClientPayload'
 import { AuthRepository } from '../repositories/auth'
-import { Role } from '../entities/role'
 
 export class SignupClientUseCase {
   constructor (private readonly authRepository: AuthRepository) {}
