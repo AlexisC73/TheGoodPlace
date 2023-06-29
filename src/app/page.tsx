@@ -1,10 +1,10 @@
-import { BooksFetcherProvider } from '../../application/catalog/contexts/getForSaleBooks'
-import ForSaleBooksPage from '../../presentation/pages/ForSaleBooksPage/ForSaleBooksPage'
+import { BooksFetcherProvider } from "@/application/catalog/contexts/getForSaleBooks";
+import BookPage from "@/presentation/pages/ForSaleBookPage/BookPage";
 
 export default function Home() {
   return (
     <BooksFetcherProvider>
-      <ForSaleBooksPage />
+      <BookPage bookId="" />
     </BooksFetcherProvider>
-  )
+  );
 }
