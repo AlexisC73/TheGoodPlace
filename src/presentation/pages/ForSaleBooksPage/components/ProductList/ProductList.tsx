@@ -1,9 +1,9 @@
 import React from 'react'
-import { BookModel } from '../../../application/catalog/models/bookModel'
+import { BookModel } from '@/application/catalog/models/bookModel'
 import BookCard from './BookCard/BookCard'
 
-function ProductList({ books }: { books: BookModel[] | null }) {
-  let content = books?.map((book) => (
+function ProductList ({ books }: { books: BookModel[] | null }) {
+  let content = books?.map(book => (
     <li key={book.id} className='sm:justify-self-center h-full'>
       <BookCard bookInfo={book} />
     </li>

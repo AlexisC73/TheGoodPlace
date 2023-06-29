@@ -1,6 +1,6 @@
 import AddCartIcon from '@/assets/AddCart'
 import Link from 'next/link'
-import { BookModel } from '../../../../application/catalog/models/bookModel'
+import { BookModel } from '@/application/catalog/models/bookModel'
 import Rating from '@/components/Rating'
 
 type BookCardProps = {
