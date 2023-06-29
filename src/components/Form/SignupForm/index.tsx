@@ -3,41 +3,43 @@
 import { FormEventHandler } from 'react'
 import FormElement from '../FormElement'
 import { useNotifications } from '@/context/NotificationContext'
-import { State, useSignup } from '../../../../application/auth/hook/useSignup'
+import { State, useSignup } from '@/application/auth/hook/useSignup'
 
-export default function SignupForm({
-  switchToSignin,
+export default function SignupForm ({
+  switchToSignin
 }: {
   switchToSignin: () => void
 }) {
   const { pushNotification } = useNotifications()
-  const {state, signupUser} = useSignup()
+  const { state, signupUser } = useSignup()
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
     const name = formData.get('name')?.toString()!
     const email = formData.get('email')?.toString()!
     const password = formData.get('password')?.toString()!
-    const passwordConfirmation = formData.get('password-confirmation')?.toString()!
+    const passwordConfirmation = formData
+      .get('password-confirmation')
+      ?.toString()!
     signupUser({ name, email, password, passwordConfirmation })
   }
 
-  if(state === State.ERROR) {
+  if (state === State.ERROR) {
     pushNotification({
       title: 'Inscription manquée',
-      content: 'Problème lors de l\'inscription',
+      content: "Problème lors de l'inscription",
       type: 'error',
-      duration: 2,
+      duration: 2
     })
   }
 
-  if(state === State.SUCCESS) {
+  if (state === State.SUCCESS) {
     pushNotification({
       title: 'Inscription réussie',
       content: 'Votre compte a bien été créé',
       type: 'success',
-      duration: 2,
+      duration: 2
     })
     switchToSignin()
   }

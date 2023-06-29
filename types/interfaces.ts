@@ -1,4 +1,4 @@
-import { Auth } from "../domain/auth/entities/auth";
+import { Auth } from '@/domain/auth/entities/auth'
 
 export interface AuthUser
-  extends Partial<{ [T in keyof Auth["data"]]: string | null }> {}
+  extends Partial<{ [T in keyof Auth['data']]: string | null }> {}

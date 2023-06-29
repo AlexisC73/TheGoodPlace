@@ -5,7 +5,7 @@ import ChangeInformationForm from '../ChangeInformationForm/ChangeInformationFor
 import FormElement from '@/components/Form/FormElement'
 import { FormEventHandler } from 'react'
 import { useNotifications } from '@/context/NotificationContext'
-import { useUpdatePassword } from '../../../../../../application/user/hook/useUpdatePassword'
+import { useUpdatePassword } from '@/application/user/hook/useUpdatePassword'
 import { useSession } from 'next-auth/react'
 
 function ChangePasswordForm () {

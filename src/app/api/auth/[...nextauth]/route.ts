@@ -1,7 +1,7 @@
 import NextAuth, { AuthOptions, User } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { SigninClientUseCase } from '../../../../../domain/auth/usecases/signin-client.usecase'
-import { Dependencies } from '../../../../../config/dependencies'
+import { SigninClientUseCase } from '@/domain/auth/usecases/signin-client.usecase'
+import { Dependencies } from '@/config/dependencies'
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -9,10 +9,10 @@ export const authOptions: AuthOptions = {
       name: 'Credentials',
       credentials: {
         email: { label: 'Email', type: 'email' },
-        password: { label: 'Password', type: 'password' },
+        password: { label: 'Password', type: 'password' }
       },
-      async authorize(credentials) {
-        const {userRepository} = Dependencies()
+      async authorize (credentials) {
+        const { userRepository } = Dependencies()
         const { email, password } = credentials as {
           email: string
           password: string
@@ -22,32 +22,32 @@ export const authOptions: AuthOptions = {
         try {
           const auth = await signinUseCase.handle({
             email,
-            password,
+            password
           })
 
           return auth.data
         } catch (err) {
           return null
         }
-      },
-    }),
+      }
+    })
   ],
   callbacks: {
-    async jwt({ token, user, trigger, session }) {
+    async jwt ({ token, user, trigger, session }) {
       if (trigger === 'update' && session?.avatarUrl) {
         token.avatarUrl = session.avatarUrl
       }
-      return {...token, ...user}
+      return { ...token, ...user }
     },
-    async session({ session, token, trigger, newSession }) {
+    async session ({ session, token, trigger, newSession }) {
       if (trigger === 'update' && newSession?.avatarUrl) {
         session.user.avatarUrl = newSession.avatarUrl
       }
       session.user = token as any
       console.log(session)
       return session
-    },
-  },
+    }
+  }
 }
 
 const handler = NextAuth(authOptions)
