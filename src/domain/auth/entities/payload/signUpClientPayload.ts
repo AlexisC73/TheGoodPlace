@@ -1,13 +1,18 @@
 import { Email } from '../../valueObjects/email'
+import { Id } from '../../valueObjects/id'
 import { Password } from '../../valueObjects/password'
 
 export class SignUpClientPayload {
   constructor (
-    public readonly id: string,
+    private readonly _id: Id,
     private readonly _email: Email,
-    public readonly _password: Password,
-    public readonly _passwordConfirmation: Password
+    private readonly _password: Password,
+    private readonly _passwordConfirmation: Password
   ) {}
+
+  get id (): string {
+    return this._id.value
+  }
 
   get email (): string {
     return this._email.value

@@ -2,6 +2,7 @@ import { SignInPayload } from '@/domain/auth/entities/payload/signInPayload'
 import { AuthFixture, createAuthFixture } from '../authFixture'
 import { authDTOBuilder } from '../authDTOBuilder'
 import { Role } from '@/domain/auth/entities/role'
+import { Email } from '@/domain/auth/valueObjects/email'
 
 describe('SigninUser', () => {
   let authFixture: AuthFixture
@@ -20,7 +21,10 @@ describe('SigninUser', () => {
     authFixture.givenAuthAccounts([existingUser])
 
     await authFixture.whenUserSignInWithCredentials({
-      payload: new SignInPayload('alice@test.fr', 'password')
+      payload: new SignInPayload(
+        new Email({ value: 'alice@test.fr' }),
+        'password'
+      )
     })
 
     authFixture.thenAuthenticatedUserShouldBe(existingUser.toDomain())

@@ -4,6 +4,7 @@ import { SignUpClientPayload } from '@/domain/auth/entities/payload/signUpClient
 import { AuthFixture, createAuthFixture } from '../authFixture'
 import { Email } from '@/domain/auth/valueObjects/email'
 import { Password } from '@/domain/auth/valueObjects/password'
+import { Id } from '@/domain/auth/valueObjects/id'
 
 describe('SignupClientUseCase', () => {
   let authFixture: AuthFixture
@@ -16,7 +17,7 @@ describe('SignupClientUseCase', () => {
 
     await authFixture.whenUserSignUpWithCredentials({
       payload: new SignUpClientPayload(
-        'alice-id',
+        new Id({ value: 'alice-id' }),
         new Email({ value: 'alice@test.fr' }),
         new Password({ value: 'password' }),
         new Password({ value: 'password' })
