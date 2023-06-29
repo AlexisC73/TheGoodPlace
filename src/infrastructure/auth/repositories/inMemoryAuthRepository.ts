@@ -4,6 +4,7 @@ import { AuthRepository } from '@/domain/auth/repositories/auth'
 import { AuthDTO } from '../dtos/auth'
 import { Role } from '@/domain/auth/entities/role'
 import { SignInPayload } from '@/domain/auth/entities/payload/signInPayload'
+import { UpdatePasswordPayload } from '@/domain/auth/entities/payload/updatePassword'
 
 export class InMemoryAuthRepository implements AuthRepository {
   auths: AuthDTO[] = [
@@ -47,6 +48,19 @@ export class InMemoryAuthRepository implements AuthRepository {
     return foundUser.toDomain()
   }
 
+  async updatePassword (payload: UpdatePasswordPayload): Promise<void> {
+    const foundUser = this.findUserById(payload.userId)
+    if (!foundUser) {
+      throw new Error('User not found')
+    }
+    if (foundUser.password !== payload.oldPassword) {
+      throw new Error('Wrong password')
+    }
+
+    const updatedUser = foundUser.copyWith({ password: payload.newPassword })
+    this.save(updatedUser)
+  }
+
   private save (auth: AuthDTO) {
     const foundIndex = this.auths.findIndex(auth => auth.id === auth.id)
     if (foundIndex !== -1) {
@@ -68,5 +82,9 @@ export class InMemoryAuthRepository implements AuthRepository {
 
   setAuths (auths: AuthDTO[]) {
     this.auths = auths
+  }
+
+  getAuthById (id: string): AuthDTO | undefined {
+    return this.findUserById(id)
   }
 }
