@@ -5,13 +5,9 @@ import ChangeInformationForm from '../ChangeInformationForm/ChangeInformationFor
 import FormElement from '@/components/Form/FormElement'
 import { FormEventHandler } from 'react'
 import { useNotifications } from '@/context/NotificationContext'
-import { useUpdatePassword } from '@/application/user/hook/useUpdatePassword'
-import { useSession } from 'next-auth/react'
 
 function ChangePasswordForm () {
   const { pushNotification } = useNotifications()
-  const { state, updateUserPassword } = useUpdatePassword()
-  const { data: session } = useSession()
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault()
@@ -20,12 +16,7 @@ function ChangePasswordForm () {
     const oldPassword = formData.get('old-password')?.toString()
     const newPassword = formData.get('new-password')?.toString()
     const newPasswordConfirmation = formData.get('confirmPassword')?.toString()
-    if (
-      !oldPassword ||
-      !newPassword ||
-      !newPasswordConfirmation ||
-      !session?.user.id
-    ) {
+    if (!oldPassword || !newPassword || !newPasswordConfirmation) {
       pushNotification({
         title: 'Erreur',
         content: 'Veuillez remplir tous les champs',
@@ -35,15 +26,11 @@ function ChangePasswordForm () {
       return
     }
 
-    updateUserPassword({
-      id: session.user.id,
-      newPassword,
-      newPasswordConfirmation,
-      oldPassword
-    })
+    console.log('update password')
   }
 
-  if (state === 'SUCCESS') {
+  if (false) {
+    //TODO : update when updatePassword is implemented
     pushNotification({
       title: 'Mot de passe modifié',
       content: 'Votre mot de passe a bien été modifié',
@@ -58,7 +45,7 @@ function ChangePasswordForm () {
       submitLabel='Modifier le mot de passe'
       icon={<CheckIcon />}
       onSubmit={handleSubmit}
-      canSubmit={state === 'LOADING'}
+      canSubmit={false} //TODO : update when updatePassword is implemented
     >
       <FormElement
         label='Mot de passe (actuel)'

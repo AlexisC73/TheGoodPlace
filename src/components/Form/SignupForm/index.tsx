@@ -1,9 +1,13 @@
 'use client'
 
-import { FormEventHandler } from 'react'
+import { FormEventHandler, useContext } from 'react'
 import FormElement from '../FormElement'
 import { useNotifications } from '@/context/NotificationContext'
-import { State, useSignup } from '@/application/auth/hook/useSignup'
+import {
+  AuthProviderContext,
+  FetchStatus
+} from '@/application/auth/contexts/AuthProvider'
+import { SignUpClientPayload } from '@/domain/auth/entities/signUpClientPayload'
 
 export default function SignupForm ({
   switchToSignin
@@ -11,21 +15,21 @@ export default function SignupForm ({
   switchToSignin: () => void
 }) {
   const { pushNotification } = useNotifications()
-  const { state, signupUser } = useSignup()
+
+  const { signUp, state } = useContext(AuthProviderContext)
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
-    const name = formData.get('name')?.toString()!
     const email = formData.get('email')?.toString()!
     const password = formData.get('password')?.toString()!
     const passwordConfirmation = formData
       .get('password-confirmation')
       ?.toString()!
-    signupUser({ name, email, password, passwordConfirmation })
+    signUp(new SignUpClientPayload('1', email, password, passwordConfirmation))
   }
 
-  if (state === State.ERROR) {
+  if (state === FetchStatus.FAILURE) {
     pushNotification({
       title: 'Inscription manquée',
       content: "Problème lors de l'inscription",
@@ -34,7 +38,7 @@ export default function SignupForm ({
     })
   }
 
-  if (state === State.SUCCESS) {
+  if (state === FetchStatus.SUCCESS) {
     pushNotification({
       title: 'Inscription réussie',
       content: 'Votre compte a bien été créé',
@@ -47,7 +51,6 @@ export default function SignupForm ({
   return (
     <form className='flex flex-col' onSubmit={handleSubmit}>
       <div className='flex flex-col gap-[20px]'>
-        <FormElement label="Nom d'utilisateur" name='name' />
         <FormElement label='Addresse email' name='email' type='email' />
         <FormElement label='Mot de passe' name='password' type='password' />
         <FormElement
@@ -58,7 +61,7 @@ export default function SignupForm ({
       </div>
       <button
         className={`bg-primary h-[40px] self-center px-20 rounded mt-6 text-white`}
-        disabled={state === State.LOADING}
+        disabled={state === FetchStatus.LOADING}
         type='submit'
       >
         M&apos;inscrire

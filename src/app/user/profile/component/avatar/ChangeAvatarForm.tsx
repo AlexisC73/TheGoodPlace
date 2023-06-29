@@ -2,29 +2,12 @@
 
 import { DeleteIcon } from '@/assets/DeleteIcon'
 import { UploadIcon } from '@/assets/UploadIcon'
-import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import FormButton from './FormButton/FormButton'
 import { ChangeEvent, useRef } from 'react'
-import { fetchAvatarUrl } from '@/utils/avatar'
-import { ApiResponse } from '@/utils/api-response'
-import { useNotifications } from '@/context/NotificationContext'
 
 const ChangeAvatarForm = () => {
-  const { data: session, status, update } = useSession()
   const hiddenInputFile = useRef<HTMLInputElement>(null)
-
-  const { pushNotification } = useNotifications()
-
-  const avatarUrl = session
-    ? session.user
-      ? session.user.avatarUrl
-        ? session.user.avatarUrl
-        : null
-      : null
-    : null
-
-  if (status === 'loading') return null
 
   const handleClick = () => {
     hiddenInputFile.current?.click()
@@ -42,39 +25,11 @@ const ChangeAvatarForm = () => {
     const sendImage = new FormData()
     sendImage.append('image', e.target.files[0], e.target.files[0].name)
 
-    fetch('/api/user/avatar', {
-      method: 'PATCH',
-      headers: {
-        Accept: 'application/json',
-      },
-      body: sendImage,
-    }).then(async (res) => {
-      if (res.ok) {
-        update({
-          avatarUrl: await fetchAvatarUrl(),
-        })
-      }
-    })
+    console.log('update avatar')
   }
 
   const handleDeleteAvatar = () => {
-    fetch('/api/user/avatar', {
-      method: 'DELETE',
-    }).then(async (res) => {
-      const result: ApiResponse = await res.json()
-      if (result.success) {
-        update({
-          avatarUrl: await fetchAvatarUrl(),
-        })
-      } else {
-        pushNotification({
-          title: 'Erreur',
-          content: result.error,
-          type: 'error',
-          duration: 2,
-        })
-      }
-    })
+    console.log('delete avatar')
   }
 
   return (
@@ -84,7 +39,6 @@ const ChangeAvatarForm = () => {
           height={88}
           width={88}
           src={
-            avatarUrl ??
             'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
           }
           className='object-cover h-full w-full'

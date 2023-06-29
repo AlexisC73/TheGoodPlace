@@ -1,13 +1,12 @@
-import { DeleteIcon } from '@/assets/DeleteIcon'
 import React from 'react'
 
-function FormButton({
+function FormButton ({
   action,
   style = 'default',
   icon,
   children,
   className,
-  type,
+  type
 }: {
   action: () => void
   style?: 'default' | 'danger'

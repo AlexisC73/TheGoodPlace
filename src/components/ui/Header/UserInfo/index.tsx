@@ -1,13 +1,17 @@
 'use client'
 
-import { useSession } from 'next-auth/react'
 import UserInfo from './UserInfo'
+import {
+  AuthProviderContext,
+  FetchStatus
+} from '@/application/auth/contexts/AuthProvider'
+import { useContext } from 'react'
 
 const UserConnection = ({ showLoginModal }: { showLoginModal: () => void }) => {
-  const { data: session, status } = useSession()
-  if (status === 'loading') return null
+  const { auth, state } = useContext(AuthProviderContext)
+  if (state === FetchStatus.LOADING) return null
 
-  return session ? <UserInfo /> : <ConnectionLink action={showLoginModal} />
+  return auth ? <UserInfo /> : <ConnectionLink action={showLoginModal} />
 }
 
 export default UserConnection
