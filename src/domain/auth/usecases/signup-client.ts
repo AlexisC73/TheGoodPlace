@@ -6,6 +6,9 @@ export class SignupClientUseCase {
 
   handle (command: SignUpClientParams) {
     const { payload } = command
+    if (!payload.passwordMatch()) {
+      throw new Error('Les mots de passe ne correspondent pas')
+    }
     const createdClient = this.authRepository.signupClient(payload)
     return createdClient
   }
