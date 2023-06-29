@@ -12,11 +12,11 @@ interface SigninModalProps {
   showOtherProvider?: boolean
 }
 
-function Modal({ closeLoginModal, showOtherProvider }: SigninModalProps) {
+function Modal ({ closeLoginModal, showOtherProvider }: SigninModalProps) {
   const [isSignin, setIsSignin] = useState(true)
 
   const toggleSignin = () => {
-    setIsSignin((prev) => !prev)
+    setIsSignin(prev => !prev)
   }
 
   const content = isSignin ? (

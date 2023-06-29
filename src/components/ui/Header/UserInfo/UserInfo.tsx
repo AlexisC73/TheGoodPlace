@@ -1,14 +1,16 @@
 'use client'
 
 import CartLogo from '@/assets/CartLogo'
-import React from 'react'
+import React, { useContext } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import LogoutIcon from '@/assets/LogoutIcon/LogoutIcon'
+import { AuthProviderContext } from '@/application/auth/contexts/AuthProvider'
 
 function UserInfo () {
+  const { signOut } = useContext(AuthProviderContext)
   const handleLogout = () => {
-    console.log('Logout')
+    signOut()
   }
 
   return (

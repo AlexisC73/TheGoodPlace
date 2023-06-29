@@ -17,7 +17,8 @@ export const AuthProviderContext = createContext({
   auth: null as Auth | null,
   state: FetchStatus.INITIAL,
   signIn: (payload: SignInPayload) => {},
-  signUp: (payload: SignUpClientPayload) => {}
+  signUp: (payload: SignUpClientPayload) => {},
+  signOut: () => {}
 })
 
 export const AuthContext: React.FC<{ children: React.ReactNode }> = ({
@@ -49,8 +50,16 @@ export const AuthContext: React.FC<{ children: React.ReactNode }> = ({
     }
   }
 
+  const signOut = () => {
+    setState(FetchStatus.LOADING)
+    setAuth(null)
+    setState(FetchStatus.SUCCESS)
+  }
+
   return (
-    <AuthProviderContext.Provider value={{ auth, signIn, signUp, state }}>
+    <AuthProviderContext.Provider
+      value={{ auth, signIn, signUp, state, signOut }}
+    >
       {children}
     </AuthProviderContext.Provider>
   )
