@@ -1,51 +1,46 @@
 'use client'
-import { FormEventHandler } from 'react'
+import { FormEventHandler, useContext } from 'react'
 import FormElement from '../FormElement'
-import { signIn } from 'next-auth/react'
 import { useNotifications } from '@/context/NotificationContext'
+import {
+  AuthProviderContext,
+  FetchStatus
+} from '@/application/auth/contexts/AuthProvider'
+import { SignInPayload } from '@/domain/auth/entities/signInPayload'
 
-export default function SigninForm({
-  closeSigninModal,
+export default function SigninForm ({
+  closeSigninModal
 }: {
   closeSigninModal: () => void
 }) {
+  const { signIn, state, auth } = useContext(AuthProviderContext)
   const { pushNotification } = useNotifications()
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
-    signIn('credentials', {
-      email: formData.get('email'),
-      password: formData.get('password'),
-      redirect: false,
-    })
-      .then((res) => {
-        if (!res?.error) {
-          closeSigninModal()
-          pushNotification({
-            title: 'Connexion réussie',
-            content: 'Vous êtes maintenant connecté',
-            duration: 1,
-          })
-        } else {
-          pushNotification({
-            title: 'Erreur',
-            content: res?.error || 'Une erreur est survenue',
-            type: 'error',
-            duration: 1,
-          })
-        }
-      })
-      .catch((err) => {
-        pushNotification({
-          title: 'Erreur',
-          content: 'Il y a un problème de liaison avec le server',
-          type: 'error',
-          duration: 1,
-        })
-        return
-      })
+
+    signIn(
+      new SignInPayload(
+        formData.get('email') as string,
+        formData.get('password') as string
+      )
+    )
   }
+
+  if (state === FetchStatus.SUCCESS) {
+    pushNotification({
+      title: 'Connexion réussie',
+      content: 'Vous êtes maintenant connecté',
+      type: 'success',
+      duration: 2
+    })
+  }
+
+  if (auth) {
+    closeSigninModal()
+  }
+
   return (
     <form className='flex flex-col' onSubmit={handleSubmit}>
       <div className='flex flex-col gap-[20px]'>

@@ -6,7 +6,15 @@ import { Role } from '@/domain/auth/entities/role'
 import { SignInPayload } from '@/domain/auth/entities/signInPayload'
 
 export class InMemoryAuthRepository implements AuthRepository {
-  auths: AuthDTO[] = []
+  auths: AuthDTO[] = [
+    new AuthDTO(
+      '1',
+      JSON.stringify({ id: '1' }),
+      Role.CLIENT.toString(),
+      'test@test.fr',
+      'test'
+    )
+  ]
 
   signupClient (payload: SignUpClientPayload): Promise<Auth> {
     if (this.auths.find(auth => auth.email === payload.email)) {
