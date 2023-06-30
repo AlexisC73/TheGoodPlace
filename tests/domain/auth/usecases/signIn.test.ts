@@ -3,6 +3,7 @@ import { Email } from '@/domain/auth/valueObjects/email'
 import { authBuilder } from '../authBuilder'
 import { Role } from '@/domain/auth/entities/role'
 import { AuthFixture, createAuthFixture } from '../authFixture'
+import { profileDTOBuilder } from '@tests/domain/profile/profileDTOBuilder'
 
 describe('When user signIn', () => {
   let authFixture: AuthFixture
@@ -14,9 +15,11 @@ describe('When user signIn', () => {
   test('when alice signIn with credentials, her account should be returned', async () => {
     authFixture.givenUserExists([
       {
-        id: 'alice-id',
-        email: 'alice@email.fr',
-        password: 'alice-password',
+        profile: profileDTOBuilder()
+          .withId('alice-id')
+          .withEmail('alice@email.fr')
+          .withPassword('alice-password')
+          .build(),
         role: Role.CLIENT
       }
     ])

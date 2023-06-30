@@ -1,11 +1,11 @@
 import { UpdatePasswordPayload } from '../entities/payload/updatePassword'
-import { ProfileRepository } from '@/domain/@shared/repositories/profileRepository'
+import { AuthRepository } from '../repositories/authRepository'
 
 export class UpdatePasswordUseCase {
-  constructor (private readonly profileRepository: ProfileRepository) {}
+  constructor (private readonly authRepository: AuthRepository) {}
   async handle (params: UpdatePasswordUseCaseParams) {
     const { payload } = params
-    await this.profileRepository.updatePassword(payload)
+    await this.authRepository.updatePassword(payload)
   }
 }
 

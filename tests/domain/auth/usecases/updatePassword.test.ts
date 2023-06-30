@@ -12,7 +12,7 @@ describe('When user update his password', () => {
     authFixture = createAuthFixture()
   })
 
-  test.only('when alice update her password, her profile should be updated', async () => {
+  test('when alice update her password, her profile should be updated', async () => {
     const aliceDtoBuilder = profileDTOBuilder()
       .withId('alice-id')
       .withEmail('alice@test.fr')

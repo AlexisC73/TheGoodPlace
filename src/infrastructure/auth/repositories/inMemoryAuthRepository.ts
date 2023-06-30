@@ -1,45 +1,29 @@
 import { AuthRepository } from '@/domain/auth/repositories/authRepository'
-import { AuthDTO } from '../dtos/auth'
-import { Role } from '@/domain/auth/entities/role'
+import { LocalProfileDataSource } from '@/infrastructure/@shared/datasources/InMemoryProfile'
+import { LocalAuthDataSource } from '../datasources/InMemoryAuthDataSource'
 import { Auth } from '@/domain/auth/entities/auth'
+import { SignUpClientPayload } from '@/domain/auth/entities/payload/signUpClientPayload'
+import { SignInPayload } from '@/domain/auth/entities/payload/signInPayload'
+import { UpdatePasswordPayload } from '@/domain/auth/entities/payload/updatePassword'
 
 export class InMemoryAuthRepository implements AuthRepository {
-  auths: AuthDTO[] = []
+  constructor (
+    private readonly profileDataSource: LocalProfileDataSource,
+    private readonly authDataSource: LocalAuthDataSource
+  ) {}
 
-  async createAuthClient (id: string): Promise<Auth> {
-    const createdAuth = new AuthDTO(
-      id,
-      JSON.stringify({ id }),
-      Role.CLIENT.toString()
-    )
-    this._save(createdAuth)
-    return Promise.resolve(createdAuth.toDomain())
+  signUp (payload: SignUpClientPayload): Promise<Auth> {
+    this.profileDataSource.createProfile(payload)
+    return this.authDataSource.createAuthClient(payload.id)
   }
 
-  async signIn (id: string): Promise<Auth> {
-    const auth = this.auths.find(a => a.id === id)
-    if (!auth) throw new Error("Cannot sign in, auth won't exist")
-    return Promise.resolve(auth.toDomain())
+  signIn (payload: SignInPayload): Promise<Auth> {
+    const userId = this.profileDataSource.verifyAccount(payload)
+    return Promise.resolve(this.authDataSource.signIn(userId))
   }
 
-  private _save (auth: AuthDTO) {
-    const findIndex = this.auths.findIndex(a => a.id === auth.id)
-    if (findIndex !== -1) {
-      this.auths[findIndex] = auth
-      return
-    }
-    this.auths.push(auth)
-  }
-
-  // FOR TESTS
-
-  findById (id: string): AuthDTO | undefined {
-    return this.auths.find(a => a.id === id)
-  }
-
-  givenUsers (users: { id: string; role: Role }[]) {
-    this.auths = users.map(
-      u => new AuthDTO(u.id, JSON.stringify({ id: u.id }), u.role.toString())
-    )
+  updatePassword (payload: UpdatePasswordPayload): Promise<void> {
+    this.profileDataSource.updatePassword(payload)
+    return Promise.resolve()
   }
 }

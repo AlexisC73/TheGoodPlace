@@ -1,4 +1,4 @@
-import { ProfileDTO } from '@/infrastructure/profile/dtos/profileDTO'
+import { ProfileDTO } from '@/infrastructure/@shared/dtos/profileDTO'
 
 export const profileDTOBuilder = ({
   id = 'test-id',

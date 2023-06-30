@@ -1,11 +1,10 @@
 import { Auth } from '@/domain/auth/entities/auth'
-import { ProfileDTO } from '@/infrastructure/profile/dtos/profileDTO'
+import { ProfileDTO } from '@/infrastructure/@shared/dtos/profileDTO'
 import {
   SignUpClientParams,
   SignupClientUseCase
 } from '@/domain/auth/usecases/signupClient'
 import { InMemoryAuthRepository } from '@/infrastructure/auth/repositories/inMemoryAuthRepository'
-import { InMemoryProfileRepository } from '@/infrastructure/profile/repositories/InMemoryProfile'
 import {
   SignInUseCase,
   SignInUseCaseParams
@@ -15,25 +14,30 @@ import {
   UpdatePasswordUseCase,
   UpdatePasswordUseCaseParams
 } from '@/domain/auth/usecases/updatePassword'
+import { InMemoryProfileDataSource } from '@/infrastructure/@shared/datasources/InMemoryProfile'
+import { InMemoryAuthDataSource } from '@/infrastructure/auth/datasources/InMemoryAuthDataSource'
 
 export const createAuthFixture = () => {
   let authenticatedUser: Auth
 
-  const authRepository = new InMemoryAuthRepository()
-  const profileRepository = new InMemoryProfileRepository()
-  const signUpClientUseCase = new SignupClientUseCase(
-    authRepository,
-    profileRepository
+  const profileDataSource = new InMemoryProfileDataSource()
+  const authDataSource = new InMemoryAuthDataSource()
+
+  const authRepository = new InMemoryAuthRepository(
+    profileDataSource,
+    authDataSource
   )
-  const signInUseCase = new SignInUseCase(profileRepository, authRepository)
-  const updatePasswordUseCase = new UpdatePasswordUseCase(profileRepository)
+
+  const signUpClientUseCase = new SignupClientUseCase(authRepository)
+  const signInUseCase = new SignInUseCase(authRepository)
+  const updatePasswordUseCase = new UpdatePasswordUseCase(authRepository)
 
   return {
     givenUserExists (users: { profile: ProfileDTO; role: Role }[]) {
-      profileRepository.givenUsers(users.map(u => u.profile))
-      authRepository.givenUsers(
+      authDataSource.givenUsers(
         users.map(u => ({ id: u.profile.id, role: u.role }))
       )
+      profileDataSource.givenProfiles(users.map(u => u.profile))
     },
     async whenUserSignUp (params: SignUpClientParams) {
       authenticatedUser = await signUpClientUseCase.handle(params)
@@ -45,7 +49,7 @@ export const createAuthFixture = () => {
       await updatePasswordUseCase.handle(params)
     },
     thenProfileShouldExist (expectedProfile: ProfileDTO) {
-      const searchedProfile = profileRepository.findById(expectedProfile.id)
+      const searchedProfile = profileDataSource.findById(expectedProfile.id)
       expect(searchedProfile).toEqual(expectedProfile)
     },
     thenAuthenticatedUserShouldBe (expectedAuth: Auth) {
