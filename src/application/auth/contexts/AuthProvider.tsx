@@ -38,7 +38,7 @@ export const AuthContext: React.FC<{ children: React.ReactNode }> = ({
     authRepository,
     profileRepository
   )
-  const updatePasswordUseCase = new UpdatePasswordUseCase()
+  const updatePasswordUseCase = new UpdatePasswordUseCase(profileRepository)
 
   const signIn = async (payload: SignInPayload): Promise<void> => {
     setState(FetchStatus.LOADING)
