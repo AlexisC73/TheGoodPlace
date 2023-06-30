@@ -1,89 +1,45 @@
-import { Auth } from '@/domain/auth/entities/auth'
-import { SignUpClientPayload } from '@/domain/auth/entities/payload/signUpClientPayload'
-import { AuthRepository } from '@/domain/auth/repositories/auth'
+import { AuthRepository } from '@/domain/auth/repositories/authRepository'
 import { AuthDTO } from '../dtos/auth'
 import { Role } from '@/domain/auth/entities/role'
-import { SignInPayload } from '@/domain/auth/entities/payload/signInPayload'
-import { UpdatePasswordPayload } from '@/domain/auth/entities/payload/updatePassword'
+import { Auth } from '@/domain/auth/entities/auth'
 
 export class InMemoryAuthRepository implements AuthRepository {
-  auths: AuthDTO[] = [
-    new AuthDTO(
-      '1',
-      JSON.stringify({ id: '1' }),
-      Role.CLIENT.toString(),
-      'test@test.fr',
-      'test'
+  auths: AuthDTO[] = []
+
+  async createAuthClient (id: string): Promise<Auth> {
+    const createdAuth = new AuthDTO(
+      id,
+      JSON.stringify({ id }),
+      Role.CLIENT.toString()
     )
-  ]
+    this._save(createdAuth)
+    return Promise.resolve(createdAuth.toDomain())
+  }
 
-  signupClient (payload: SignUpClientPayload): Promise<Auth> {
-    if (this.auths.find(auth => auth.email === payload.email)) {
-      throw new Error('Email already exists')
-    }
-
-    const auth = new AuthDTO(
-      payload.id,
-      JSON.stringify({ id: payload.id }),
-      Role.CLIENT.toString(),
-      payload.email,
-      payload.password
-    )
-
-    this.save(auth)
+  async signIn (id: string): Promise<Auth> {
+    const auth = this.auths.find(a => a.id === id)
+    if (!auth) throw new Error("Cannot sign in, auth won't exist")
     return Promise.resolve(auth.toDomain())
   }
 
-  async signIn (payload: SignInPayload): Promise<Auth> {
-    const foundUser = this.findUserByEmail(payload.email)
-
-    if (!foundUser) {
-      throw new Error('User not found')
+  private _save (auth: AuthDTO) {
+    const findIndex = this.auths.findIndex(a => a.id === auth.id)
+    if (findIndex !== -1) {
+      this.auths[findIndex] = auth
+      return
     }
-
-    if (foundUser.password !== payload.password) {
-      throw new Error('Wrong password')
-    }
-    return foundUser.toDomain()
+    this.auths.push(auth)
   }
 
-  async updatePassword (payload: UpdatePasswordPayload): Promise<void> {
-    const foundUser = this.findUserById(payload.userId)
-    if (!foundUser) {
-      throw new Error('User not found')
-    }
-    if (foundUser.password !== payload.oldPassword) {
-      throw new Error('Wrong password')
-    }
+  // FOR TESTS
 
-    const updatedUser = foundUser.copyWith({ password: payload.newPassword })
-    this.save(updatedUser)
+  findById (id: string): AuthDTO | undefined {
+    return this.auths.find(a => a.id === id)
   }
 
-  private save (auth: AuthDTO) {
-    const foundIndex = this.auths.findIndex(auth => auth.id === auth.id)
-    if (foundIndex !== -1) {
-      this.auths[foundIndex] = auth
-    } else {
-      this.auths.push(auth)
-    }
-  }
-
-  private findUserByEmail (email: string): AuthDTO | undefined {
-    return this.auths.find(auth => auth.email === email)
-  }
-
-  private findUserById (id: string): AuthDTO | undefined {
-    return this.auths.find(auth => auth.id === id)
-  }
-
-  // For tests
-
-  setAuths (auths: AuthDTO[]) {
-    this.auths = auths
-  }
-
-  getAuthById (id: string): AuthDTO | undefined {
-    return this.findUserById(id)
+  givenUsers (users: { id: string; role: Role }[]) {
+    this.auths = users.map(
+      u => new AuthDTO(u.id, JSON.stringify({ id: u.id }), u.role.toString())
+    )
   }
 }

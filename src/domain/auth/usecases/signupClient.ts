@@ -1,16 +1,21 @@
+import { ProfileRepository } from '@/domain/@shared/repositories/profileRepository'
 import { SignUpClientPayload } from '../entities/payload/signUpClientPayload'
-import { AuthRepository } from '../repositories/auth'
+import { AuthRepository } from '../repositories/authRepository'
 
 export class SignupClientUseCase {
-  constructor (private readonly authRepository: AuthRepository) {}
+  constructor (
+    private readonly authRepository: AuthRepository,
+    private readonly profileRepository: ProfileRepository
+  ) {}
 
-  handle (command: SignUpClientParams) {
+  async handle (command: SignUpClientParams) {
     const { payload } = command
     if (!payload.passwordMatch()) {
       throw new Error('Les mots de passe ne correspondent pas')
     }
-    const createdClient = this.authRepository.signupClient(payload)
-    return createdClient
+    await this.profileRepository.createProfile(payload)
+    const authClient = await this.authRepository.createAuthClient(payload.id)
+    return authClient
   }
 }
 

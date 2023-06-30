@@ -15,6 +15,10 @@ export class Id implements ValueObject<IdProps> {
     return this.props.value
   }
 
+  static create (id: string): Id {
+    return new Id({ value: id })
+  }
+
   equals (vo?: Id): boolean {
     if (vo === null || vo === undefined) {
       return false

@@ -1,18 +1,14 @@
 import { UpdatePasswordPayload } from '../entities/payload/updatePassword'
-import { AuthRepository } from '../repositories/auth'
+import { ProfileRepository } from '@/domain/@shared/repositories/profileRepository'
 
-export class UpdatePassword {
-  constructor (private readonly authRepository: AuthRepository) {}
-
-  async handle (params: UpdatePasswordParams) {
+export class UpdatePasswordUseCase {
+  constructor (private readonly profileRepository: ProfileRepository) {}
+  async handle (params: UpdatePasswordUseCaseParams) {
     const { payload } = params
-    if (!payload._newPassword.equals(payload._newPasswordConfirmation)) {
-      throw new Error('New password and confirmation do not match')
-    }
-    await this.authRepository.updatePassword(payload)
+    await this.profileRepository.updatePassword(payload)
   }
 }
 
-export type UpdatePasswordParams = {
+export type UpdatePasswordUseCaseParams = {
   payload: UpdatePasswordPayload
 }

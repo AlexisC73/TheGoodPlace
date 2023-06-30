@@ -1,17 +1,20 @@
-import { Auth } from '../entities/auth'
+import { ProfileRepository } from '@/domain/@shared/repositories/profileRepository'
 import { SignInPayload } from '../entities/payload/signInPayload'
-import { AuthRepository } from '../repositories/auth'
+import { AuthRepository } from '../repositories/authRepository'
 
 export class SignInUseCase {
-  constructor (private readonly authRepository: AuthRepository) {}
-
-  async handle (params: SignInParams): Promise<Auth> {
+  constructor (
+    private readonly profileRepository: ProfileRepository,
+    private readonly authRepository: AuthRepository
+  ) {}
+  async handle (params: SignInUseCaseParams) {
     const { payload } = params
-    const auth = await this.authRepository.signIn(payload)
-    return auth
+    const userId = await this.profileRepository.signIn(payload)
+    if (!userId) throw new Error("Something went wrong, or user won't exist")
+    return this.authRepository.signIn(userId)
   }
 }
 
-export type SignInParams = {
+export type SignInUseCaseParams = {
   payload: SignInPayload
 }

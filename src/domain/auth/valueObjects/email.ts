@@ -15,6 +15,10 @@ export class Email implements ValueObject<EmailProps> {
     return this.props.value
   }
 
+  static create (email: string): Email {
+    return new Email({ value: email })
+  }
+
   equals (vo?: Email): boolean {
     if (vo === null || vo === undefined) {
       return false

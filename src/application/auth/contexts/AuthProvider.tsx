@@ -7,7 +7,7 @@ import { SignUpClientPayload } from '@/domain/auth/entities/payload/signUpClient
 import { UpdatePasswordPayload } from '@/domain/auth/entities/payload/updatePassword'
 import { SignInUseCase } from '@/domain/auth/usecases/signIn'
 import { SignupClientUseCase } from '@/domain/auth/usecases/signupClient'
-import { UpdatePassword } from '@/domain/auth/usecases/updatePassword'
+import { UpdatePasswordUseCase } from '@/domain/auth/usecases/updatePassword'
 import { createContext, useState } from 'react'
 
 export enum FetchStatus {
@@ -31,11 +31,14 @@ export const AuthContext: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [auth, setAuth] = useState<Auth | null>(null)
   const [state, setState] = useState<FetchStatus>(FetchStatus.INITIAL)
-  const { authRepository } = Dependencies()
+  const { authRepository, profileRepository } = Dependencies()
 
-  const signInUseCase = new SignInUseCase(authRepository)
-  const signUpClientUseCase = new SignupClientUseCase(authRepository)
-  const updatePasswordUseCase = new UpdatePassword(authRepository)
+  const signInUseCase = new SignInUseCase(profileRepository, authRepository)
+  const signUpClientUseCase = new SignupClientUseCase(
+    authRepository,
+    profileRepository
+  )
+  const updatePasswordUseCase = new UpdatePasswordUseCase()
 
   const signIn = async (payload: SignInPayload): Promise<void> => {
     setState(FetchStatus.LOADING)

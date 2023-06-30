@@ -1,41 +1,55 @@
-import { SignupClientUseCase } from '@/domain/auth/usecases/signupClient'
-import { InMemoryAuthRepository } from '@/infrastructure/auth/repositories/inMemoryAuthRepository'
 import { Auth } from '@/domain/auth/entities/auth'
-import { SignUpClientParams } from '@/domain/auth/usecases/signupClient'
-import { SignInParams, SignInUseCase } from '@/domain/auth/usecases/signIn'
-import { AuthDTO } from '@/infrastructure/auth/dtos/auth'
+import { ProfileDTO } from '@/infrastructure/profile/dtos/profileDTO'
 import {
-  UpdatePassword,
-  UpdatePasswordParams
+  SignUpClientParams,
+  SignupClientUseCase
+} from '@/domain/auth/usecases/signupClient'
+import { InMemoryAuthRepository } from '@/infrastructure/auth/repositories/inMemoryAuthRepository'
+import { InMemoryProfileRepository } from '@/infrastructure/profile/repositories/InMemoryProfile'
+import {
+  SignInUseCase,
+  SignInUseCaseParams
+} from '@/domain/auth/usecases/signIn'
+import { Role } from '@/domain/auth/entities/role'
+import {
+  UpdatePasswordUseCase,
+  UpdatePasswordUseCaseParams
 } from '@/domain/auth/usecases/updatePassword'
 
 export const createAuthFixture = () => {
-  let currentAuth: Auth
+  let authenticatedUser: Auth
 
   const authRepository = new InMemoryAuthRepository()
-  const signUpClientUseCase = new SignupClientUseCase(authRepository)
-  const signInUseCase = new SignInUseCase(authRepository)
-  const updatePassword = new UpdatePassword(authRepository)
+  const profileRepository = new InMemoryProfileRepository()
+  const signUpClientUseCase = new SignupClientUseCase(
+    authRepository,
+    profileRepository
+  )
+  const signInUseCase = new SignInUseCase(profileRepository, authRepository)
+  const updatePasswordUseCase = new UpdatePasswordUseCase(profileRepository)
 
   return {
-    givenAuthAccounts (givenAuth: AuthDTO[]) {
-      authRepository.setAuths(givenAuth)
+    givenUserExists (users: { profile: ProfileDTO; role: Role }[]) {
+      profileRepository.givenUsers(users.map(u => u.profile))
+      authRepository.givenUsers(
+        users.map(u => ({ id: u.profile.id, role: u.role }))
+      )
     },
-    async whenUserSignUpWithCredentials (credentials: SignUpClientParams) {
-      currentAuth = await signUpClientUseCase.handle(credentials)
+    async whenUserSignUp (params: SignUpClientParams) {
+      authenticatedUser = await signUpClientUseCase.handle(params)
     },
-    async whenUserUpdatePassword (params: UpdatePasswordParams) {
-      await updatePassword.handle(params)
+    async whenUserSignIn (params: SignInUseCaseParams) {
+      authenticatedUser = await signInUseCase.handle(params)
     },
-    async whenUserSignInWithCredentials (credentials: SignInParams) {
-      currentAuth = await signInUseCase.handle(credentials)
+    async whenUserUpdateHisPassword (params: UpdatePasswordUseCaseParams) {
+      await updatePasswordUseCase.handle(params)
+    },
+    thenProfileShouldExist (expectedProfile: ProfileDTO) {
+      const searchedProfile = profileRepository.findById(expectedProfile.id)
+      expect(searchedProfile).toEqual(expectedProfile)
     },
     thenAuthenticatedUserShouldBe (expectedAuth: Auth) {
-      expect(currentAuth).toEqual(expectedAuth)
-    },
-    thenAccountShouldBe (expectedAccount: AuthDTO) {
-      const auth = authRepository.getAuthById(expectedAccount.id)
-      expect(auth).toEqual(expectedAccount)
+      expect(authenticatedUser).toEqual(expectedAuth)
     }
   }
 }

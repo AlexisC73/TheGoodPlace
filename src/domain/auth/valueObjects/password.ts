@@ -15,6 +15,10 @@ export class Password implements ValueObject<PasswordProps> {
     return this.props.value
   }
 
+  static create (password: string): Password {
+    return new Password({ value: password })
+  }
+
   equals (vo?: Password): boolean {
     if (vo === null || vo === undefined) {
       return false
