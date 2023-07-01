@@ -15,6 +15,12 @@ export class Email implements ValueObject<EmailProps> {
     return this.props.value
   }
 
+  isValid (): boolean {
+    const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/gi
+    if (!this.props?.value) return false
+    return regex.test(this.props.value)
+  }
+
   static create (email: string): Email {
     return new Email({ value: email })
   }

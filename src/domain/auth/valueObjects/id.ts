@@ -15,6 +15,11 @@ export class Id implements ValueObject<IdProps> {
     return this.props.value
   }
 
+  isValid (): boolean {
+    if (!this.props?.value) return false
+    return this.props.value.length >= 8
+  }
+
   static create (id: string): Id {
     return new Id({ value: id })
   }

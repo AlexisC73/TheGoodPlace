@@ -10,6 +10,15 @@ export class SignUpClientPayload {
     private readonly _passwordConfirmation: Password
   ) {}
 
+  isValid (): boolean {
+    return (
+      this._id.isValid() &&
+      this._email.isValid() &&
+      this._password.isValid() &&
+      this._passwordConfirmation.isValid()
+    )
+  }
+
   get id (): string {
     return this._id.value
   }

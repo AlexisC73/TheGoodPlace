@@ -6,6 +6,9 @@ export class SignupClientUseCase {
 
   async handle (command: SignUpClientParams) {
     const { payload } = command
+    if (!payload.isValid()) {
+      throw new Error('Invalid payload')
+    }
     if (!payload.passwordMatch()) {
       throw new Error('Les mots de passe ne correspondent pas')
     }

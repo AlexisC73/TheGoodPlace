@@ -10,6 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@paralleldrive/cuid2": "^2.2.1",
     "@types/formidable": "^2.0.6",
     "@types/node": "20.2.5",
     "@types/react": "18.2.7",

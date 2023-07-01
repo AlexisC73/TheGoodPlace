@@ -5,6 +5,9 @@ export class SignInUseCase {
   constructor (private readonly authRepository: AuthRepository) {}
   async handle (params: SignInUseCaseParams) {
     const { payload } = params
+    if (!payload.isValid()) {
+      throw new Error('Invalid payload')
+    }
     return this.authRepository.signIn(payload)
   }
 }
