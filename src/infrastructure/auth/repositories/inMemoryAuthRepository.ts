@@ -1,4 +1,4 @@
-import { AuthRepository } from '@/domain/auth/repositories/authRepository'
+import type { AuthRepository } from '@/domain/auth/repositories/authRepository'
 import type { LocalProfileDataSource } from '@/infrastructure/@shared/datasources/InMemoryProfile'
 import type { LocalAuthDataSource } from '../datasources/InMemoryAuthDataSource'
 import { Auth } from '@/domain/auth/entities/auth'

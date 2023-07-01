@@ -2,7 +2,6 @@ import { Auth } from '@/domain/auth/entities/auth'
 import { AuthDTO } from '../dtos/auth'
 import { Role } from '@/domain/auth/entities/role'
 import { injectable } from 'inversify'
-import 'reflect-metadata'
 
 export interface LocalAuthDataSource {
   createAuthClient(id: string): Promise<Auth>

@@ -2,7 +2,7 @@
 
 import { authContainer } from '@/config/dependencies'
 import { TYPES } from '@/config/types'
-import { AuthService } from '@/config/usecases/AuthService'
+import type { AuthService } from '@/config/usecases/AuthService'
 import { Auth } from '@/domain/auth/entities/auth'
 import { SignInPayload } from '@/domain/auth/entities/payload/signInPayload'
 import { SignUpClientPayload } from '@/domain/auth/entities/payload/signUpClientPayload'

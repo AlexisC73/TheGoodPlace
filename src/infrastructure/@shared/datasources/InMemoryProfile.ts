@@ -3,7 +3,6 @@ import { ProfileDTO } from '../dtos/profileDTO'
 import { SignInPayload } from '@/domain/auth/entities/payload/signInPayload'
 import { UpdatePasswordPayload } from '@/domain/auth/entities/payload/updatePassword'
 import { injectable } from 'inversify'
-import 'reflect-metadata'
 
 export interface LocalProfileDataSource {
   createProfile(payload: SignUpClientPayload): void
