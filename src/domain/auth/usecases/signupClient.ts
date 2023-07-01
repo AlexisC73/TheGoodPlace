@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify'
 import { SignUpClientPayload } from '../entities/payload/signUpClientPayload'
-import { AuthRepository } from '../repositories/authRepository'
+import type { AuthRepository } from '../repositories/authRepository'
 import { TYPES } from '@/config/types'
 
 @injectable()

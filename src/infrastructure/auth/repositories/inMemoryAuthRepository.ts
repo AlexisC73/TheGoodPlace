@@ -1,9 +1,6 @@
 import { AuthRepository } from '@/domain/auth/repositories/authRepository'
-import { LocalProfileDataSource } from '@/infrastructure/@shared/datasources/InMemoryProfile'
-import {
-  InMemoryAuthDataSource,
-  LocalAuthDataSource
-} from '../datasources/InMemoryAuthDataSource'
+import type { LocalProfileDataSource } from '@/infrastructure/@shared/datasources/InMemoryProfile'
+import type { LocalAuthDataSource } from '../datasources/InMemoryAuthDataSource'
 import { Auth } from '@/domain/auth/entities/auth'
 import { SignUpClientPayload } from '@/domain/auth/entities/payload/signUpClientPayload'
 import { SignInPayload } from '@/domain/auth/entities/payload/signInPayload'
@@ -11,7 +8,6 @@ import { UpdatePasswordPayload } from '@/domain/auth/entities/payload/updatePass
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@/config/types'
 import 'reflect-metadata'
-import { profile } from 'console'
 
 @injectable()
 export class InMemoryAuthRepository implements AuthRepository {

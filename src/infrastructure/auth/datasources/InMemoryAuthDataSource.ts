@@ -4,10 +4,9 @@ import { Role } from '@/domain/auth/entities/role'
 import { injectable } from 'inversify'
 import 'reflect-metadata'
 
-@injectable()
-export abstract class LocalAuthDataSource {
-  abstract createAuthClient(id: string): Promise<Auth>
-  abstract signIn(id: string): Promise<Auth>
+export interface LocalAuthDataSource {
+  createAuthClient(id: string): Promise<Auth>
+  signIn(id: string): Promise<Auth>
 }
 
 @injectable()

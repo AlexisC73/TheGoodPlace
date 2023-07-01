@@ -5,10 +5,10 @@ import { UpdatePasswordPayload } from '@/domain/auth/entities/payload/updatePass
 import { injectable } from 'inversify'
 import 'reflect-metadata'
 
-export abstract class LocalProfileDataSource {
-  abstract createProfile(payload: SignUpClientPayload): void
-  abstract verifyAccount(payload: SignInPayload): string
-  abstract updatePassword(payload: UpdatePasswordPayload): void
+export interface LocalProfileDataSource {
+  createProfile(payload: SignUpClientPayload): void
+  verifyAccount(payload: SignInPayload): string
+  updatePassword(payload: UpdatePasswordPayload): void
 }
 
 @injectable()
