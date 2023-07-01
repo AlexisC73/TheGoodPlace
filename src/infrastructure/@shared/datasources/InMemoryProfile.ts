@@ -2,13 +2,16 @@ import { SignUpClientPayload } from '@/domain/auth/entities/payload/signUpClient
 import { ProfileDTO } from '../dtos/profileDTO'
 import { SignInPayload } from '@/domain/auth/entities/payload/signInPayload'
 import { UpdatePasswordPayload } from '@/domain/auth/entities/payload/updatePassword'
+import { injectable } from 'inversify'
+import 'reflect-metadata'
 
-export type LocalProfileDataSource = {
-  createProfile(payload: SignUpClientPayload): void
-  verifyAccount(payload: SignInPayload): string
-  updatePassword(payload: UpdatePasswordPayload): void
+export abstract class LocalProfileDataSource {
+  abstract createProfile(payload: SignUpClientPayload): void
+  abstract verifyAccount(payload: SignInPayload): string
+  abstract updatePassword(payload: UpdatePasswordPayload): void
 }
 
+@injectable()
 export class InMemoryProfileDataSource implements LocalProfileDataSource {
   profiles: ProfileDTO[] = []
 

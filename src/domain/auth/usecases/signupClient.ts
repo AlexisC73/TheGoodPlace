@@ -1,8 +1,14 @@
+import { inject, injectable } from 'inversify'
 import { SignUpClientPayload } from '../entities/payload/signUpClientPayload'
 import { AuthRepository } from '../repositories/authRepository'
+import { TYPES } from '@/config/types'
 
+@injectable()
 export class SignupClientUseCase {
-  constructor (private readonly authRepository: AuthRepository) {}
+  constructor (
+    @inject(TYPES.AuthRepository)
+    private readonly authRepository: AuthRepository
+  ) {}
 
   async handle (command: SignUpClientParams) {
     const { payload } = command

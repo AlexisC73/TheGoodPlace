@@ -9,7 +9,7 @@ import { Password } from '@/domain/auth/valueObjects/password'
 describe('When user signIn', () => {
   let authFixture: AuthFixture
 
-  beforeEach(() => {
+  beforeEach(async () => {
     authFixture = createAuthFixture()
   })
 

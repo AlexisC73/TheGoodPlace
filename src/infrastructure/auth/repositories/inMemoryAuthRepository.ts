@@ -1,14 +1,24 @@
 import { AuthRepository } from '@/domain/auth/repositories/authRepository'
 import { LocalProfileDataSource } from '@/infrastructure/@shared/datasources/InMemoryProfile'
-import { LocalAuthDataSource } from '../datasources/InMemoryAuthDataSource'
+import {
+  InMemoryAuthDataSource,
+  LocalAuthDataSource
+} from '../datasources/InMemoryAuthDataSource'
 import { Auth } from '@/domain/auth/entities/auth'
 import { SignUpClientPayload } from '@/domain/auth/entities/payload/signUpClientPayload'
 import { SignInPayload } from '@/domain/auth/entities/payload/signInPayload'
 import { UpdatePasswordPayload } from '@/domain/auth/entities/payload/updatePassword'
+import { inject, injectable } from 'inversify'
+import { TYPES } from '@/config/types'
+import 'reflect-metadata'
+import { profile } from 'console'
 
+@injectable()
 export class InMemoryAuthRepository implements AuthRepository {
   constructor (
+    @inject(TYPES.LocalProfileDataSource)
     private readonly profileDataSource: LocalProfileDataSource,
+    @inject(TYPES.LocalAuthDataSource)
     private readonly authDataSource: LocalAuthDataSource
   ) {}
 

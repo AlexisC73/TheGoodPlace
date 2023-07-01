@@ -31,7 +31,7 @@ export default function SignupForm ({
       ?.toString()!
     signUp(
       new SignUpClientPayload(
-        new Id({ value: '1' }),
+        new Id({ value: '123456789' }),
         new Email({ value: email }),
         new Password({ value: password }),
         new Password({ value: passwordConfirmation })

@@ -1,6 +1,7 @@
 'use client'
 
-import { Dependencies } from '@/config/dependencies'
+import { container } from '@/config/dependencies'
+import { AuthService } from '@/config/usecases/AuthService'
 import { Auth } from '@/domain/auth/entities/auth'
 import { SignInPayload } from '@/domain/auth/entities/payload/signInPayload'
 import { SignUpClientPayload } from '@/domain/auth/entities/payload/signUpClientPayload'
@@ -31,14 +32,12 @@ export const AuthContext: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [auth, setAuth] = useState<Auth | null>(null)
   const [state, setState] = useState<FetchStatus>(FetchStatus.INITIAL)
-  const { authRepository, profileRepository } = Dependencies()
 
-  const signInUseCase = new SignInUseCase(profileRepository, authRepository)
-  const signUpClientUseCase = new SignupClientUseCase(
-    authRepository,
-    profileRepository
-  )
-  const updatePasswordUseCase = new UpdatePasswordUseCase(profileRepository)
+  const authService = container.get(AuthService)
+
+  const signInUseCase = authService.GetSignInUseCase()
+  const signUpClientUseCase = authService.GetSignUpUseCase()
+  const updatePasswordUseCase = authService.GetUpdatePasswordUseCase()
 
   const signIn = async (payload: SignInPayload): Promise<void> => {
     setState(FetchStatus.LOADING)

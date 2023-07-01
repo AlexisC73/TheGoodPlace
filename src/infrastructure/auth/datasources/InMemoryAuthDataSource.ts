@@ -1,12 +1,16 @@
 import { Auth } from '@/domain/auth/entities/auth'
 import { AuthDTO } from '../dtos/auth'
 import { Role } from '@/domain/auth/entities/role'
+import { injectable } from 'inversify'
+import 'reflect-metadata'
 
-export interface LocalAuthDataSource {
-  createAuthClient(id: string): Promise<Auth>
-  signIn(id: string): Promise<Auth>
+@injectable()
+export abstract class LocalAuthDataSource {
+  abstract createAuthClient(id: string): Promise<Auth>
+  abstract signIn(id: string): Promise<Auth>
 }
 
+@injectable()
 export class InMemoryAuthDataSource implements LocalAuthDataSource {
   auths: AuthDTO[] = []
 
