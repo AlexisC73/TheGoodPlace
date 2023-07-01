@@ -1,4 +1,4 @@
-import { AuthRepository } from '@/domain/auth/repositories/authRepository'
+import type { AuthRepository } from '@/domain/auth/repositories/authRepository'
 import { SignupClientUseCase } from '@/domain/auth/usecases/signupClient'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@/config/types'

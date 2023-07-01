@@ -14,21 +14,25 @@ export function Dependencies () {
   }
 }
 
-export const container = new Container()
-container.bind<AuthRepository>(TYPES.AuthRepository).to(InMemoryAuthRepository)
-container.bind(TYPES.LocalProfileDataSource).to(InMemoryProfileDataSource)
-container.bind(TYPES.LocalAuthDataSource).to(InMemoryAuthDataSource)
-container.bind<AuthService>(TYPES.AuthService).to(AuthService)
+export const authContainer = new Container()
+authContainer
+  .bind<AuthRepository>(TYPES.AuthRepository)
+  .to(InMemoryAuthRepository)
+authContainer.bind(TYPES.LocalProfileDataSource).to(InMemoryProfileDataSource)
+authContainer.bind(TYPES.LocalAuthDataSource).to(InMemoryAuthDataSource)
+authContainer.bind<AuthService>(TYPES.AuthService).to(AuthService)
 
 const authDataSource = new InMemoryAuthDataSource()
 const profileDataSource = new InMemoryProfileDataSource()
 
-export const testContainer = new Container()
-testContainer
+export const testAuthContainer = new Container()
+testAuthContainer
   .bind<AuthRepository>(TYPES.AuthRepository)
   .to(InMemoryAuthRepository)
-testContainer
+testAuthContainer
   .bind(TYPES.LocalProfileDataSource)
   .toConstantValue(profileDataSource)
-testContainer.bind(TYPES.LocalAuthDataSource).toConstantValue(authDataSource)
-testContainer.bind<AuthService>(TYPES.AuthService).to(AuthService)
+testAuthContainer
+  .bind(TYPES.LocalAuthDataSource)
+  .toConstantValue(authDataSource)
+testAuthContainer.bind<AuthService>(TYPES.AuthService).to(AuthService)

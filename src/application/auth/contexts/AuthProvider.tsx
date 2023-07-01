@@ -1,14 +1,12 @@
 'use client'
 
-import { container } from '@/config/dependencies'
+import { authContainer } from '@/config/dependencies'
+import { TYPES } from '@/config/types'
 import { AuthService } from '@/config/usecases/AuthService'
 import { Auth } from '@/domain/auth/entities/auth'
 import { SignInPayload } from '@/domain/auth/entities/payload/signInPayload'
 import { SignUpClientPayload } from '@/domain/auth/entities/payload/signUpClientPayload'
 import { UpdatePasswordPayload } from '@/domain/auth/entities/payload/updatePassword'
-import { SignInUseCase } from '@/domain/auth/usecases/signIn'
-import { SignupClientUseCase } from '@/domain/auth/usecases/signupClient'
-import { UpdatePasswordUseCase } from '@/domain/auth/usecases/updatePassword'
 import { createContext, useState } from 'react'
 
 export enum FetchStatus {
@@ -33,7 +31,7 @@ export const AuthContext: React.FC<{ children: React.ReactNode }> = ({
   const [auth, setAuth] = useState<Auth | null>(null)
   const [state, setState] = useState<FetchStatus>(FetchStatus.INITIAL)
 
-  const authService = container.get(AuthService)
+  const authService = authContainer.get(TYPES.AuthService) as AuthService
 
   const signInUseCase = authService.GetSignInUseCase()
   const signUpClientUseCase = authService.GetSignUpUseCase()

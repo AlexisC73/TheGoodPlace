@@ -8,19 +8,19 @@ import { InMemoryAuthDataSource } from '@/infrastructure/auth/datasources/InMemo
 import { AuthService } from '@/config/usecases/AuthService'
 import { TYPES } from '@/config/types'
 import { InMemoryProfileDataSource } from '@/infrastructure/@shared/datasources/InMemoryProfile'
-import { testContainer } from '@/config/dependencies'
+import { testAuthContainer } from '@/config/dependencies'
 
 export const createAuthFixture = () => {
   let authenticatedUser: Auth
 
-  const authDataSource = testContainer.get(
+  const authDataSource = testAuthContainer.get(
     TYPES.LocalAuthDataSource
   ) as InMemoryAuthDataSource
-  const profileDataSource = testContainer.get(
+  const profileDataSource = testAuthContainer.get(
     TYPES.LocalProfileDataSource
   ) as InMemoryProfileDataSource
 
-  const authService = testContainer.get(TYPES.AuthService) as AuthService
+  const authService = testAuthContainer.get(TYPES.AuthService) as AuthService
 
   const signUpClientUseCase = authService.GetSignUpUseCase()
   const signInUseCase = authService.GetSignInUseCase()
