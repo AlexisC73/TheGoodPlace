@@ -2,6 +2,7 @@ import { inject, injectable } from 'inversify'
 import { SignUpClientPayload } from '../entities/payload/signUpClientPayload'
 import type { AuthRepository } from '../repositories/authRepository'
 import { TYPES } from '@/config/types'
+import { PayloadError } from '../error/errors'
 
 @injectable()
 export class SignupClientUseCase {
@@ -13,10 +14,10 @@ export class SignupClientUseCase {
   async handle (command: SignUpClientParams) {
     const { payload } = command
     if (!payload.isValid()) {
-      throw new Error('Invalid payload')
+      throw new PayloadError()
     }
     if (!payload.passwordMatch()) {
-      throw new Error('Les mots de passe ne correspondent pas')
+      throw new PayloadError('Password not match')
     }
     const authClient = await this.authRepository.signUp(payload)
     return authClient

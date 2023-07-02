@@ -6,12 +6,14 @@ import { profileDTOBuilder } from '@tests/domain/profile/profileDTOBuilder'
 import { authBuilder } from '../authBuilder'
 import { Role } from '@/domain/auth/entities/role'
 import { AuthFixture, createAuthFixture } from '../authFixture'
+import { PayloadError } from '@/domain/auth/error/errors'
 
 describe('When new user signUp', () => {
   let authFixture: AuthFixture
 
   beforeEach(() => {
     authFixture = createAuthFixture()
+    localStorage.clear()
   })
   test('when alice signUp, her account should be created', async () => {
     await authFixture.whenUserSignUp({
@@ -37,5 +39,20 @@ describe('When new user signUp', () => {
     authFixture.thenAuthenticatedUserShouldBe(
       authBuilder().withId('alice-id').withRole(Role.CLIENT).build()
     )
+  })
+
+  test('when alice signUp with wrong confirmation password, her account should not be created', async () => {
+    await authFixture.whenUserSignUp({
+      payload: new SignUpClientPayload(
+        Id.create('alice-id'),
+        Email.create('alice@email.fr'),
+        Password.create('alice-password'),
+        Password.create('alice-password 2')
+      )
+    })
+
+    authFixture.thenErrorShouldBe(PayloadError)
+    authFixture.thenProfileShouldNotExist('alice-id')
+    authFixture.thenUserShouldNotBeAuthenticated()
   })
 })

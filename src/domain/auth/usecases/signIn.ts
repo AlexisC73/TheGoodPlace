@@ -2,6 +2,7 @@ import { inject, injectable } from 'inversify'
 import { SignInPayload } from '../entities/payload/signInPayload'
 import type { AuthRepository } from '../repositories/authRepository'
 import { TYPES } from '@/config/types'
+import { PayloadError } from '../error/errors'
 
 @injectable()
 export class SignInUseCase {
@@ -12,7 +13,7 @@ export class SignInUseCase {
   async handle (params: SignInUseCaseParams) {
     const { payload } = params
     if (!payload.isValid()) {
-      throw new Error('Invalid payload')
+      throw new PayloadError()
     }
     return this.authRepository.signIn(payload)
   }

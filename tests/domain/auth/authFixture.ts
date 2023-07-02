@@ -12,6 +12,7 @@ import { testAuthContainer } from '@/config/dependencies'
 
 export const createAuthFixture = () => {
   let authenticatedUser: Auth
+  let thrownError: Error | undefined
 
   const authDataSource = testAuthContainer.get(
     TYPES.LocalAuthDataSource
@@ -37,29 +38,39 @@ export const createAuthFixture = () => {
       try {
         authenticatedUser = await signUpClientUseCase.handle(params)
       } catch (err: any) {
-        console.log(err.message)
+        thrownError = err
       }
     },
     async whenUserSignIn (params: SignInUseCaseParams) {
       try {
         authenticatedUser = await signInUseCase.handle(params)
       } catch (err: any) {
-        console.log(err.message)
+        thrownError = err
       }
     },
     async whenUserUpdateHisPassword (params: UpdatePasswordUseCaseParams) {
       try {
         await updatePasswordUseCase.handle(params)
       } catch (err: any) {
-        console.log(err.message)
+        thrownError = err
       }
     },
     thenProfileShouldExist (expectedProfile: ProfileDTO) {
       const searchedProfile = profileDataSource.findById(expectedProfile.id)
       expect(searchedProfile).toEqual(expectedProfile)
     },
+    thenProfileShouldNotExist (id: string) {
+      const searchedProfile = profileDataSource.findById(id)
+      expect(searchedProfile).toBeUndefined()
+    },
     thenAuthenticatedUserShouldBe (expectedAuth: Auth) {
       expect(authenticatedUser).toEqual(expectedAuth)
+    },
+    thenErrorShouldBe (expectedError: new () => Error) {
+      expect(thrownError).toBeInstanceOf(expectedError)
+    },
+    thenUserShouldNotBeAuthenticated () {
+      expect(authenticatedUser).toBeUndefined()
     }
   }
 }

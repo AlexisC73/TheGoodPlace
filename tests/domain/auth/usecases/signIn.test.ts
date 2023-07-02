@@ -11,6 +11,7 @@ describe('When user signIn', () => {
 
   beforeEach(async () => {
     authFixture = createAuthFixture()
+    localStorage.clear()
   })
 
   test('when alice signIn with credentials, her account should be returned', async () => {

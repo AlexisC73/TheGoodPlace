@@ -18,6 +18,10 @@ export class UpdatePasswordPayload {
     )
   }
 
+  passwordMatch (): boolean {
+    return this._newPassword.equals(this._newPasswordConfirmation)
+  }
+
   get userId () {
     return this._userId.value
   }
