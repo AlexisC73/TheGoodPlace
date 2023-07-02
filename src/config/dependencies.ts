@@ -5,7 +5,9 @@ import { AuthRepository } from '@/domain/auth/repositories/authRepository'
 import { AuthService } from './usecases/AuthService'
 import { TYPES } from './types'
 import { InMemoryProfileDataSource } from '@/infrastructure/@shared/datasources/InMemoryProfile'
+import { LocalStorageProfile } from '@/infrastructure/@shared/datasources/LocalStorageProfile'
 import { InMemoryAuthDataSource } from '@/infrastructure/auth/datasources/InMemoryAuthDataSource'
+import { LocalStorageAuth } from '@/infrastructure/auth/datasources/LocalStorageAuthDataSource'
 import 'reflect-metadata'
 
 export function Dependencies () {
@@ -18,12 +20,12 @@ export const authContainer = new Container()
 authContainer
   .bind<AuthRepository>(TYPES.AuthRepository)
   .to(InMemoryAuthRepository)
-authContainer.bind(TYPES.LocalProfileDataSource).to(InMemoryProfileDataSource)
-authContainer.bind(TYPES.LocalAuthDataSource).to(InMemoryAuthDataSource)
+authContainer.bind(TYPES.LocalProfileDataSource).to(LocalStorageProfile)
+authContainer.bind(TYPES.LocalAuthDataSource).to(LocalStorageAuth)
 authContainer.bind<AuthService>(TYPES.AuthService).to(AuthService)
 
-const authDataSource = new InMemoryAuthDataSource()
-const profileDataSource = new InMemoryProfileDataSource()
+const authDataSource = new LocalStorageAuth()
+const profileDataSource = new LocalStorageProfile()
 
 export const testAuthContainer = new Container()
 testAuthContainer

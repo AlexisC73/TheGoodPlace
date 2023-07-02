@@ -8,6 +8,7 @@ import {
 } from '@/application/auth/contexts/AuthProvider'
 import { SignInPayload } from '@/domain/auth/entities/payload/signInPayload'
 import { Email } from '@/domain/auth/valueObjects/email'
+import { Password } from '@/domain/auth/valueObjects/password'
 
 export default function SigninForm ({
   closeSigninModal
@@ -23,8 +24,8 @@ export default function SigninForm ({
 
     signIn(
       new SignInPayload(
-        new Email({ value: formData.get('email') as string }),
-        formData.get('password') as string
+        Email.create(formData.get('email') as string),
+        Password.create(formData.get('password') as string)
       )
     )
   }

@@ -3,7 +3,7 @@ import { Password } from '../../valueObjects/password'
 
 export class SignInPayload {
   constructor (
-    private readonly _email: Email,
+    public readonly _email: Email,
     public readonly _password: Password
   ) {}
 
