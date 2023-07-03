@@ -2,10 +2,9 @@
 import Breadcrumbs from '@/components/Breadcrumb/Breadcrumbs'
 import { ProductBookPresentation } from './ProductBookPresentation'
 import { useContext, useEffect, useState } from 'react'
-import BookFetcherContext, {
-  FetchStatus
-} from '../../../application/catalog/contexts/getForSaleBook'
+import BookFetcherContext from '../../../application/catalog/contexts/getForSaleBook'
 import Link from 'next/link'
+import { FetchStatus } from '@/application/@shared/FetchStatus'
 
 export default function BookPage ({ bookId }: { bookId: string }) {
   const bookFetcher = useContext(BookFetcherContext)
