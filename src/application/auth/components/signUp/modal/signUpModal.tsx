@@ -23,7 +23,7 @@ export default function SignUpModal ({
 }: SignUpModalProps) {
   const { pushNotification } = useNotifications()
 
-  const { state, signUp } = useContext(SignUpProviderContext)
+  const { state, signUp, error } = useContext(SignUpProviderContext)
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault()
@@ -47,7 +47,19 @@ export default function SignUpModal ({
       password,
       passwordConfirmation
     )
-    signUp(signUpPayload).then(() => closeModal())
+    signUp(signUpPayload)
+  }
+
+  if (state === FetchStatus.SUCCESS) {
+    closeModal()
+  }
+  if (state === FetchStatus.FAILURE) {
+    pushNotification({
+      title: 'Inscription échouée',
+      content: error,
+      type: 'error',
+      duration: 2
+    })
   }
 
   return (

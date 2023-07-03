@@ -10,7 +10,8 @@ import { FetchStatus } from '@/application/@shared/FetchStatus'
 
 export const SignInProviderContext = createContext({
   state: FetchStatus.INITIAL,
-  signIn: async (payload: SignInPayload) => {}
+  signIn: async (payload: SignInPayload) => {},
+  error: ''
 })
 
 export const SignInContext: React.FC<{ children: React.ReactNode }> = ({
@@ -18,6 +19,7 @@ export const SignInContext: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const { setAuth } = useContext(AuthProviderContext)
   const [state, setState] = useState<FetchStatus>(FetchStatus.INITIAL)
+  const [error, setError] = useState<string>('')
 
   const authService = authContainer.get(TYPES.AuthService) as AuthService
 
@@ -29,13 +31,14 @@ export const SignInContext: React.FC<{ children: React.ReactNode }> = ({
       const auth = await signInUseCase.handle({ payload })
       setAuth(auth)
       setState(FetchStatus.SUCCESS)
-    } catch (error) {
+    } catch (error: any) {
+      setError(error.message)
       setState(FetchStatus.FAILURE)
     }
   }
 
   return (
-    <SignInProviderContext.Provider value={{ signIn, state }}>
+    <SignInProviderContext.Provider value={{ signIn, state, error }}>
       {children}
     </SignInProviderContext.Provider>
   )

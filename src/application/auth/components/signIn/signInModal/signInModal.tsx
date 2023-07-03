@@ -2,10 +2,11 @@ import { FetchStatus } from '@/application/@shared/FetchStatus'
 import { SignInProviderContext } from '@/application/auth/contexts/SignInProvider'
 import FormElement from '@/components/Form/FormElement'
 import Modal from '@/components/ui/Modal/Modal'
+import { useNotifications } from '@/context/NotificationContext'
 import { Email } from '@/domain/@shared/valueObject/email'
 import { Password } from '@/domain/@shared/valueObject/password'
 import { SignInPayload } from '@/domain/auth/entities/payload/signInPayload'
-import { FormEventHandler, useContext } from 'react'
+import { FormEventHandler, useContext, useRef } from 'react'
 
 interface SignInModalProps {
   closeModal: () => void
@@ -16,7 +17,8 @@ export default function SignInModal ({
   closeModal,
   switchToSignup
 }: SignInModalProps) {
-  const { signIn, state } = useContext(SignInProviderContext)
+  const { signIn, state, error } = useContext(SignInProviderContext)
+  const { pushNotification } = useNotifications()
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault()
@@ -30,7 +32,19 @@ export default function SignInModal ({
     const email = Email.create(inputMail)
     const password = Password.create(inputPassword)
     const payload = new SignInPayload(email, password)
-    signIn(payload).then(() => closeModal())
+    signIn(payload)
+  }
+
+  if (state === FetchStatus.SUCCESS) {
+    closeModal()
+  }
+  if (state === FetchStatus.FAILURE) {
+    pushNotification({
+      title: 'Erreur',
+      content: error,
+      type: 'error',
+      duration: 2
+    })
   }
 
   return (

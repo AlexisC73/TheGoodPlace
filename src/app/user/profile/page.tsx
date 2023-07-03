@@ -1,8 +1,17 @@
+'use client'
+
 import ChangeAvatarForm from './component/avatar/ChangeAvatarForm'
 import ChangeUserInfoForm from './component/ChangeUserInfoForm/ChangeUserInfoForm'
-import ChangePasswordForm from './component/ChangePasswordForm/ChangePasswordForm'
+import UpdatePasswordForm from '@/application/auth/components/updatePassword'
+import { useContext } from 'react'
+import { AuthProviderContext } from '@/application/auth/contexts/AuthProvider'
+import { redirect } from 'next/navigation'
 
-export default async function Profile () {
+export default function Profile () {
+  const { auth } = useContext(AuthProviderContext)
+  if (!auth) {
+    redirect('/')
+  }
   return (
     <main className='pb-32'>
       <section className='max-w-[750px] mx-auto px-5 xl:px0'>
@@ -12,7 +21,7 @@ export default async function Profile () {
         <div className='flex flex-col gap-y-16'>
           <ChangeAvatarForm />
           <ChangeUserInfoForm />
-          <ChangePasswordForm />
+          <UpdatePasswordForm />
         </div>
       </section>
     </main>

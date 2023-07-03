@@ -1,18 +1,16 @@
 'use client'
 
 import CheckIcon from '@/assets/CheckIcon'
-import ChangeInformationForm from '../ChangeInformationForm/ChangeInformationForm'
 import FormElement from '@/components/Form/FormElement'
 import { FormEventHandler, useContext } from 'react'
 import { useNotifications } from '@/context/NotificationContext'
 import { AuthProviderContext } from '@/application/auth/contexts/AuthProvider'
-import { UpdatePasswordPayload } from '@/domain/auth/entities/payload/updatePassword'
-import { Password } from '@/domain/@shared/valueObject/password'
-import { Id } from '@/domain/@shared/valueObject/id'
 import { FetchStatus } from '@/application/@shared/FetchStatus'
+import UpdateInformationForm from '@/components/ui/UpdateInformationForm/UpdateInformationForm'
 
 function ChangePasswordForm () {
   const { pushNotification } = useNotifications()
+  
   const { auth, state } = useContext(AuthProviderContext)
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = e => {
@@ -38,7 +36,7 @@ function ChangePasswordForm () {
   }
 
   return (
-    <ChangeInformationForm
+    <UpdateInformationForm
       sectionTitle='Modification du mot de passe'
       submitLabel='Modifier le mot de passe'
       icon={<CheckIcon />}
@@ -60,7 +58,7 @@ function ChangePasswordForm () {
         name='confirmPassword'
         type='password'
       />
-    </ChangeInformationForm>
+    </UpdateInformationForm>
   )
 }
 

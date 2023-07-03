@@ -3,11 +3,13 @@
 import Brand from '@/components/brand'
 import SearchBar from './SearchBar'
 import { AuthModal } from '../AuthModal'
-import { useState } from 'react'
-import UserConnection from './UserInfo'
+import { useContext, useState } from 'react'
+import { AuthProviderContext } from '@/application/auth/contexts/AuthProvider'
+import UserInfo from './UserInfo/UserInfo'
 
 function Header () {
   const [showAuthModal, setShowAuthModal] = useState(false)
+  const { auth } = useContext(AuthProviderContext)
 
   const closeAuthModal = () => {
     setShowAuthModal(false)
@@ -26,12 +28,16 @@ function Header () {
           <SearchBar />
         </div>
         <div className='xl:w-[200px]'>
-          <UserConnection showLoginModal={openAuthModal} />
+          {auth ? <UserInfo /> : <ConnectionLink action={openAuthModal} />}
         </div>
       </header>
-      {showAuthModal && <AuthModal closeModal={closeAuthModal} />}
+      {showAuthModal && !auth && <AuthModal closeModal={closeAuthModal} />}
     </>
   )
+}
+
+const ConnectionLink = ({ action }: { action: () => void }) => {
+  return <button onClick={action}>Me connecter / M&apos;inscrire</button>
 }
 
 export default Header

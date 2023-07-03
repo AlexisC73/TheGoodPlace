@@ -1,8 +1,7 @@
-import { LoadingSpinner } from '@/assets/spinner'
 import Button from '@/components/Button/Button'
 import React, { PropsWithChildren } from 'react'
 
-function ChangeInformationForm ({
+function UpdateInformationForm ({
   children,
   submitLabel,
   icon,
@@ -23,25 +22,15 @@ function ChangeInformationForm ({
         <div className='grid grid-cols-1 sm:grid-cols-2 gap-x-20 gap-y-6 text-[14px]'>
           {children}
         </div>
-        <Button
-          disabled={!canSubmit}
-          className='sm:self-start cursor-pointer disabled:bg-blue-400'
-          type='submit'
-        >
-          {canSubmit ? (
-            <div className='flex items-center h-10 sm:h-8 justify-center gap-x-2'>
-              {icon && <span className='text-[25px]'>{icon}</span>}
-              {submitLabel}
-            </div>
-          ) : (
-            <div className='flex items-center h-10 sm:h-8 justify-center gap-x-2'>
-              <LoadingSpinner className='text-[1.5rem]' />
-            </div>
-          )}
+        <Button disabled={canSubmit} className='sm:self-start' type='submit'>
+          <div className='flex items-center h-10 sm:h-8 justify-center gap-x-2'>
+            {icon && <span className='text-[25px]'>{icon}</span>}
+            {submitLabel}
+          </div>
         </Button>
       </form>
     </div>
   )
 }
 
-export default ChangeInformationForm
+export default UpdateInformationForm
