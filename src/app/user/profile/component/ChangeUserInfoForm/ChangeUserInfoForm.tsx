@@ -9,12 +9,9 @@ function ChangeUserInfoForm () {
     e.preventDefault()
     const form = e.currentTarget
     const formData = new FormData(form)
+    const password = formData.get('password')
     const name = formData.get('name')
     const email = formData.get('email')
-    const body = {
-      name: !!name ? name : undefined,
-      email: !!email ? email : undefined
-    }
     console.log('update user profile')
   }
   return (
@@ -24,6 +21,11 @@ function ChangeUserInfoForm () {
       icon={<CheckIcon />}
       onSubmit={handleSubmitForm}
     >
+      <FormElement
+        label='Mot de passe (actuel)'
+        name='password'
+        type='password'
+      />
       <FormElement label="Nom d'utilisateur" name='name' />
       <FormElement label='Addresse Email' name='email' />
     </ChangeInformationForm>

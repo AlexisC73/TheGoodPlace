@@ -13,15 +13,16 @@ describe('When new user signUp', () => {
 
   beforeEach(() => {
     authFixture = createAuthFixture()
-    localStorage.clear()
   })
   test('when alice signUp, her account should be created', async () => {
+    authFixture.givenUserExists([])
+
     await authFixture.whenUserSignUp({
       payload: new SignUpClientPayload(
         Id.create('alice-id'),
         Email.create('alice@email.fr'),
-        Password.create('alice-password'),
-        Password.create('alice-password')
+        Password.create('testing-password'),
+        Password.create('testing-password')
       )
     })
 
@@ -32,7 +33,7 @@ describe('When new user signUp', () => {
         .withLastname('')
         .withFirstname('')
         .withAvatarUrl('default-avatar.png')
-        .withPassword('alice-password')
+        .withPassword('testing-password')
         .build()
     )
 
@@ -42,6 +43,8 @@ describe('When new user signUp', () => {
   })
 
   test('when alice signUp with wrong confirmation password, her account should not be created', async () => {
+    authFixture.givenUserExists([])
+
     await authFixture.whenUserSignUp({
       payload: new SignUpClientPayload(
         Id.create('alice-id'),
