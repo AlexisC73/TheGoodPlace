@@ -1,5 +1,5 @@
-import { Email } from '../../valueObjects/email'
-import { Password } from '../../valueObjects/password'
+import { Email } from '../../../@shared/valueObject/email'
+import { Password } from '../../../@shared/valueObject/password'
 
 export class SignInPayload {
   constructor (

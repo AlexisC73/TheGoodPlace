@@ -3,11 +3,13 @@ import { ProfileDTO } from '../dtos/profileDTO'
 import { SignInPayload } from '@/domain/auth/entities/payload/signInPayload'
 import { UpdatePasswordPayload } from '@/domain/auth/entities/payload/updatePassword'
 import { injectable } from 'inversify'
+import { UpdateProfilePayload } from '@/domain/profile/entities/payload/updateProfilePayload'
 
 export interface LocalProfileDataSource {
   createProfile(payload: SignUpClientPayload): void
   verifyAccount(payload: SignInPayload): string
   updatePassword(payload: UpdatePasswordPayload): void
+  update(payload: UpdateProfilePayload): void
 }
 
 @injectable()
@@ -46,6 +48,22 @@ export class InMemoryProfileDataSource implements LocalProfileDataSource {
       throw new Error('Old password not match')
     }
     const newProfile = foundProfile.copyWith({ password: payload.newPassword })
+    this._save(newProfile)
+  }
+
+  update (payload: UpdateProfilePayload): void {
+    const foundProfile = this.profiles.find(p => p.id === payload.id)
+    if (!foundProfile) {
+      throw new Error('Account not found')
+    }
+    if (foundProfile.password !== payload.password) {
+      throw new Error('Password not match')
+    }
+    const newProfile = foundProfile.copyWith({
+      firstname: payload.firstname,
+      lastname: payload.lastname,
+      email: payload.email
+    })
     this._save(newProfile)
   }
 

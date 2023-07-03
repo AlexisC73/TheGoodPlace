@@ -1,10 +1,10 @@
 import { SignInPayload } from '@/domain/auth/entities/payload/signInPayload'
-import { Email } from '@/domain/auth/valueObjects/email'
+import { Email } from '@/domain/@shared/valueObject/email'
 import { authBuilder } from '../authBuilder'
 import { Role } from '@/domain/auth/entities/role'
 import { AuthFixture, createAuthFixture } from '../authFixture'
 import { profileDTOBuilder } from '@tests/domain/profile/profileDTOBuilder'
-import { Password } from '@/domain/auth/valueObjects/password'
+import { Password } from '@/domain/@shared/valueObject/password'
 
 describe('When user signIn', () => {
   let authFixture: AuthFixture

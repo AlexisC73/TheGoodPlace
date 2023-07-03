@@ -1,6 +1,6 @@
-import { Email } from '../../valueObjects/email'
-import { Id } from '../../valueObjects/id'
-import { Password } from '../../valueObjects/password'
+import { Email } from '../../../@shared/valueObject/email'
+import { Id } from '../../../@shared/valueObject/id'
+import { Password } from '../../../@shared/valueObject/password'
 
 export class SignUpClientPayload {
   constructor (

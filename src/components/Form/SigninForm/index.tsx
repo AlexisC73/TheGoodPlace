@@ -7,8 +7,8 @@ import {
   FetchStatus
 } from '@/application/auth/contexts/AuthProvider'
 import { SignInPayload } from '@/domain/auth/entities/payload/signInPayload'
-import { Email } from '@/domain/auth/valueObjects/email'
-import { Password } from '@/domain/auth/valueObjects/password'
+import { Email } from '@/domain/@shared/valueObject/email'
+import { Password } from '@/domain/@shared/valueObject/password'
 
 export default function SigninForm ({
   closeSigninModal

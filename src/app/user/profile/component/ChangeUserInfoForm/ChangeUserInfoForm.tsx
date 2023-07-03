@@ -10,7 +10,8 @@ function ChangeUserInfoForm () {
     const form = e.currentTarget
     const formData = new FormData(form)
     const password = formData.get('password')
-    const name = formData.get('name')
+    const firstname = formData.get('firstname')
+    const lastname = formData.get('lastname')
     const email = formData.get('email')
     console.log('update user profile')
   }
@@ -26,7 +27,8 @@ function ChangeUserInfoForm () {
         name='password'
         type='password'
       />
-      <FormElement label="Nom d'utilisateur" name='name' />
+      <FormElement label='Prénom' name='firstname' />
+      <FormElement label='Nom de famille' name='lastname' />
       <FormElement label='Addresse Email' name='email' />
     </ChangeInformationForm>
   )

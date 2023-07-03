@@ -1,5 +1,5 @@
-import { Id } from '../../valueObjects/id'
-import { Password } from '../../valueObjects/password'
+import { Id } from '../../../@shared/valueObject/id'
+import { Password } from '../../../@shared/valueObject/password'
 
 export class UpdatePasswordPayload {
   constructor (

@@ -10,8 +10,8 @@ import {
   FetchStatus
 } from '@/application/auth/contexts/AuthProvider'
 import { UpdatePasswordPayload } from '@/domain/auth/entities/payload/updatePassword'
-import { Password } from '@/domain/auth/valueObjects/password'
-import { Id } from '@/domain/auth/valueObjects/id'
+import { Password } from '@/domain/@shared/valueObject/password'
+import { Id } from '@/domain/@shared/valueObject/id'
 
 function ChangePasswordForm () {
   const { pushNotification } = useNotifications()

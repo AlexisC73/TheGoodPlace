@@ -1,3 +1,5 @@
+import { Profile } from '@/domain/profile/entities/profile'
+
 export class ProfileDTO {
   constructor (
     public readonly id: string,
@@ -17,6 +19,27 @@ export class ProfileDTO {
       avatarUrl: this.avatarUrl,
       password: this.password
     }
+  }
+
+  toDomain (): Profile {
+    return new Profile(
+      this.id,
+      this.email,
+      this.lastname,
+      this.firstname,
+      this.avatarUrl
+    )
+  }
+
+  static fromDomain (profile: Profile, password: string) {
+    return new ProfileDTO(
+      profile.id,
+      profile.email,
+      profile.lastname,
+      profile.firstname,
+      profile.avatarUrl,
+      password
+    )
   }
 
   copyWith (data: Partial<ProfileDTO>) {

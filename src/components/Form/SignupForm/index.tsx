@@ -8,9 +8,9 @@ import {
   FetchStatus
 } from '@/application/auth/contexts/AuthProvider'
 import { SignUpClientPayload } from '@/domain/auth/entities/payload/signUpClientPayload'
-import { Id } from '@/domain/auth/valueObjects/id'
-import { Email } from '@/domain/auth/valueObjects/email'
-import { Password } from '@/domain/auth/valueObjects/password'
+import { Id } from '@/domain/@shared/valueObject/id'
+import { Email } from '@/domain/@shared/valueObject/email'
+import { Password } from '@/domain/@shared/valueObject/password'
 
 export default function SignupForm ({
   switchToSignin
