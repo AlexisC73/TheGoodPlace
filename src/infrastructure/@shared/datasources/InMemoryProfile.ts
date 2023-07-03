@@ -60,9 +60,9 @@ export class InMemoryProfileDataSource implements LocalProfileDataSource {
       throw new Error('Password not match')
     }
     const newProfile = foundProfile.copyWith({
-      firstname: payload.firstname,
-      lastname: payload.lastname,
-      email: payload.email
+      firstname: payload.updateData.firstname,
+      lastname: payload.updateData.lastname,
+      email: payload.updateData.email
     })
     this._save(newProfile)
   }

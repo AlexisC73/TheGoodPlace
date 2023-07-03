@@ -11,6 +11,7 @@ export class UpdateProfileUseCase {
 
   async handle (params: UpdateProfileParams) {
     const { payload } = params
+    if (!payload.isValid()) throw new Error('Invalid payload')
     this.profileRepository.update(payload)
   }
 }
