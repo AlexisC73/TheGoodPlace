@@ -1,12 +1,12 @@
+import 'reflect-metadata'
 import { InMemoryAuthRepository } from '@/infrastructure/auth/repositories/inMemoryAuthRepository'
-import { ApiBookRepository } from '../infrastructure/catalog/repositories/api-book-repository'
+import { ApiBookRepository } from '../../../infrastructure/catalog/repositories/api-book-repository'
 import { Container } from 'inversify'
 import { AuthRepository } from '@/domain/auth/repositories/authRepository'
-import { AuthService } from './usecases/AuthService'
+import { AuthService } from '@/application/auth/services/AuthService'
 import { TYPES } from './types'
 import { InMemoryProfileDataSource } from '@/infrastructure/@shared/datasources/InMemoryProfile'
 import { InMemoryAuthDataSource } from '@/infrastructure/auth/datasources/InMemoryAuthDataSource'
-import 'reflect-metadata'
 
 export function Dependencies () {
   return {

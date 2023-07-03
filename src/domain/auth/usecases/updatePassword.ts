@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify'
 import { UpdatePasswordPayload } from '../entities/payload/updatePassword'
 import type { AuthRepository } from '../repositories/authRepository'
-import { TYPES } from '@/config/types'
+import { TYPES } from '@/application/auth/container/types'
 import { PayloadError } from '../error/errors'
 
 @injectable()

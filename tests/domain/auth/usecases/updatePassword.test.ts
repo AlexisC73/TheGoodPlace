@@ -11,7 +11,6 @@ describe('When user update his password', () => {
 
   beforeEach(() => {
     authFixture = createAuthFixture()
-    localStorage.clear()
   })
 
   test('when alice update her password, her profile should be updated', async () => {

@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { BookModel } from '../models/bookModel'
 import { createContext } from 'react'
 import { GetSpecificForSaleBook } from '../../../domain/catalog/usecases/get-for-sale-book'
-import { Dependencies } from '../../../config/dependencies'
+import { Dependencies } from '../../auth/container/authContainer'
 
 export enum FetchStatus {
   INITIAL,

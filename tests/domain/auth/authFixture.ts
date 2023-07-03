@@ -5,10 +5,10 @@ import { SignInUseCaseParams } from '@/domain/auth/usecases/signIn'
 import { Role } from '@/domain/auth/entities/role'
 import { UpdatePasswordUseCaseParams } from '@/domain/auth/usecases/updatePassword'
 import { InMemoryAuthDataSource } from '@/infrastructure/auth/datasources/InMemoryAuthDataSource'
-import { AuthService } from '@/config/usecases/AuthService'
-import { TYPES } from '@/config/types'
+import { AuthService } from '@/application/auth/services/AuthService'
+import { TYPES } from '@/application/auth/container/types'
 import { InMemoryProfileDataSource } from '@/infrastructure/@shared/datasources/InMemoryProfile'
-import { createTestAuthContainer } from '@/config/dependencies'
+import { createTestAuthContainer } from '@tests/application/auth/container/authContainer'
 
 export const createAuthFixture = () => {
   let authenticatedUser: Auth

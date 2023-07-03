@@ -6,8 +6,7 @@ import { SignUpClientPayload } from '@/domain/auth/entities/payload/signUpClient
 import { SignInPayload } from '@/domain/auth/entities/payload/signInPayload'
 import { UpdatePasswordPayload } from '@/domain/auth/entities/payload/updatePassword'
 import { inject, injectable } from 'inversify'
-import { TYPES } from '@/config/types'
-import 'reflect-metadata'
+import { TYPES } from '@/application/auth/container/types'
 
 @injectable()
 export class InMemoryAuthRepository implements AuthRepository {
