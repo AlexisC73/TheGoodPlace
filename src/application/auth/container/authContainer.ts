@@ -31,24 +31,3 @@ authContainer
   .bind<AuthService>(TYPES.AuthService)
   .to(AuthService)
   .inSingletonScope()
-
-export const createTestAuthContainer = () => {
-  const testAuthContainer = new Container()
-  testAuthContainer
-    .bind<AuthRepository>(TYPES.AuthRepository)
-    .to(InMemoryAuthRepository)
-    .inSingletonScope()
-  testAuthContainer
-    .bind(TYPES.LocalProfileDataSource)
-    .to(InMemoryProfileDataSource)
-    .inSingletonScope()
-  testAuthContainer
-    .bind(TYPES.LocalAuthDataSource)
-    .to(InMemoryAuthDataSource)
-    .inSingletonScope()
-  testAuthContainer
-    .bind<AuthService>(TYPES.AuthService)
-    .to(AuthService)
-    .inSingletonScope()
-  return testAuthContainer
-}

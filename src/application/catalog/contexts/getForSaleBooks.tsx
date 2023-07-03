@@ -2,9 +2,10 @@
 
 import { useState } from 'react'
 import { BookModel } from '../models/bookModel'
-import { GetForSaleBooksUseCase } from '../../../domain/catalog/usecases/get-for-sale-books'
 import { createContext } from 'react'
-import { Dependencies } from '../../auth/container/authContainer'
+import { CatalogService } from '../services/catalogService'
+import { catalogContainer } from '../container/catalogContainer'
+import { TYPES } from '../container/types'
 
 export enum FetchStatus {
   INITIAL,
@@ -24,12 +25,15 @@ export const BooksFetcherProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [books, setBooks] = useState<BookModel[] | null>(null)
   const [state, setState] = useState<FetchStatus>(FetchStatus.INITIAL)
-  const { bookRepository } = Dependencies()
+
+  const catalogService = catalogContainer.get(
+    TYPES.CatalogService
+  ) as CatalogService
 
   const getBooks = async () => {
     setState(FetchStatus.LOADING)
     try {
-      const getForSaleBooksUseCase = new GetForSaleBooksUseCase(bookRepository)
+      const getForSaleBooksUseCase = catalogService.FetchForSaleBooksUseCase()
 
       const books = await getForSaleBooksUseCase.handle()
 

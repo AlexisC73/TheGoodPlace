@@ -1,7 +1,7 @@
 'use client'
 
 import { authContainer } from '@/application/auth/container/authContainer'
-import { TYPES } from '@/config/auth/types'
+import { TYPES } from '@/application/auth/container/types'
 import type { AuthService } from '@/application/auth/services/AuthService'
 import { Auth } from '@/domain/auth/entities/auth'
 import { SignInPayload } from '@/domain/auth/entities/payload/signInPayload'

@@ -1,10 +1,15 @@
+import { inject } from 'inversify'
 import { Book } from '../entities/book'
-import { BookRepository } from '../repositories/book'
+import type { BookRepository } from '../repositories/book'
+import { TYPES } from '@/application/catalog/container/types'
 
 export class GetForSaleBooksUseCase {
-  constructor(private readonly bookRepository: BookRepository) {}
+  constructor (
+    @inject(TYPES.BookRepository)
+    private readonly bookRepository: BookRepository
+  ) {}
 
-  async handle(): Promise<Book[]> {
+  async handle (): Promise<Book[]> {
     return this.bookRepository.getForSaleBooks()
   }
 }
