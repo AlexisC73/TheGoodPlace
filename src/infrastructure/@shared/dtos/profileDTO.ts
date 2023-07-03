@@ -1,3 +1,6 @@
+import { Email } from '@/domain/@shared/valueObject/email'
+import { Id } from '@/domain/@shared/valueObject/id'
+import { Name } from '@/domain/@shared/valueObject/name'
 import { Profile } from '@/domain/profile/entities/profile'
 
 export class ProfileDTO {
@@ -23,10 +26,10 @@ export class ProfileDTO {
 
   toDomain (): Profile {
     return new Profile(
-      this.id,
-      this.email,
-      this.lastname,
-      this.firstname,
+      Id.create(this.id),
+      Email.create(this.email),
+      Name.create(this.lastname),
+      Name.create(this.firstname),
       this.avatarUrl
     )
   }

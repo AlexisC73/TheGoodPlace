@@ -1,3 +1,6 @@
+import { Email } from '@/domain/@shared/valueObject/email'
+import { Id } from '@/domain/@shared/valueObject/id'
+import { Name } from '@/domain/@shared/valueObject/name'
 import { Profile } from '@/domain/profile/entities/profile'
 
 export const profileBuilder = ({
@@ -18,10 +21,10 @@ export const profileBuilder = ({
       profileBuilder({ ...props, avatarUrl }),
     build: () =>
       new Profile(
-        props.id,
-        props.email,
-        props.lastname,
-        props.firstname,
+        Id.create(props.id),
+        Email.create(props.email),
+        Name.create(props.lastname),
+        Name.create(props.firstname),
         props.avatarUrl
       )
   }
