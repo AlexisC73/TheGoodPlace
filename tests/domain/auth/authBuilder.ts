@@ -1,3 +1,4 @@
+import { Id } from '@/domain/@shared/valueObject/id'
 import { Auth } from '@/domain/auth/entities/auth'
 import { Role } from '@/domain/auth/entities/role'
 
@@ -10,6 +11,10 @@ export const authBuilder = ({
     withId: (id: string) => authBuilder({ ...props, id }),
     withRole: (role: Role) => authBuilder({ ...props, role }),
     build: () =>
-      new Auth(props.id, JSON.stringify({ id: props.id }), props.role)
+      new Auth(
+        Id.create(props.id),
+        JSON.stringify({ id: props.id }),
+        props.role
+      )
   }
 }

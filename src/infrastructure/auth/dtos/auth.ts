@@ -1,3 +1,4 @@
+import { Id } from '@/domain/@shared/valueObject/id'
 import { Auth } from '@/domain/auth/entities/auth'
 import { Role } from '@/domain/auth/entities/role'
 
@@ -18,7 +19,7 @@ export class AuthDTO {
 
   toDomain (): Auth {
     return new Auth(
-      this.id,
+      Id.create(this.id),
       this.access_token,
       Role[this.role as keyof typeof Role]
     )
