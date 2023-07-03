@@ -52,7 +52,7 @@ export class InMemoryProfileDataSource implements LocalProfileDataSource {
   }
 
   update (payload: UpdateProfilePayload): void {
-    const foundProfile = this.profiles.find(p => p.id === payload.id)
+    const foundProfile = this.profiles.find(p => p.id === payload.userId)
     if (!foundProfile) {
       throw new Error('Account not found')
     }
