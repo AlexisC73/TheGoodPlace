@@ -1,20 +1,11 @@
 'use client'
 
+import { FetchStatus } from '@/application/@shared/FetchStatus'
 import { authContainer } from '@/application/auth/container/authContainer'
 import { TYPES } from '@/application/auth/container/types'
 import type { AuthService } from '@/application/auth/services/AuthService'
 import { Auth } from '@/domain/auth/entities/auth'
-import { SignInPayload } from '@/domain/auth/entities/payload/signInPayload'
-import { SignUpClientPayload } from '@/domain/auth/entities/payload/signUpClientPayload'
-import { UpdatePasswordPayload } from '@/domain/auth/entities/payload/updatePassword'
 import { createContext, useState } from 'react'
-
-export enum FetchStatus {
-  INITIAL,
-  LOADING,
-  SUCCESS,
-  FAILURE
-}
 
 export const AuthProviderContext = createContext({
   auth: null as Auth | null,

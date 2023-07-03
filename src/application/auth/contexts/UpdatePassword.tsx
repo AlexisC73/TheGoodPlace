@@ -3,16 +3,9 @@
 import { authContainer } from '@/application/auth/container/authContainer'
 import { TYPES } from '@/application/auth/container/types'
 import type { AuthService } from '@/application/auth/services/AuthService'
-import { createContext, useContext, useState } from 'react'
-import { AuthProviderContext } from './AuthProvider'
+import { createContext, useState } from 'react'
 import { UpdatePasswordPayload } from '@/domain/auth/entities/payload/updatePassword'
-
-export enum FetchStatus {
-  INITIAL,
-  LOADING,
-  SUCCESS,
-  FAILURE
-}
+import { FetchStatus } from '@/application/@shared/FetchStatus'
 
 export const UpdatePasswordProviderContext = createContext({
   state: FetchStatus.INITIAL,

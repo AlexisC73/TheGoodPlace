@@ -6,13 +6,7 @@ import type { AuthService } from '@/application/auth/services/AuthService'
 import { SignInPayload } from '@/domain/auth/entities/payload/signInPayload'
 import { createContext, useContext, useState } from 'react'
 import { AuthProviderContext } from './AuthProvider'
-
-export enum FetchStatus {
-  INITIAL,
-  LOADING,
-  SUCCESS,
-  FAILURE
-}
+import { FetchStatus } from '@/application/@shared/FetchStatus'
 
 export const SignInProviderContext = createContext({
   state: FetchStatus.INITIAL,

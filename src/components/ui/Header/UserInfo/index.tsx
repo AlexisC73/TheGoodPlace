@@ -1,10 +1,8 @@
 'use client'
 
+import { FetchStatus } from '@/application/@shared/FetchStatus'
 import UserInfo from './UserInfo'
-import {
-  AuthProviderContext,
-  FetchStatus
-} from '@/application/auth/contexts/AuthProvider'
+import { AuthProviderContext } from '@/application/auth/contexts/AuthProvider'
 import { useContext } from 'react'
 
 const UserConnection = ({ showLoginModal }: { showLoginModal: () => void }) => {

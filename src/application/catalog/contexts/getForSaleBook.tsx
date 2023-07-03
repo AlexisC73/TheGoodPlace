@@ -6,13 +6,7 @@ import { createContext } from 'react'
 import { catalogContainer } from '../container/catalogContainer'
 import { TYPES } from '../container/types'
 import { CatalogService } from '../services/catalogService'
-
-export enum FetchStatus {
-  INITIAL,
-  LOADING,
-  SUCCESS,
-  FAILURE
-}
+import { FetchStatus } from '@/application/@shared/FetchStatus'
 
 const BookFetcherContext = createContext({
   book: null as BookModel | null,

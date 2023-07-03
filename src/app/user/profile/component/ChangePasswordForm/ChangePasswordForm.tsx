@@ -5,17 +5,15 @@ import ChangeInformationForm from '../ChangeInformationForm/ChangeInformationFor
 import FormElement from '@/components/Form/FormElement'
 import { FormEventHandler, useContext } from 'react'
 import { useNotifications } from '@/context/NotificationContext'
-import {
-  AuthProviderContext,
-  FetchStatus
-} from '@/application/auth/contexts/AuthProvider'
+import { AuthProviderContext } from '@/application/auth/contexts/AuthProvider'
 import { UpdatePasswordPayload } from '@/domain/auth/entities/payload/updatePassword'
 import { Password } from '@/domain/@shared/valueObject/password'
 import { Id } from '@/domain/@shared/valueObject/id'
+import { FetchStatus } from '@/application/@shared/FetchStatus'
 
 function ChangePasswordForm () {
   const { pushNotification } = useNotifications()
-  const { updatePassword, auth, state } = useContext(AuthProviderContext)
+  const { auth, state } = useContext(AuthProviderContext)
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault()
@@ -37,15 +35,6 @@ function ChangePasswordForm () {
     if (!auth) {
       return
     }
-
-    updatePassword(
-      new UpdatePasswordPayload(
-        new Id({ value: auth.id }),
-        new Password({ value: oldPassword }),
-        new Password({ value: newPassword }),
-        new Password({ value: newPasswordConfirmation })
-      )
-    )
   }
 
   return (
