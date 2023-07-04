@@ -2,7 +2,7 @@ import { Book } from '../../../domain/catalog/entities/book'
 import { BookStatus } from '../../../domain/catalog/entities/bookStatus'
 
 export class BookDto {
-  private constructor(
+  private constructor (
     public readonly _id: string,
     public readonly _title: string,
     public readonly _author: string,
@@ -15,11 +15,11 @@ export class BookDto {
     public readonly _seller: string
   ) {}
 
-  isForSale() {
+  isForSale () {
     return this._status === BookStatus.FOR_SALE.toString()
   }
 
-  get data() {
+  get data () {
     return {
       id: this.id,
       title: this.title,
@@ -30,11 +30,16 @@ export class BookDto {
       description: this.description,
       createdAt: this.createdAt,
       status: this.status,
-      seller: this.seller,
+      seller: this.seller
     }
   }
 
-  static fromData(data: BookDto['data']) {
+  static fromJSON (json: string) {
+    const data = JSON.parse(json)
+    return BookDto.fromData(data)
+  }
+
+  static fromData (data: BookDto['data']) {
     return new BookDto(
       data.id,
       data.title,
@@ -49,7 +54,7 @@ export class BookDto {
     )
   }
 
-  toDomain(): Book {
+  toDomain (): Book {
     return new Book(
       this.id,
       this.title,
@@ -64,7 +69,7 @@ export class BookDto {
     )
   }
 
-  static fromDomain(book: Book): BookDto {
+  static fromDomain (book: Book): BookDto {
     return new BookDto(
       book.id,
       book.title,
@@ -79,43 +84,43 @@ export class BookDto {
     )
   }
 
-  get id() {
+  get id () {
     return this._id
   }
 
-  get title() {
+  get title () {
     return this._title
   }
 
-  get author() {
+  get author () {
     return this._author
   }
 
-  get price() {
+  get price () {
     return this._price
   }
 
-  get imageUrl() {
+  get imageUrl () {
     return this._imageUrl
   }
 
-  get publicationDate() {
+  get publicationDate () {
     return this._publicationDate
   }
 
-  get description() {
+  get description () {
     return this._description
   }
 
-  get createdAt() {
+  get createdAt () {
     return this._createdAt
   }
 
-  get status() {
+  get status () {
     return this._status
   }
 
-  get seller() {
+  get seller () {
     return this._seller
   }
 }

@@ -14,7 +14,7 @@ import { InMemoryProfileRepository } from '@/infrastructure/profile/repositories
 import { ProfileRepository } from '@/domain/profile/repositories/profileRepository'
 import { CatalogService } from '@/application/catalog/services/catalogService'
 import { BookRepository } from '@/domain/catalog/repositories/book'
-import { InMemoryBookRepository } from '@/infrastructure/catalog/repositories/in-memory-book-repository'
+import { BookRepositoryImpl } from '@/infrastructure/catalog/repositories/BookRepositoryImpl'
 
 export const createTestAppContainer = () => {
   const appContainer = new Container()
@@ -44,7 +44,7 @@ export const createTestAppContainer = () => {
     .inSingletonScope()
   appContainer
     .bind<BookRepository>(TYPES.BookRepository)
-    .to(InMemoryBookRepository)
+    .to(BookRepositoryImpl)
     .inSingletonScope()
   appContainer
     .bind<CatalogService>(TYPES.CatalogService)

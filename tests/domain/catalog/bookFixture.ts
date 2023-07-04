@@ -2,9 +2,9 @@ import { BookDto } from '@/infrastructure/catalog/dtos/bookDto'
 import { Book } from '@/domain/catalog/entities/book'
 import { GetForSaleBookCommand } from '@/domain/catalog/usecases/get-for-sale-book'
 import { CatalogService } from '@/application/catalog/services/catalogService'
-import { InMemoryBookRepository } from '@/infrastructure/catalog/repositories/in-memory-book-repository'
 import { TYPES } from '@/application/@shared/container/types'
 import { createTestAppContainer } from '@tests/application/@shared/container/container'
+import { BookRepositoryImpl } from '@/infrastructure/catalog/repositories/BookRepositoryImpl'
 
 export const createBookFixture = () => {
   let book: Book
@@ -17,13 +17,23 @@ export const createBookFixture = () => {
 
   const bookRepository = catalogContainer.get(
     TYPES.BookRepository
-  ) as InMemoryBookRepository
+  ) as BookRepositoryImpl
+  const bookRemoteDataSource = bookRepository.bookRemoteDataSource
+  const bookLocalDataSource = bookRepository.bookLocalDataSource
   const getForSaleBooksUseCase = catalogService.FetchForSaleBooksUseCase()
   const getSpecificForSaleBookUseCase = catalogService.FetchForSaleBookUseCase()
 
   return {
-    whenBooksExist (books: Book[]) {
-      bookRepository._books = books.map(book => BookDto.fromDomain(book))
+    whenBooksExistInRemote (books: Book[]) {
+      bookRemoteDataSource._setBooks(
+        books.map(book => BookDto.fromDomain(book))
+      )
+    },
+    whenBooksExistInCacheAndRemote (books: Book[]) {
+      bookLocalDataSource._setBooks(books.map(book => BookDto.fromDomain(book)))
+      bookRemoteDataSource._setBooks(
+        books.map(book => BookDto.fromDomain(book))
+      )
     },
     async whenUserAskForASpecificSaleBook (command: GetForSaleBookCommand) {
       book = await getSpecificForSaleBookUseCase.handle(command)

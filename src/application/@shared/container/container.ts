@@ -11,7 +11,7 @@ import { ProfileRepository } from '@/domain/profile/repositories/profileReposito
 import { InMemoryProfileRepository } from '@/infrastructure/profile/repositories/profileRepository'
 import { CatalogService } from '@/application/catalog/services/catalogService'
 import { BookRepository } from '@/domain/catalog/repositories/book'
-import { InMemoryBookRepository } from '@/infrastructure/catalog/repositories/in-memory-book-repository'
+import { InMemoryBookRepository } from '@/infrastructure/catalog/repositories/BookRepositoryImpl'
 
 export const appContainer = new Container()
 appContainer
