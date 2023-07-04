@@ -14,7 +14,8 @@ import { Profile } from '@/domain/profile/entities/profile'
 import { CacheProfileDataSource } from '@/infrastructure/profile/datasources/cacheDataSource'
 
 export const createAuthFixture = () => {
-  let authenticatedUser: { auth: Auth; profile: Profile }
+  let authUser: Auth
+  let profileUser: Profile
   let thrownError: Error | undefined
 
   const testAuthContainer = createTestAppContainer()
@@ -45,16 +46,14 @@ export const createAuthFixture = () => {
     },
     async whenUserSignUp (params: SignUpClientParams) {
       try {
-        const result = await signUpClientUseCase.handle(params)
-        authenticatedUser = result
+        authUser = await signUpClientUseCase.handle(params)
       } catch (err: any) {
         thrownError = err
       }
     },
     async whenUserSignIn (params: SignInUseCaseParams) {
       try {
-        const { auth, profile } = await signInUseCase.handle(params)
-        authenticatedUser = { auth, profile }
+        authUser = await signInUseCase.handle(params)
       } catch (err: any) {
         thrownError = err
       }
@@ -77,7 +76,7 @@ export const createAuthFixture = () => {
       expect(searchedProfile).toBeUndefined()
     },
     thenAuthenticatedUserShouldBe (expectedAuth: Auth) {
-      expect(authenticatedUser.auth).toEqual(expectedAuth)
+      expect(authUser).toEqual(expectedAuth)
     },
     thenAuthenticatedUserShouldBeCached (expectedAuth: Auth) {
       const cachedAuth = cacheAuthDataSource.findById(expectedAuth.id)
@@ -86,15 +85,8 @@ export const createAuthFixture = () => {
     thenErrorShouldBe (expectedError: new () => Error) {
       expect(thrownError).toBeInstanceOf(expectedError)
     },
-    thenAuthenticatedProfilShouldBe (expectedProfile: Profile) {
-      expect(authenticatedUser.profile).toEqual(expectedProfile)
-    },
-    thenCachedProfileShouldBe (expectedProfile: Profile) {
-      const cachedProfile = cacheProfileDateSource.getProfile()
-      expect(cachedProfile).toEqual(expectedProfile)
-    },
     thenUserShouldNotBeAuthenticated () {
-      expect(authenticatedUser).toBeUndefined()
+      expect(profileUser).toBeUndefined()
     }
   }
 }

@@ -3,26 +3,19 @@ import { AuthDTO } from '../dtos/auth'
 import { Role } from '@/domain/auth/entities/role'
 import { InMemoryRemoteProfileDataSource } from '@/infrastructure/profile/datasources/InMemoryRemoteDataSource'
 import { Auth } from '@/domain/auth/entities/auth'
-import { Profile } from '@/domain/profile/entities/profile'
 import { ProfileDTO } from '@/infrastructure/@shared/dtos/profileDTO'
 import { SignInPayload } from '@/domain/auth/entities/payload/signInPayload'
 
 export interface RemoteDataSource {
-  signUp(
-    payload: SignUpClientPayload
-  ): Promise<{ auth: Auth; profile: Profile }>
+  signUp(payload: SignUpClientPayload): Promise<Auth>
   createProfileForAuth(payload: SignUpClientPayload): Promise<ProfileDTO>
-  signInAccount(
-    payload: SignInPayload
-  ): Promise<{ auth: Auth; profile: Profile }>
+  signInAccount(payload: SignInPayload): Promise<Auth>
 }
 
 export class InMemoryRemoteAuthDataSource implements RemoteDataSource {
   remoteProfileDataSource = new InMemoryRemoteProfileDataSource()
 
-  async signUp (
-    payload: SignUpClientPayload
-  ): Promise<{ auth: Auth; profile: Profile }> {
+  async signUp (payload: SignUpClientPayload): Promise<Auth> {
     const auths = this.getAuths()
     const isExist = auths.some(p => p.id === payload.id)
     if (isExist) {
@@ -34,24 +27,23 @@ export class InMemoryRemoteAuthDataSource implements RemoteDataSource {
       role: Role.CLIENT
     })
     this.saveAuth(newAuth)
-    const profile = await this.createProfileForAuth(payload)
-    return { auth: newAuth.toDomain(), profile: profile.toDomain() } as any
+    await this.createProfileForAuth(payload)
+
+    return newAuth.toDomain()
   }
 
-  async signInAccount (
-    payload: SignInPayload
-  ): Promise<{ auth: Auth; profile: Profile }> {
+  async signInAccount (payload: SignInPayload): Promise<Auth> {
     const profileDto =
       await this.remoteProfileDataSource.signInProfileWithEmail(payload)
     if (!profileDto) {
       throw new Error("Profile doesn't exist")
     }
-    return {
-      auth: this.getAuths()
-        .find(p => p.id === profileDto.id)!
-        .toDomain(),
-      profile: profileDto.toDomain()
-    }
+    const auth = Auth.fromData({
+      id: profileDto.id,
+      access_token: JSON.stringify({ id: profileDto.id }),
+      role: Role.CLIENT
+    })
+    return auth
   }
 
   getAuths (): AuthDTO[] {

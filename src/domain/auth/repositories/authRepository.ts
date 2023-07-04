@@ -4,9 +4,7 @@ import { SignInPayload } from '../entities/payload/signInPayload'
 import { SignUpClientPayload } from '../entities/payload/signUpClientPayload'
 import { UpdatePasswordPayload } from '../entities/payload/updatePassword'
 export interface AuthRepository {
-  signUp(
-    payload: SignUpClientPayload
-  ): Promise<{ auth: Auth; profile: Profile }>
-  signIn(payload: SignInPayload): Promise<{ auth: Auth; profile: Profile }>
+  signUp(payload: SignUpClientPayload): Promise<Auth>
+  signIn(payload: SignInPayload): Promise<Auth>
   updatePassword(payload: UpdatePasswordPayload): Promise<void>
 }

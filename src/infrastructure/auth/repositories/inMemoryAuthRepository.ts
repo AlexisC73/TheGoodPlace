@@ -18,28 +18,20 @@ export class InMemoryAuthRepository implements AuthRepository {
   remoteAuthDataSource = new InMemoryRemoteAuthDataSource()
   cacheAuthDataSource = new CacheAuthDataSource()
 
-  async signUp (
-    payload: SignUpClientPayload
-  ): Promise<{ auth: Auth; profile: Profile }> {
+  async signUp (payload: SignUpClientPayload): Promise<Auth> {
     try {
-      const { profile, auth } = await this.remoteAuthDataSource.signUp(payload)
-      this.cacheProfileDataSource.saveProfileInCache(profile)
+      const auth = await this.remoteAuthDataSource.signUp(payload)
       this.cacheAuthDataSource.saveAuthInCache(auth)
-      return { auth, profile }
+      return auth
     } catch (err) {
       throw err
     }
   }
 
-  async signIn (
-    payload: SignInPayload
-  ): Promise<{ auth: Auth; profile: Profile }> {
-    const { auth, profile } = await this.remoteAuthDataSource.signInAccount(
-      payload
-    )
-    this.cacheProfileDataSource.saveProfileInCache(profile)
+  async signIn (payload: SignInPayload): Promise<Auth> {
+    const auth = await this.remoteAuthDataSource.signInAccount(payload)
     this.cacheAuthDataSource.saveAuthInCache(auth)
-    return { auth, profile }
+    return auth
   }
 
   async updatePassword (payload: UpdatePasswordPayload): Promise<void> {

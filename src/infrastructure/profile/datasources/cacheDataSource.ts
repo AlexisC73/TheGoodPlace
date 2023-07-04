@@ -37,14 +37,4 @@ export class CacheProfileDataSource implements LocalProfileDataSource {
   saveProfile (profileToSave: Profile) {
     localStorage.setItem('profile', JSON.stringify(profileToSave.data))
   }
-
-  // FOR TESTS
-  _getProfile (): Profile | undefined {
-    const profileJSON = localStorage.getItem('profile')
-    if (!profileJSON) {
-      return
-    }
-    const profileData: Profile['data'] = JSON.parse(profileJSON)
-    return Profile.fromData(profileData)
-  }
 }
