@@ -21,7 +21,7 @@ describe('UpdateProfile', () => {
       .withEmail('alice@doe.fr')
       .withId('alice-id')
 
-    profilesFixture.givenProfilesExist([
+    profilesFixture.givenProfilesExistInRemote([
       ProfileDTO.fromDomain(aliceProfile.build(), 'alice-password')
     ])
 
@@ -53,7 +53,7 @@ describe('UpdateProfile', () => {
       .withEmail('alice@doe.fr')
       .withId('alice-id')
 
-    profilesFixture.givenProfilesExist([
+    profilesFixture.givenProfilesExistInRemote([
       ProfileDTO.fromDomain(aliceProfile.build(), 'alice-password')
     ])
 

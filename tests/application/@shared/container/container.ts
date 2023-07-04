@@ -1,26 +1,21 @@
 import 'reflect-metadata'
-import {
-  InMemoryProfileDataSource,
-  LocalProfileDataSource
-} from '@/infrastructure/@shared/datasources/InMemoryProfile'
 import { Container } from 'inversify'
 import { ProfileService } from '@/application/profile/services/profileService'
 import { AuthRepository } from '@/domain/auth/repositories/authRepository'
 import { InMemoryAuthRepository } from '@/infrastructure/auth/repositories/inMemoryAuthRepository'
-import { InMemoryAuthDataSource } from '@/infrastructure/auth/datasources/InMemoryAuthDataSource'
 import { AuthService } from '@/application/auth/services/AuthService'
 import { TYPES } from '@/application/@shared/container/types'
-import { InMemoryProfileRepository } from '@/infrastructure/profile/repositories/profileRepository'
 import { ProfileRepository } from '@/domain/profile/repositories/profileRepository'
 import { CatalogService } from '@/application/catalog/services/catalogService'
 import { BookRepository } from '@/domain/catalog/repositories/book'
 import { BookRepositoryImpl } from '@/infrastructure/catalog/repositories/BookRepositoryImpl'
+import { ProfileRepositoryImpl } from '@/infrastructure/profile/repositories/profileRepository'
 
 export const createTestAppContainer = () => {
   const appContainer = new Container()
   appContainer
     .bind<ProfileRepository>(TYPES.ProfileRepository)
-    .to(InMemoryProfileRepository)
+    .to(ProfileRepositoryImpl)
     .inSingletonScope()
   appContainer
     .bind<ProfileService>(TYPES.ProfileService)
@@ -29,14 +24,6 @@ export const createTestAppContainer = () => {
   appContainer
     .bind<AuthRepository>(TYPES.AuthRepository)
     .to(InMemoryAuthRepository)
-    .inSingletonScope()
-  appContainer
-    .bind<LocalProfileDataSource>(TYPES.LocalProfileDataSource)
-    .to(InMemoryProfileDataSource)
-    .inSingletonScope()
-  appContainer
-    .bind(TYPES.LocalAuthDataSource)
-    .to(InMemoryAuthDataSource)
     .inSingletonScope()
   appContainer
     .bind<AuthService>(TYPES.AuthService)

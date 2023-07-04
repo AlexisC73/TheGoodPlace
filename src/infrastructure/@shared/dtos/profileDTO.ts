@@ -24,6 +24,17 @@ export class ProfileDTO {
     }
   }
 
+  static fromData (data: ProfileDTO['data']) {
+    return new ProfileDTO(
+      data.id,
+      data.email,
+      data.lastname,
+      data.firstname,
+      data.avatarUrl,
+      data.password
+    )
+  }
+
   toDomain (): Profile {
     return new Profile(
       Id.create(this.id),

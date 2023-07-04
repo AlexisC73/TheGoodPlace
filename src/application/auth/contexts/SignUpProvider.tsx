@@ -28,7 +28,7 @@ export const SignUpContext: React.FC<{ children: React.ReactNode }> = ({
   const signUp = async (payload: SignUpClientPayload): Promise<void> => {
     setState(FetchStatus.LOADING)
     try {
-      const auth = await signUpUseCase.handle({ payload })
+      const { auth } = await signUpUseCase.handle({ payload })
       setAuth(auth)
       setState(FetchStatus.SUCCESS)
     } catch (error: any) {

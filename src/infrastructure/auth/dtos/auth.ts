@@ -17,6 +17,10 @@ export class AuthDTO {
     }
   }
 
+  static fromData (data: Auth['data']) {
+    return new AuthDTO(data.id, data.access_token, data.role)
+  }
+
   toDomain (): Auth {
     return new Auth(
       Id.create(this.id),

@@ -4,11 +4,12 @@ import { SignUpClientParams } from '@/domain/auth/usecases/signupClient'
 import { SignInUseCaseParams } from '@/domain/auth/usecases/signIn'
 import { Role } from '@/domain/auth/entities/role'
 import { UpdatePasswordUseCaseParams } from '@/domain/auth/usecases/updatePassword'
-import { InMemoryAuthDataSource } from '@/infrastructure/auth/datasources/InMemoryAuthDataSource'
 import { AuthService } from '@/application/auth/services/AuthService'
-import { InMemoryProfileDataSource } from '@/infrastructure/@shared/datasources/InMemoryProfile'
 import { createTestAppContainer } from '@tests/application/@shared/container/container'
 import { TYPES } from '@/application/@shared/container/types'
+import { InMemoryAuthRepository } from '@/infrastructure/auth/repositories/inMemoryAuthRepository'
+import { InMemoryRemoteAuthDataSource } from '@/infrastructure/auth/datasources/InMemoryRemoteAuthDataSource'
+import { InMemoryRemoteProfileDataSource } from '@/infrastructure/profile/datasources/InMemoryRemoteDataSource'
 
 export const createAuthFixture = () => {
   let authenticatedUser: Auth
@@ -16,12 +17,13 @@ export const createAuthFixture = () => {
 
   const testAuthContainer = createTestAppContainer()
 
-  const authDataSource = testAuthContainer.get(
-    TYPES.LocalAuthDataSource
-  ) as InMemoryAuthDataSource
-  const profileDataSource = testAuthContainer.get(
-    TYPES.LocalProfileDataSource
-  ) as InMemoryProfileDataSource
+  const authRepositoryImpl = testAuthContainer.get(
+    TYPES.AuthRepository
+  ) as InMemoryAuthRepository
+  const authRemoteDataSource =
+    authRepositoryImpl.remoteAuthDataSource as InMemoryRemoteAuthDataSource
+  const profileRemoteDataSource =
+    authRepositoryImpl.remoteProfileDataSource as InMemoryRemoteProfileDataSource
 
   const authService = testAuthContainer.get(TYPES.AuthService) as AuthService
 
@@ -31,21 +33,23 @@ export const createAuthFixture = () => {
 
   return {
     givenUserExists (users: { profile: ProfileDTO; role: Role }[]) {
-      authDataSource.givenUsers(
+      authRemoteDataSource.givenAuths(
         users.map(u => ({ id: u.profile.id, role: u.role }))
       )
-      profileDataSource.givenProfiles(users.map(u => u.profile))
+      profileRemoteDataSource.givenProfiles(users.map(u => u.profile))
     },
     async whenUserSignUp (params: SignUpClientParams) {
       try {
-        authenticatedUser = await signUpClientUseCase.handle(params)
+        const result = await signUpClientUseCase.handle(params)
+        authenticatedUser = result.auth
       } catch (err: any) {
         thrownError = err
       }
     },
     async whenUserSignIn (params: SignInUseCaseParams) {
       try {
-        authenticatedUser = await signInUseCase.handle(params)
+        const { auth, profile } = await signInUseCase.handle(params)
+        authenticatedUser = auth
       } catch (err: any) {
         thrownError = err
       }
@@ -58,11 +62,13 @@ export const createAuthFixture = () => {
       }
     },
     thenProfileShouldExist (expectedProfile: ProfileDTO) {
-      const searchedProfile = profileDataSource.findById(expectedProfile.id)
+      const searchedProfile = profileRemoteDataSource.findById(
+        expectedProfile.id
+      )
       expect(searchedProfile).toEqual(expectedProfile)
     },
     thenProfileShouldNotExist (id: string) {
-      const searchedProfile = profileDataSource.findById(id)
+      const searchedProfile = profileRemoteDataSource.findById(id)
       expect(searchedProfile).toBeUndefined()
     },
     thenAuthenticatedUserShouldBe (expectedAuth: Auth) {

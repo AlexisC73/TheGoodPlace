@@ -36,4 +36,21 @@ export class Profile {
       avatarUrl: this.avatarUrl
     }
   }
+
+  static fromData (data: Profile['data']): Profile {
+    return new Profile(
+      Id.create(data.id),
+      Email.create(data.email),
+      Name.create(data.lastname),
+      Name.create(data.firstname),
+      data.avatarUrl
+    )
+  }
+
+  copyWith (data: Partial<Profile['data']>): Profile {
+    return Profile.fromData({
+      ...this.data,
+      ...data
+    })
+  }
 }

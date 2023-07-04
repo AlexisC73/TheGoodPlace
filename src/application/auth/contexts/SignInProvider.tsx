@@ -28,7 +28,7 @@ export const SignInContext: React.FC<{ children: React.ReactNode }> = ({
   const signIn = async (payload: SignInPayload): Promise<void> => {
     setState(FetchStatus.LOADING)
     try {
-      const auth = await signInUseCase.handle({ payload })
+      const { auth } = await signInUseCase.handle({ payload })
       setAuth(auth)
       setState(FetchStatus.SUCCESS)
     } catch (error: any) {
