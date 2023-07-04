@@ -12,4 +12,13 @@ export class CacheAuthDataSource implements LocalAuthDataSource {
   saveAuth (auth: Auth) {
     localStorage.setItem('auth', JSON.stringify(auth.data))
   }
+
+  // FOR TESTS
+  findById (id: string): Auth | undefined {
+    const auth = localStorage.getItem('auth')
+    if (auth) {
+      return Auth.fromData(JSON.parse(auth))
+    }
+    return undefined
+  }
 }

@@ -1,7 +1,5 @@
-import { SignUpClientPayload } from '@/domain/auth/entities/payload/signUpClientPayload'
 import { UpdateProfilePayload } from '@/domain/profile/entities/payload/updateProfilePayload'
 import { Profile } from '@/domain/profile/entities/profile'
-import { ProfileDTO } from '@/infrastructure/@shared/dtos/profileDTO'
 
 export interface LocalProfileDataSource {
   updateProfile(payload: UpdateProfilePayload): void
@@ -10,7 +8,7 @@ export interface LocalProfileDataSource {
 
 export class CacheProfileDataSource implements LocalProfileDataSource {
   updateProfile (payload: UpdateProfilePayload): void {
-    const profile = this.getProfile(payload.userId)
+    const profile = this.getProfile()
     if (!profile) {
       return
     }
@@ -27,7 +25,7 @@ export class CacheProfileDataSource implements LocalProfileDataSource {
     this.saveProfile(profile)
   }
 
-  getProfile (id: string): Profile | undefined {
+  getProfile (): Profile | undefined {
     const profileJSON = localStorage.getItem('profile')
     if (!profileJSON) {
       return
@@ -37,7 +35,16 @@ export class CacheProfileDataSource implements LocalProfileDataSource {
   }
 
   saveProfile (profileToSave: Profile) {
-    const profileData = profileToSave.data
-    localStorage.setItem('profiles', JSON.stringify(profileData))
+    localStorage.setItem('profile', JSON.stringify(profileToSave.data))
+  }
+
+  // FOR TESTS
+  _getProfile (): Profile | undefined {
+    const profileJSON = localStorage.getItem('profile')
+    if (!profileJSON) {
+      return
+    }
+    const profileData: Profile['data'] = JSON.parse(profileJSON)
+    return Profile.fromData(profileData)
   }
 }

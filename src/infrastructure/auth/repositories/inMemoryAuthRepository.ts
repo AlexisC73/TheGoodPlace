@@ -22,7 +22,7 @@ export class InMemoryAuthRepository implements AuthRepository {
     payload: SignUpClientPayload
   ): Promise<{ auth: Auth; profile: Profile }> {
     try {
-      const { profile, auth } = await this.remoteAuthDataSource.signUp(payload) //renvoie le auth et le profile
+      const { profile, auth } = await this.remoteAuthDataSource.signUp(payload)
       this.cacheProfileDataSource.saveProfileInCache(profile)
       this.cacheAuthDataSource.saveAuthInCache(auth)
       return { auth, profile }
@@ -37,6 +37,8 @@ export class InMemoryAuthRepository implements AuthRepository {
     const { auth, profile } = await this.remoteAuthDataSource.signInAccount(
       payload
     )
+    this.cacheProfileDataSource.saveProfileInCache(profile)
+    this.cacheAuthDataSource.saveAuthInCache(auth)
     return { auth, profile }
   }
 

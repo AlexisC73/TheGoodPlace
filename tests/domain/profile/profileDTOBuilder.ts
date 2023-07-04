@@ -4,8 +4,8 @@ export const profileDTOBuilder = ({
   id = 'test-id',
   avatarUrl = 'default-avatar.png',
   email = 'test@email.fr',
-  firstname = 'firstname',
-  lastname = 'lastname',
+  firstname = '',
+  lastname = '',
   password = 'password'
 }: Partial<ProfileDTO['data']> = {}) => {
   const props = { id, avatarUrl, email, firstname, lastname, password }

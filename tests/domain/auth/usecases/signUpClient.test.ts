@@ -7,6 +7,7 @@ import { authBuilder } from '../authBuilder'
 import { Role } from '@/domain/auth/entities/role'
 import { AuthFixture, createAuthFixture } from '../authFixture'
 import { PayloadError } from '@/domain/auth/error/errors'
+import { profileBuilder } from '@tests/domain/profile/profileBuilder'
 
 describe('When new user signUp', () => {
   let authFixture: AuthFixture
@@ -39,6 +40,27 @@ describe('When new user signUp', () => {
 
     authFixture.thenAuthenticatedUserShouldBe(
       authBuilder().withId('alice-id').withRole(Role.CLIENT).build()
+    )
+    authFixture.thenAuthenticatedProfilShouldBe(
+      profileBuilder()
+        .withId('alice-id')
+        .withAvatarUrl('default-avatar.png')
+        .withEmail('alice@email.fr')
+        .withFirstname('')
+        .withLastname('')
+        .build()
+    )
+    authFixture.thenAuthenticatedUserShouldBeCached(
+      authBuilder().withId('alice-id').withRole(Role.CLIENT).build()
+    )
+    authFixture.thenCachedProfileShouldBe(
+      profileBuilder()
+        .withId('alice-id')
+        .withAvatarUrl('default-avatar.png')
+        .withEmail('alice@email.fr')
+        .withFirstname('')
+        .withLastname('')
+        .build()
     )
   })
 
