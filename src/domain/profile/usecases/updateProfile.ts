@@ -1,7 +1,7 @@
 import { inject } from 'inversify'
 import { UpdateProfilePayload } from '../entities/payload/updateProfilePayload'
 import type { ProfileRepository } from '../repositories/profileRepository'
-import { TYPES } from '@/application/profile/container/types'
+import { TYPES } from '@/application/@shared/container/types'
 
 export class UpdateProfileUseCase {
   constructor (

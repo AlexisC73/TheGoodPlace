@@ -1,9 +1,9 @@
 import type { AuthRepository } from '@/domain/auth/repositories/authRepository'
 import { SignupClientUseCase } from '@/domain/auth/usecases/signupClient'
 import { inject, injectable } from 'inversify'
-import { TYPES } from '@/application/auth/container/types'
 import { SignInUseCase } from '@/domain/auth/usecases/signIn'
 import { UpdatePasswordUseCase } from '@/domain/auth/usecases/updatePassword'
+import { TYPES } from '@/application/@shared/container/types'
 
 @injectable()
 export class AuthService {

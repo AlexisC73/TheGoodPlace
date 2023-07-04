@@ -1,7 +1,7 @@
 import type { ProfileRepository } from '@/domain/profile/repositories/profileRepository'
 import { inject, injectable } from 'inversify'
-import { TYPES } from '../container/types'
 import { UpdateProfileUseCase } from '@/domain/profile/usecases/updateProfile'
+import { TYPES } from '@/application/@shared/container/types'
 
 @injectable()
 export class ProfileService {

@@ -1,8 +1,8 @@
 'use client'
 
 import { FetchStatus } from '@/application/@shared/FetchStatus'
-import { authContainer } from '@/application/auth/container/authContainer'
-import { TYPES } from '@/application/auth/container/types'
+import { appContainer } from '@/application/@shared/container/container'
+import { TYPES } from '@/application/@shared/container/types'
 import type { AuthService } from '@/application/auth/services/AuthService'
 import { Auth } from '@/domain/auth/entities/auth'
 import { createContext, useState } from 'react'
@@ -20,7 +20,7 @@ export const AuthContext: React.FC<{ children: React.ReactNode }> = ({
   const [auth, setAuth] = useState<Auth | null>(null)
   const [state, setState] = useState<FetchStatus>(FetchStatus.INITIAL)
 
-  const authService = authContainer.get(TYPES.AuthService) as AuthService
+  const authService = appContainer.get(TYPES.AuthService) as AuthService
 
   const signOut = () => {
     setState(FetchStatus.LOADING)

@@ -6,6 +6,7 @@ import UpdatePasswordForm from '@/application/auth/components/updatePassword'
 import { useContext } from 'react'
 import { AuthProviderContext } from '@/application/auth/contexts/AuthProvider'
 import { redirect } from 'next/navigation'
+import UpdateProfileForm from '@/application/profile/components/updateProfile/form'
 
 export default function Profile () {
   const { auth } = useContext(AuthProviderContext)
@@ -20,7 +21,7 @@ export default function Profile () {
         </h1>
         <div className='flex flex-col gap-y-16'>
           <ChangeAvatarForm />
-          <ChangeUserInfoForm />
+          <UpdateProfileForm />
           <UpdatePasswordForm />
         </div>
       </section>

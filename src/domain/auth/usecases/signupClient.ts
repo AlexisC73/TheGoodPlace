@@ -1,8 +1,8 @@
 import { inject, injectable } from 'inversify'
 import { SignUpClientPayload } from '../entities/payload/signUpClientPayload'
 import type { AuthRepository } from '../repositories/authRepository'
-import { TYPES } from '@/application/auth/container/types'
 import { PayloadError } from '../error/errors'
+import { TYPES } from '@/application/@shared/container/types'
 
 @injectable()
 export class SignupClientUseCase {

@@ -1,22 +1,21 @@
-import { TYPES } from '@/application/profile/container/types'
 import { ProfileService } from '@/application/profile/services/profileService'
 import { InMemoryProfileDataSource } from '@/infrastructure/@shared/datasources/InMemoryProfile'
 import { ProfileDTO } from '@/infrastructure/@shared/dtos/profileDTO'
-import { createProfileContainer } from '@tests/application/profile/container/profileContainer'
 import { Profile } from '@/domain/profile/entities/profile'
 import { UpdateProfileParams } from '@/domain/profile/usecases/updateProfile'
+import { createTestAppContainer } from '@tests/application/@shared/container/container'
+import { TYPES } from '@/application/@shared/container/types'
 
 export const createProfileFixture = () => {
-  const profileContainer = createProfileContainer()
+  const profileContainer = createTestAppContainer()
+
   const profileService = profileContainer.get(
     TYPES.ProfileService
   ) as ProfileService
 
   const profileDataSource = profileContainer.get(
-    TYPES.ProfileDataSource
+    TYPES.LocalProfileDataSource
   ) as InMemoryProfileDataSource
-
-  let profile: ProfileDTO
 
   const updateProfileUseCase = profileService.GetUpdateProfileUseCase()
 

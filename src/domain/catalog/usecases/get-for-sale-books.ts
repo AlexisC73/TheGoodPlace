@@ -1,7 +1,7 @@
 import { inject } from 'inversify'
 import { Book } from '../entities/book'
 import type { BookRepository } from '../repositories/book'
-import { TYPES } from '@/application/catalog/container/types'
+import { TYPES } from '@/application/@shared/container/types'
 
 export class GetForSaleBooksUseCase {
   constructor (

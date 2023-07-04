@@ -1,8 +1,8 @@
 import { inject, injectable } from 'inversify'
-import { TYPES } from '../container/types'
 import type { BookRepository } from '@/domain/catalog/repositories/book'
 import { GetForSaleBooksUseCase } from '@/domain/catalog/usecases/get-for-sale-books'
 import { GetSpecificForSaleBook } from '@/domain/catalog/usecases/get-for-sale-book'
+import { TYPES } from '@/application/@shared/container/types'
 
 @injectable()
 export class CatalogService {

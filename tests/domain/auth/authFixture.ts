@@ -6,15 +6,15 @@ import { Role } from '@/domain/auth/entities/role'
 import { UpdatePasswordUseCaseParams } from '@/domain/auth/usecases/updatePassword'
 import { InMemoryAuthDataSource } from '@/infrastructure/auth/datasources/InMemoryAuthDataSource'
 import { AuthService } from '@/application/auth/services/AuthService'
-import { TYPES } from '@/application/auth/container/types'
 import { InMemoryProfileDataSource } from '@/infrastructure/@shared/datasources/InMemoryProfile'
-import { createTestAuthContainer } from '@tests/application/auth/container/authContainer'
+import { createTestAppContainer } from '@tests/application/@shared/container/container'
+import { TYPES } from '@/application/@shared/container/types'
 
 export const createAuthFixture = () => {
   let authenticatedUser: Auth
   let thrownError: Error | undefined
 
-  const testAuthContainer = createTestAuthContainer()
+  const testAuthContainer = createTestAppContainer()
 
   const authDataSource = testAuthContainer.get(
     TYPES.LocalAuthDataSource
