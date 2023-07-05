@@ -38,4 +38,8 @@ export class InMemoryAuthRepository implements AuthRepository {
     await this.remoteProfileDataSource.updatePassword(payload)
     return Promise.resolve()
   }
+
+  getCachedAuth (): Auth | undefined {
+    return this.cacheAuthDataSource.getCachedAuth()
+  }
 }

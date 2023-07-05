@@ -6,10 +6,12 @@ import { AuthModal } from '../AuthModal'
 import { useContext, useState } from 'react'
 import { AuthProviderContext } from '@/application/auth/contexts/AuthProvider'
 import UserInfo from './UserInfo/UserInfo'
+import { FetchStatus } from '@/application/@shared/FetchStatus'
+import { LoadingSpinner } from '@/assets/spinner'
 
 function Header () {
   const [showAuthModal, setShowAuthModal] = useState(false)
-  const { auth } = useContext(AuthProviderContext)
+  const { auth, state } = useContext(AuthProviderContext)
 
   const closeAuthModal = () => {
     setShowAuthModal(false)
@@ -28,7 +30,8 @@ function Header () {
           <SearchBar />
         </div>
         <div className='xl:w-[200px]'>
-          {auth ? <UserInfo /> : <ConnectionLink action={openAuthModal} />}
+          {state === FetchStatus.SUCCESS &&
+            (auth ? <UserInfo /> : <ConnectionLink action={openAuthModal} />)}
         </div>
       </header>
       {showAuthModal && !auth && <AuthModal closeModal={closeAuthModal} />}

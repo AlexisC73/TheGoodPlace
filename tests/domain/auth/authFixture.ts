@@ -11,10 +11,9 @@ import { InMemoryAuthRepository } from '@/infrastructure/auth/repositories/inMem
 import { InMemoryRemoteAuthDataSource } from '@/infrastructure/auth/datasources/InMemoryRemoteAuthDataSource'
 import { InMemoryRemoteProfileDataSource } from '@/infrastructure/profile/datasources/InMemoryRemoteDataSource'
 import { Profile } from '@/domain/profile/entities/profile'
-import { CacheProfileDataSource } from '@/infrastructure/profile/datasources/cacheDataSource'
 
 export const createAuthFixture = () => {
-  let authUser: Auth
+  let authUser: Auth | undefined
   let profileUser: Profile
   let thrownError: Error | undefined
 
@@ -28,14 +27,13 @@ export const createAuthFixture = () => {
   const profileRemoteDataSource =
     authRepositoryImpl.remoteProfileDataSource as InMemoryRemoteProfileDataSource
   const cacheAuthDataSource = authRepositoryImpl.cacheAuthDataSource
-  const cacheProfileDateSource =
-    authRepositoryImpl.cacheProfileDataSource as CacheProfileDataSource
 
   const authService = testAuthContainer.get(TYPES.AuthService) as AuthService
 
   const signUpClientUseCase = authService.GetSignUpUseCase()
   const signInUseCase = authService.GetSignInUseCase()
   const updatePasswordUseCase = authService.GetUpdatePasswordUseCase()
+  const lookForCachedAuthUseCase = authService.GetLookForCachedAuthUseCase()
 
   return {
     givenUserExists (users: { profile: ProfileDTO; role: Role }[]) {
@@ -43,6 +41,12 @@ export const createAuthFixture = () => {
         users.map(u => ({ id: u.profile.id, role: u.role }))
       )
       profileRemoteDataSource.givenProfiles(users.map(u => u.profile))
+    },
+    givenAuthIsCached (authInfo: { id: string; role: Role }) {
+      cacheAuthDataSource.cacheAuth(authInfo)
+    },
+    givenNoAuthIsCached () {
+      cacheAuthDataSource.removeCachedAuth()
     },
     async whenUserSignUp (params: SignUpClientParams) {
       try {
@@ -65,6 +69,9 @@ export const createAuthFixture = () => {
         thrownError = err
       }
     },
+    whenGetCachedAuthIsCalled () {
+      authUser = lookForCachedAuthUseCase.handle()
+    },
     thenProfileShouldExist (expectedProfile: ProfileDTO) {
       const searchedProfile = profileRemoteDataSource.findById(
         expectedProfile.id
@@ -85,8 +92,8 @@ export const createAuthFixture = () => {
     thenErrorShouldBe (expectedError: new () => Error) {
       expect(thrownError).toBeInstanceOf(expectedError)
     },
-    thenUserShouldNotBeAuthenticated () {
-      expect(profileUser).toBeUndefined()
+    thenAuthenticatedShouldBeUndefined () {
+      expect(authUser).toBeUndefined()
     }
   }
 }
