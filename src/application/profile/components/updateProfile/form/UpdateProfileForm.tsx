@@ -13,7 +13,7 @@ import { UpdateProfilePayload } from '@/domain/profile/entities/payload/updatePr
 import { AuthProviderContext } from '@/application/auth/contexts/AuthProvider'
 import { Id } from '@/domain/@shared/valueObject/id'
 import { useNotifications } from '@/context/NotificationContext'
-import { ProfileProviderContext } from '@/application/profile/contexts/profileProvider'
+import { ProfileProviderContext } from '@/application/auth/contexts/ProfileProvider'
 
 function UpdateProfileFormElement () {
   const { auth } = useContext(AuthProviderContext)

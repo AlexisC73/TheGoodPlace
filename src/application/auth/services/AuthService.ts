@@ -6,6 +6,7 @@ import { UpdatePasswordUseCase } from '@/domain/auth/usecases/updatePassword'
 import { TYPES } from '@/application/@shared/container/types'
 import { LookForCachedAuthUseCase } from '@/domain/auth/usecases/lookForCachedAuth'
 import { SignOutUseCase } from '@/domain/auth/usecases/signOutUseCase'
+import { GetProfileUseCase } from '@/domain/auth/usecases/getProfile'
 
 @injectable()
 export class AuthService {
@@ -32,5 +33,9 @@ export class AuthService {
 
   public GetSignOutUseCase (): SignOutUseCase {
     return new SignOutUseCase(this.authRepository)
+  }
+
+  public GetGetProfileUseCase (): GetProfileUseCase {
+    return new GetProfileUseCase(this.authRepository)
   }
 }

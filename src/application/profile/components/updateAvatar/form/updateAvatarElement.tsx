@@ -2,7 +2,6 @@
 
 import FormButton from '@/components/Form/FormButton/FormButton'
 import { AuthProviderContext } from '@/application/auth/contexts/AuthProvider'
-import { ProfileProviderContext } from '@/application/profile/contexts/profileProvider'
 import { UpdateAvatarProviderContext } from '@/application/profile/contexts/updateAvatar'
 import { DeleteIcon } from '@/assets/DeleteIcon'
 import { UploadIcon } from '@/assets/UploadIcon'
@@ -10,6 +9,7 @@ import { Id } from '@/domain/@shared/valueObject/id'
 import { UpdateAvatarPayload } from '@/domain/profile/entities/payload/updateAvatarPayload'
 import Image from 'next/image'
 import { ChangeEvent, useContext, useRef } from 'react'
+import { ProfileProviderContext } from '@/application/auth/contexts/ProfileProvider'
 
 const UpdateAvatarForm = () => {
   const hiddenInputFile = useRef<HTMLInputElement>(null)

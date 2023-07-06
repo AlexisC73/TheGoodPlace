@@ -11,7 +11,8 @@ export interface RemoteProfileDataSource {
   updatePassword(payload: UpdatePasswordPayload): Promise<void>
   signInProfileWithEmail(payload: SignInPayload): Promise<ProfileDTO>
   updateAvatar(payload: UpdateAvatarPayload): Promise<string>
-  getProfile(id: string): Promise<ProfileDTO>
+  getProfile(token: string): Promise<ProfileDTO>
+  isEmailExist(email: string): Promise<boolean>
 }
 
 export class InMemoryRemoteProfileDataSource
@@ -44,7 +45,13 @@ export class InMemoryRemoteProfileDataSource
     return Promise.resolve(avatarUrl)
   }
 
-  getProfile (id: string): Promise<ProfileDTO> {
+  isEmailExist (email: string): Promise<boolean> {
+    const profiles = this._getProfiles()
+    return Promise.resolve(profiles.some(p => p.email === email))
+  }
+
+  getProfile (token: string): Promise<ProfileDTO> {
+    const { id } = JSON.parse(token)
     const profile = this._getProfile(id)
     if (!profile) {
       throw new Error("Profile doesn't exist")

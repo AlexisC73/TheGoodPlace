@@ -2,7 +2,6 @@
 
 import { FormEventHandler, useContext } from 'react'
 import { useNotifications } from '@/context/NotificationContext'
-import { AuthProviderContext } from '@/application/auth/contexts/AuthProvider'
 import FormElement from '@/components/Form/FormElement'
 import { FetchStatus } from '@/application/@shared/FetchStatus'
 import Modal from '@/components/ui/Modal/Modal'
@@ -11,6 +10,7 @@ import { Password } from '@/domain/@shared/valueObject/password'
 import { SignUpClientPayload } from '@/domain/auth/entities/payload/signUpClientPayload'
 import { Id } from '@/domain/@shared/valueObject/id'
 import { SignUpProviderContext } from '@/application/auth/contexts/SignUpProvider'
+import { createId } from '@paralleldrive/cuid2'
 
 interface SignUpModalProps {
   closeModal: () => void
@@ -37,7 +37,7 @@ export default function SignUpModalComponent ({
     if (!inputEmail || !inputPassword || !inputPasswordConfirmation) {
       return
     }
-    const id = Id.create('12345678')
+    const id = Id.create(createId())
     const email = Email.create(inputEmail)
     const password = Password.create(inputPassword)
     const passwordConfirmation = Password.create(inputPasswordConfirmation)

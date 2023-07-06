@@ -18,7 +18,7 @@ describe('lookForCachedAuthUseCase', () => {
       }
     ])
 
-    authFixture.givenAuthIsCached({
+    authFixture.givenAuthIsAuthenticated({
       id: 'alice',
       role: Role.CLIENT
     })

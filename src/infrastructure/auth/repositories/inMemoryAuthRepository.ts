@@ -3,8 +3,7 @@ import { Auth } from '@/domain/auth/entities/auth'
 import { SignUpClientPayload } from '@/domain/auth/entities/payload/signUpClientPayload'
 import { SignInPayload } from '@/domain/auth/entities/payload/signInPayload'
 import { UpdatePasswordPayload } from '@/domain/auth/entities/payload/updatePassword'
-import { inject, injectable } from 'inversify'
-import { TYPES } from '@/application/@shared/container/types'
+import { injectable } from 'inversify'
 import { CacheProfileDataSource } from '@/infrastructure/profile/datasources/cacheDataSource'
 import { InMemoryRemoteProfileDataSource } from '@/infrastructure/profile/datasources/InMemoryRemoteDataSource'
 import { InMemoryRemoteAuthDataSource } from '../datasources/InMemoryRemoteAuthDataSource'
@@ -39,11 +38,26 @@ export class InMemoryAuthRepository implements AuthRepository {
     return Promise.resolve()
   }
 
+  async getProfile (token: string): Promise<Profile> {
+    const { id } = JSON.parse(token) as { id: string }
+    let profile = this.cacheProfileDataSource.getProfile()
+    if (!profile || profile.id !== id) {
+      this.cacheProfileDataSource.removeProfile()
+      profile = (
+        await this.remoteProfileDataSource.getProfile(token)
+      ).toDomain()
+      this.cacheProfileDataSource.saveProfile(profile)
+    }
+    if (!profile) throw new Error('Profile not found')
+    return profile
+  }
+
   getCachedAuth (): Auth | undefined {
     return this.cacheAuthDataSource.getCachedAuth()
   }
 
   signOut (): void {
     this.cacheAuthDataSource.removeCachedAuth()
+    this.cacheProfileDataSource.removeProfile()
   }
 }

@@ -19,7 +19,13 @@ export class InMemoryRemoteAuthDataSource implements RemoteDataSource {
     const auths = this.getAuths()
     const isExist = auths.some(p => p.id === payload.id)
     if (isExist) {
-      throw new Error('Auth already exists, please try again later.')
+      throw new Error('Something went wrong, please try again.')
+    }
+    const isEmailExis = await this.remoteProfileDataSource.isEmailExist(
+      payload.email
+    )
+    if (isEmailExis) {
+      throw new Error('Email already exist')
     }
     const newAuth = AuthDTO.fromData({
       id: payload.id,

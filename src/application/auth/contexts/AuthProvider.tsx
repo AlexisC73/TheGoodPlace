@@ -9,7 +9,7 @@ import { AuthService } from '../services/AuthService'
 
 export const AuthProviderContext = createContext({
   auth: undefined as Auth | undefined,
-  setAuth: (auth: Auth | undefined) => {},
+  setAuth: {} as React.Dispatch<React.SetStateAction<Auth | undefined>>,
   state: FetchStatus.INITIAL
 })
 

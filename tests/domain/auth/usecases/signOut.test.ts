@@ -9,10 +9,11 @@ describe('SignOut', () => {
   })
 
   test('when alice signut, her auth should be deleted from cache', () => {
-    authFixture.givenAuthIsCached(authBuilder().withId('alice').build())
+    authFixture.givenAuthIsAuthenticated(authBuilder().withId('alice').build())
 
     authFixture.whenAuthSignOut()
 
     authFixture.thenAuthCacheShouldBeEmpty()
+    authFixture.thenProfileCacheShouldBeEmpty()
   })
 })

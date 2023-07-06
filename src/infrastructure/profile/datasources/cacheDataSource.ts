@@ -5,6 +5,7 @@ export interface LocalProfileDataSource {
   updateProfile(payload: UpdateProfilePayload): void
   saveProfileInCache(profile: Profile): void
   updateAvatar(avatarURL: string): void
+  removeProfile(): void
 }
 
 export class CacheProfileDataSource implements LocalProfileDataSource {
@@ -34,6 +35,10 @@ export class CacheProfileDataSource implements LocalProfileDataSource {
 
   saveProfileInCache (profile: Profile): void {
     this.saveProfile(profile)
+  }
+
+  removeProfile () {
+    localStorage.removeItem('profile')
   }
 
   getProfile (): Profile | undefined {

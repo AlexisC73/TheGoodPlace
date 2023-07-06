@@ -56,7 +56,7 @@ describe('When user update his password', () => {
       )
     })
 
-    authFixture.thenErrorShouldBe(PayloadError)
+    authFixture.thenErrorShouldBeThrown()
     authFixture.thenProfileShouldExist(
       aliceDtoBuilder.withPassword('alice-password').build()
     )

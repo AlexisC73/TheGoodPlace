@@ -5,7 +5,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import SignOutButton from '@/application/auth/components/signOut/button'
 import { useContext } from 'react'
-import { ProfileProviderContext } from '@/application/profile/contexts/profileProvider'
+import { AuthProviderContext } from '@/application/auth/contexts/AuthProvider'
+import { ProfileProviderContext } from '@/application/auth/contexts/ProfileProvider'
 
 function UserInfo () {
   return (

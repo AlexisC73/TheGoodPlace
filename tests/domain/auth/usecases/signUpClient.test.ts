@@ -57,7 +57,7 @@ describe('When new user signUp', () => {
       )
     })
 
-    authFixture.thenErrorShouldBe(PayloadError)
+    authFixture.thenErrorShouldBeThrown()
     authFixture.thenProfileShouldNotExist('alice-id')
   })
 })

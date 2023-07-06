@@ -6,7 +6,8 @@ import { ProfileService } from '../services/profileService'
 import { appContainer } from '@/application/@shared/container/container'
 import { TYPES } from '@/application/@shared/container/types'
 import { UpdateAvatarPayload } from '@/domain/profile/entities/payload/updateAvatarPayload'
-import { ProfileProviderContext } from './profileProvider'
+import { AuthProviderContext } from '@/application/auth/contexts/AuthProvider'
+import { ProfileProviderContext } from '@/application/auth/contexts/ProfileProvider'
 
 export const UpdateAvatarProviderContext = createContext({
   state: FetchStatus.INITIAL,
