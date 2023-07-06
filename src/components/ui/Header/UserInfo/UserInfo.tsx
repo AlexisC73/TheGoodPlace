@@ -4,6 +4,8 @@ import CartLogo from '@/assets/CartLogo'
 import Image from 'next/image'
 import Link from 'next/link'
 import SignOutButton from '@/application/auth/components/signOut/button'
+import { useContext } from 'react'
+import { ProfileProviderContext } from '@/application/profile/contexts/profileProvider'
 
 function UserInfo () {
   return (
@@ -18,12 +20,8 @@ function UserInfo () {
 
 export default UserInfo
 
-const AvatarImage = ({ src }: { src?: string | null | undefined }) => {
-  const imageLink = src
-    ? src.length <= 0
-      ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
-      : src
-    : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
+const AvatarImage = () => {
+  const { profile } = useContext(ProfileProviderContext)
 
   return (
     <Link
@@ -33,7 +31,10 @@ const AvatarImage = ({ src }: { src?: string | null | undefined }) => {
       <Image
         height={42}
         width={42}
-        src={imageLink}
+        src={
+          profile?.avatarUrl ??
+          'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
+        }
         alt='avatar'
         className='object-cover h-full w-full'
       />

@@ -6,6 +6,10 @@ export class UpdateAvatarPayload {
     public readonly formData: FormData
   ) {}
 
+  isValid (): boolean {
+    return this._userId.isValid() && this.formData.has('avatar')
+  }
+
   get userId (): string {
     return this._userId.value
   }

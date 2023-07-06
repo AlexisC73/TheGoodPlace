@@ -7,10 +7,12 @@ import { useContext } from 'react'
 import { AuthProviderContext } from '@/application/auth/contexts/AuthProvider'
 import { redirect } from 'next/navigation'
 import UpdateProfileForm from '@/application/profile/components/updateProfile/form'
+import UpdateAvatarForm from '@/application/profile/components/updateAvatar/form'
+import { FetchStatus } from '@/application/@shared/FetchStatus'
 
 export default function Profile () {
-  const { auth } = useContext(AuthProviderContext)
-  if (!auth) {
+  const { auth, state } = useContext(AuthProviderContext)
+  if (!auth && state !== FetchStatus.INITIAL && state !== FetchStatus.LOADING) {
     redirect('/')
   }
   return (
@@ -20,7 +22,7 @@ export default function Profile () {
           Réglage du profile
         </h1>
         <div className='flex flex-col gap-y-16'>
-          <ChangeAvatarForm />
+          <UpdateAvatarForm />
           <UpdateProfileForm />
           <UpdatePasswordForm />
         </div>
