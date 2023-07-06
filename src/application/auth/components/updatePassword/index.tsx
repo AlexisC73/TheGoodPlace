@@ -1,10 +1,10 @@
 import UpdatePasswordContext from '../../contexts/UpdatePassword'
-import UpdatePasswordFormElement from './updatePasswordForm'
+import UpdatePasswordFormComponent from './updatePasswordForm'
 
 export default function UpdatePasswordForm () {
   return (
     <UpdatePasswordContext>
-      <UpdatePasswordFormElement />
+      <UpdatePasswordFormComponent />
     </UpdatePasswordContext>
   )
 }

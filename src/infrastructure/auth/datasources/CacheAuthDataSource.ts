@@ -25,13 +25,6 @@ export class CacheAuthDataSource implements LocalAuthDataSource {
   }
 
   // FOR TESTS
-  findById (id: string): Auth | undefined {
-    const auth = localStorage.getItem('auth')
-    if (auth) {
-      return Auth.fromData(JSON.parse(auth))
-    }
-    return undefined
-  }
 
   cacheAuth (authInfo: { id: string; role: Role }) {
     this.saveAuth(

@@ -1,6 +1,7 @@
 import { SignInPayload } from '@/domain/auth/entities/payload/signInPayload'
 import { SignUpClientPayload } from '@/domain/auth/entities/payload/signUpClientPayload'
 import { UpdatePasswordPayload } from '@/domain/auth/entities/payload/updatePassword'
+import { UpdateAvatarPayload } from '@/domain/profile/entities/payload/updateAvatarPayload'
 import { UpdateProfilePayload } from '@/domain/profile/entities/payload/updateProfilePayload'
 import { ProfileDTO } from '@/infrastructure/@shared/dtos/profileDTO'
 
@@ -9,6 +10,8 @@ export interface RemoteProfileDataSource {
   createProfile(payload: SignUpClientPayload): Promise<ProfileDTO>
   updatePassword(payload: UpdatePasswordPayload): Promise<void>
   signInProfileWithEmail(payload: SignInPayload): Promise<ProfileDTO>
+  updateAvatar(payload: UpdateAvatarPayload): Promise<string>
+  getProfile(id: string): Promise<ProfileDTO>
 }
 
 export class InMemoryRemoteProfileDataSource
@@ -26,6 +29,27 @@ export class InMemoryRemoteProfileDataSource
     })
     this._saveProfile(newProfile)
     return Promise.resolve()
+  }
+
+  updateAvatar (payload: UpdateAvatarPayload): Promise<string> {
+    const profile = this._getProfile(payload.userId)
+    if (!profile) {
+      throw new Error("Profile doesn't exist")
+    }
+    // traitement de l'ajout de l'image
+    const avatarUrl =
+      'https://www.searchenginejournal.com/wp-content/uploads/2022/06/image-search-1600-x-840-px-62c6dc4ff1eee-sej-760x400.webp'
+    const newProfile = profile.copyWith({ avatarUrl })
+    this._saveProfile(newProfile)
+    return Promise.resolve(avatarUrl)
+  }
+
+  getProfile (id: string): Promise<ProfileDTO> {
+    const profile = this._getProfile(id)
+    if (!profile) {
+      throw new Error("Profile doesn't exist")
+    }
+    return Promise.resolve(profile)
   }
 
   signInProfileWithEmail (payload: SignInPayload) {

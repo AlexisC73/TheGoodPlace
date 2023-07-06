@@ -12,7 +12,7 @@ import { Id } from '@/domain/@shared/valueObject/id'
 import { AuthProviderContext } from '../../contexts/AuthProvider'
 import { useNotifications } from '@/context/NotificationContext'
 
-export default function UpdatePasswordFormElement () {
+export default function UpdatePasswordFormComponent () {
   const { auth } = useContext(AuthProviderContext)
   const { state, updatePassword, error } = useContext(
     UpdatePasswordProviderContext

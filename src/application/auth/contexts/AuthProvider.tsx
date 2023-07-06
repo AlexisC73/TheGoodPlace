@@ -8,15 +8,15 @@ import { createContext, useEffect, useState } from 'react'
 import { AuthService } from '../services/AuthService'
 
 export const AuthProviderContext = createContext({
-  auth: null as Auth | null,
-  setAuth: (auth: Auth | null) => {},
+  auth: undefined as Auth | undefined,
+  setAuth: (auth: Auth | undefined) => {},
   state: FetchStatus.INITIAL
 })
 
 export const AuthContext: React.FC<{ children: React.ReactNode }> = ({
   children
 }) => {
-  const [auth, setAuth] = useState<Auth | null>(null)
+  const [auth, setAuth] = useState<Auth>()
   const [state, setState] = useState<FetchStatus>(FetchStatus.INITIAL)
   const authService = appContainer.get(TYPES.AuthService) as AuthService
   const lookForCachedAuthUseCase = authService.GetLookForCachedAuthUseCase()
@@ -24,10 +24,7 @@ export const AuthContext: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     if (state === FetchStatus.INITIAL) {
       setState(FetchStatus.LOADING)
-      const auth = lookForCachedAuthUseCase.handle()
-      if (auth) {
-        setAuth(auth)
-      }
+      setAuth(lookForCachedAuthUseCase.handle())
       setState(FetchStatus.SUCCESS)
     }
   }, [])

@@ -7,6 +7,7 @@ import { TYPES } from '@/application/@shared/container/types'
 import { ProfileRepositoryImpl } from '@/infrastructure/profile/repositories/profileRepository'
 import { CacheProfileDataSource } from '@/infrastructure/profile/datasources/cacheDataSource'
 import { InMemoryRemoteProfileDataSource } from '@/infrastructure/profile/datasources/InMemoryRemoteDataSource'
+import { UpdateAvatarParams } from '@/domain/profile/usecases/updateAvatar'
 
 export const createProfileFixture = () => {
   const profileContainer = createTestAppContainer()
@@ -25,13 +26,17 @@ export const createProfileFixture = () => {
     profileRepository.remoteProfileDataSource as InMemoryRemoteProfileDataSource
 
   const updateProfileUseCase = profileService.GetUpdateProfileUseCase()
+  const updateAvatarUseCase = profileService.GetUpdateAvatarUseCase()
 
   return {
     givenProfilesExistInRemote (profiles: ProfileDTO[]) {
       profileRemoteDataSource.givenProfiles(profiles)
     },
-    whenUserUpdateHisProfile (params: UpdateProfileParams) {
-      updateProfileUseCase.handle(params)
+    async whenUserUpdateHisProfile (params: UpdateProfileParams) {
+      await updateProfileUseCase.handle(params)
+    },
+    async whenUserUpdateProfileAvatar (params: UpdateAvatarParams) {
+      await updateAvatarUseCase.handle(params)
     },
     thenProfileShouldBe (expectedProfile: Profile) {
       const foundProfile = profileRemoteDataSource._getProfile(

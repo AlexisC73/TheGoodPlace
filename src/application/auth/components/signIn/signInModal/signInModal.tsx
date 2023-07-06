@@ -13,7 +13,7 @@ interface SignInModalProps {
   switchToSignup: () => void
 }
 
-export default function SignInModal ({
+export default function SignInModalComponent ({
   closeModal,
   switchToSignup
 }: SignInModalProps) {

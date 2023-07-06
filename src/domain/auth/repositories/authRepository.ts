@@ -8,4 +8,5 @@ export interface AuthRepository {
   signIn(payload: SignInPayload): Promise<Auth>
   updatePassword(payload: UpdatePasswordPayload): Promise<void>
   getCachedAuth(): Auth | undefined
+  signOut(): void
 }

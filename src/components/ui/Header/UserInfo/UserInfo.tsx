@@ -1,25 +1,15 @@
 'use client'
 
 import CartLogo from '@/assets/CartLogo'
-import React, { useContext } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import LogoutIcon from '@/assets/LogoutIcon/LogoutIcon'
-import { AuthProviderContext } from '@/application/auth/contexts/AuthProvider'
+import SignOutButton from '@/application/auth/components/signOut/button'
 
 function UserInfo () {
-  const { signOut } = useContext(AuthProviderContext)
-  const handleLogout = () => {
-    signOut()
-  }
-
   return (
     <div className='flex items-center gap-8 min-w-[124px] justify-end max-xl:pr-3'>
       <CartLogo className='text-[22px] text-primary' />
-      <LogoutIcon
-        onClick={handleLogout}
-        className='text-primary text-[22px] cursor-pointer'
-      />
+      <SignOutButton />
       <div className='separator h-7 w-[2px] hidden sm:block bg-[#E9EDF3]'></div>
       <AvatarImage />
     </div>

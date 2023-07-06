@@ -42,4 +42,8 @@ export class InMemoryAuthRepository implements AuthRepository {
   getCachedAuth (): Auth | undefined {
     return this.cacheAuthDataSource.getCachedAuth()
   }
+
+  signOut (): void {
+    this.cacheAuthDataSource.removeCachedAuth()
+  }
 }

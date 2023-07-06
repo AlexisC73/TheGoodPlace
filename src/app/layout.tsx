@@ -3,6 +3,7 @@ import './globals.css'
 import { Roboto } from 'next/font/google'
 import { NotificationContextProvider } from '@/context/NotificationContext'
 import AuthContext from '@/application/auth/contexts/AuthProvider'
+import ProfileContext from '@/application/profile/contexts/profileProvider'
 
 export const metadata = {
   title: 'The Book Place',
@@ -20,10 +21,12 @@ export default function RootLayout ({
     <html lang='en'>
       <body className={roboto.className}>
         <AuthContext>
-          <NotificationContextProvider>
-            <Header />
-            {children}
-          </NotificationContextProvider>
+          <ProfileContext>
+            <NotificationContextProvider>
+              <Header />
+              {children}
+            </NotificationContextProvider>
+          </ProfileContext>
         </AuthContext>
       </body>
     </html>

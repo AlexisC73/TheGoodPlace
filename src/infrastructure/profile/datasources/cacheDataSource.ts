@@ -4,6 +4,7 @@ import { Profile } from '@/domain/profile/entities/profile'
 export interface LocalProfileDataSource {
   updateProfile(payload: UpdateProfilePayload): void
   saveProfileInCache(profile: Profile): void
+  updateAvatar(avatarURL: string): void
 }
 
 export class CacheProfileDataSource implements LocalProfileDataSource {
@@ -17,6 +18,16 @@ export class CacheProfileDataSource implements LocalProfileDataSource {
       lastname: payload.updateData.lastname,
       firstname: payload.updateData.firstname
     })
+    this.saveProfile(newProfile)
+    return
+  }
+
+  updateAvatar (avatarUrl: string): void {
+    const profile = this.getProfile()
+    if (!profile) {
+      return
+    }
+    const newProfile = profile.copyWith({ avatarUrl })
     this.saveProfile(newProfile)
     return
   }

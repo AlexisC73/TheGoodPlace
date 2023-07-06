@@ -1,5 +1,5 @@
 import { SignUpContext } from '@/application/auth/contexts/SignUpProvider'
-import SignUpModal from './signUpModal'
+import SignUpModalComponent from './signUpModal'
 import withOverlay from '@/components/Overlay/overlay'
 
 interface SignUpModalProps {
@@ -10,7 +10,10 @@ interface SignUpModalProps {
 function SignUpModalUseCase ({ closeModal, switchToSignIn }: SignUpModalProps) {
   return (
     <SignUpContext>
-      <SignUpModal switchToSignIn={switchToSignIn} closeModal={closeModal} />
+      <SignUpModalComponent
+        switchToSignIn={switchToSignIn}
+        closeModal={closeModal}
+      />
     </SignUpContext>
   )
 }

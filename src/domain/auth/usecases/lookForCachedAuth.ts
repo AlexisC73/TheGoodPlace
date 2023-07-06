@@ -1,4 +1,3 @@
-import { CacheAuthDataSource } from '@/infrastructure/auth/datasources/CacheAuthDataSource'
 import { Auth } from '../entities/auth'
 import { AuthRepository } from '../repositories/authRepository'
 

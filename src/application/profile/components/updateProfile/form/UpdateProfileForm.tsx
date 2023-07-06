@@ -13,9 +13,11 @@ import { UpdateProfilePayload } from '@/domain/profile/entities/payload/updatePr
 import { AuthProviderContext } from '@/application/auth/contexts/AuthProvider'
 import { Id } from '@/domain/@shared/valueObject/id'
 import { useNotifications } from '@/context/NotificationContext'
+import { ProfileProviderContext } from '@/application/profile/contexts/profileProvider'
 
 function UpdateProfileFormElement () {
   const { auth } = useContext(AuthProviderContext)
+  const { setProfile, profile } = useContext(ProfileProviderContext)
   const { state, updateProfile, error } = useContext(
     UpdateProfileProviderContext
   )
@@ -30,23 +32,19 @@ function UpdateProfileFormElement () {
     const inputLastname = formData.get('lastname')?.toString()
     const inputEmail = formData.get('email')?.toString()
     if (
+      !auth ||
       !inputPassword ||
-      !inputFirstname ||
-      !inputLastname ||
-      !inputEmail ||
-      !auth
+      !(!!inputEmail || !!inputFirstname || !!inputLastname)
     ) {
       return
     }
     const id = Id.create(auth.id)
-    const email = Email.create(inputEmail)
-    const firstname = Name.create(inputFirstname)
-    const lastname = Name.create(inputLastname)
+    const email = inputEmail ? Email.create(inputEmail) : undefined
+    const firstname = inputFirstname ? Name.create(inputFirstname) : undefined
+    const lastname = inputLastname ? Name.create(inputLastname) : undefined
     const password = Password.create(inputPassword)
     if (
-      !email.isValid() ||
-      !firstname.isValid() ||
-      !lastname.isValid() ||
+      !(email?.isValid() || firstname?.isValid() || lastname?.isValid()) ||
       !password.isValid() ||
       !id.isValid()
     ) {
@@ -58,6 +56,13 @@ function UpdateProfileFormElement () {
       lastname
     })
     updateProfile(payload)
+    setProfile(prev =>
+      prev?.copyWith({
+        email: payload.updateData.email,
+        firstname: payload.updateData.firstname,
+        lastname: payload.updateData.lastname
+      })
+    )
   }
 
   if (state === FetchStatus.SUCCESS) {
@@ -83,16 +88,28 @@ function UpdateProfileFormElement () {
       submitLabel='Sauvegarder les changement'
       icon={<CheckIcon />}
       onSubmit={handleSubmitForm}
-      canSubmit={state !== FetchStatus.LOADING}
+      canSubmit={state !== FetchStatus.LOADING && !!profile}
     >
       <FormElement
         label='Mot de passe (actuel)'
         name='password'
         type='password'
       />
-      <FormElement label='Prénom' name='firstname' />
-      <FormElement label='Nom de famille' name='lastname' />
-      <FormElement label='Addresse Email' name='email' />
+      <FormElement
+        label='Prénom'
+        name='firstname'
+        currentValue={profile?.firstname}
+      />
+      <FormElement
+        label='Nom de famille'
+        name='lastname'
+        currentValue={profile?.lastname}
+      />
+      <FormElement
+        label='Addresse Email'
+        name='email'
+        currentValue={profile?.email}
+      />
     </ChangeInformationForm>
   )
 }
