@@ -1,6 +1,6 @@
 'use client'
 
-import FormButton from '@/app/user/profile/component/avatar/FormButton/FormButton'
+import FormButton from '@/components/Form/FormButton/FormButton'
 import { AuthProviderContext } from '@/application/auth/contexts/AuthProvider'
 import { ProfileProviderContext } from '@/application/profile/contexts/profileProvider'
 import { UpdateAvatarProviderContext } from '@/application/profile/contexts/updateAvatar'

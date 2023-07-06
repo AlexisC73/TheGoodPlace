@@ -1,7 +1,5 @@
 'use client'
 
-import ChangeAvatarForm from './component/avatar/ChangeAvatarForm'
-import ChangeUserInfoForm from './component/ChangeUserInfoForm/ChangeUserInfoForm'
 import UpdatePasswordForm from '@/application/auth/components/updatePassword'
 import { useContext } from 'react'
 import { AuthProviderContext } from '@/application/auth/contexts/AuthProvider'

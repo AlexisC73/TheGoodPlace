@@ -3,7 +3,7 @@
 import CheckIcon from '@/assets/CheckIcon'
 import FormElement from '@/components/Form/FormElement'
 import { FormEventHandler, useContext } from 'react'
-import ChangeInformationForm from '@/app/user/profile/component/ChangeInformationForm/ChangeInformationForm'
+import ChangeInformationForm from '@/components/Form/ChangeInformationForm/ChangeInformationForm'
 import { UpdateProfileProviderContext } from '@/application/profile/contexts/updateProfile'
 import { FetchStatus } from '@/application/@shared/FetchStatus'
 import { Email } from '@/domain/@shared/valueObject/email'
