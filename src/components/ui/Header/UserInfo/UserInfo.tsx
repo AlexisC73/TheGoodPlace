@@ -3,9 +3,8 @@
 import CartLogo from '@/assets/CartLogo'
 import Image from 'next/image'
 import Link from 'next/link'
-import SignOutButton from '@/application/auth/components/signOut/button'
+import SignOutButton from '@/presentation/auth/signOut/button'
 import { useContext } from 'react'
-import { AuthProviderContext } from '@/application/auth/contexts/AuthProvider'
 import { ProfileProviderContext } from '@/application/auth/contexts/ProfileProvider'
 
 function UserInfo () {

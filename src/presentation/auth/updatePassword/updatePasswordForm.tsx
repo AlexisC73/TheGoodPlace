@@ -3,13 +3,13 @@
 import { FetchStatus } from '@/application/@shared/FetchStatus'
 import CheckIcon from '@/assets/CheckIcon'
 import { FormEventHandler, useContext, useRef } from 'react'
-import { UpdatePasswordProviderContext } from '../../contexts/UpdatePassword'
+import { UpdatePasswordProviderContext } from '@/application/auth/contexts/UpdatePassword'
 import ChangeInformationForm from '@/components/Form/ChangeInformationForm/ChangeInformationForm'
 import FormElement from '@/components/Form/FormElement'
 import { Password } from '@/domain/@shared/valueObject/password'
 import { UpdatePasswordPayload } from '@/domain/auth/entities/payload/updatePassword'
 import { Id } from '@/domain/@shared/valueObject/id'
-import { AuthProviderContext } from '../../contexts/AuthProvider'
+import { AuthProviderContext } from '@/application/auth/contexts/AuthProvider'
 import { useNotifications } from '@/context/NotificationContext'
 
 export default function UpdatePasswordFormComponent () {

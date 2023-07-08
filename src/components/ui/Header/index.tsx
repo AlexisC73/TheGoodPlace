@@ -7,7 +7,6 @@ import { useContext, useState } from 'react'
 import { AuthProviderContext } from '@/application/auth/contexts/AuthProvider'
 import UserInfo from './UserInfo/UserInfo'
 import { FetchStatus } from '@/application/@shared/FetchStatus'
-import { LoadingSpinner } from '@/assets/spinner'
 
 function Header () {
   const [showAuthModal, setShowAuthModal] = useState(false)

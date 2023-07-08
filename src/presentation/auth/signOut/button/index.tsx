@@ -1,4 +1,4 @@
-import SignOutContext from '../../../contexts/signOutProvider'
+import SignOutContext from '@/application/auth/contexts/signOutProvider'
 import SignOutComponent from './SignOut'
 
 export default function SignOutButton () {

@@ -1,11 +1,11 @@
 'use client'
 
-import UpdatePasswordForm from '@/application/auth/components/updatePassword'
+import UpdatePasswordForm from '@/presentation/auth/updatePassword'
 import { useContext } from 'react'
 import { AuthProviderContext } from '@/application/auth/contexts/AuthProvider'
 import { redirect } from 'next/navigation'
-import UpdateProfileForm from '@/application/profile/components/updateProfile/form'
-import UpdateAvatarForm from '@/application/profile/components/updateAvatar/form'
+import UpdateProfileForm from '@/presentation/profile/updateProfile/form'
+import UpdateAvatarForm from '@/presentation/profile/updateAvatar/form'
 import { FetchStatus } from '@/application/@shared/FetchStatus'
 
 export default function Profile () {

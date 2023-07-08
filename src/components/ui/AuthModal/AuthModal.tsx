@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import SignInModal from '@/application/auth/components/signIn/signInModal'
-import SignUpModal from '@/application/auth/components/signUp/modal'
+import SignInModal from '@/presentation/auth/signIn/signInModal'
+import SignUpModal from '@/presentation/auth/signUp/modal'
 
 interface SigninModalProps {
   closeModal: () => void

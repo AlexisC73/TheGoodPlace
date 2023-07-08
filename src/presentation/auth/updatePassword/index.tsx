@@ -1,4 +1,4 @@
-import UpdatePasswordContext from '../../contexts/UpdatePassword'
+import UpdatePasswordContext from '@/application/auth/contexts/UpdatePassword'
 import UpdatePasswordFormComponent from './updatePasswordForm'
 
 export default function UpdatePasswordForm () {

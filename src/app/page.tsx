@@ -11,7 +11,6 @@ export default function Home () {
   return (
     <BooksFetcherProvider>
       <ForSaleBooksPage />
-      {!!auth && (profile ? <h1>{profile.email}</h1> : <h1>No Profile</h1>)}
     </BooksFetcherProvider>
   )
 }
