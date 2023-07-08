@@ -1,8 +1,12 @@
 import { AuthRepository } from '../repositories/authRepository'
 import { Auth } from '../entities/auth'
+import { inject, injectable } from 'inversify'
 
+@injectable()
 export class GetProfileUseCase {
-  constructor (private readonly authRepository: AuthRepository) {}
+  constructor (
+    @inject(AuthRepository) private readonly authRepository: AuthRepository
+  ) {}
 
   async handle (params: GetProfileUseCaseParams) {
     const { auth } = params

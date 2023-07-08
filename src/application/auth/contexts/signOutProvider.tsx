@@ -1,11 +1,10 @@
 'use client'
 
-import type { AuthService } from '@/application/auth/services/AuthService'
 import { createContext, useContext, useState } from 'react'
 import { AuthProviderContext } from './AuthProvider'
 import { FetchStatus } from '@/application/@shared/FetchStatus'
 import { appContainer } from '@/application/@shared/container/container'
-import { TYPES } from '@/application/@shared/container/types'
+import { SignOutUseCase } from '@/domain/auth/usecases/signOutUseCase'
 
 export const SignOutProviderContext = createContext({
   state: FetchStatus.INITIAL,
@@ -20,9 +19,7 @@ export const SignOutContext: React.FC<{ children: React.ReactNode }> = ({
   const [state, setState] = useState<FetchStatus>(FetchStatus.INITIAL)
   const [error, setError] = useState<string>('')
 
-  const authService = appContainer.get(TYPES.AuthService) as AuthService
-
-  const signOutUseCase = authService.GetSignOutUseCase()
+  const signOutUseCase = appContainer.get(SignOutUseCase)
 
   const signOut = async (): Promise<void> => {
     setState(FetchStatus.LOADING)

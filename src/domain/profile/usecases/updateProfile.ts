@@ -1,11 +1,11 @@
-import { inject } from 'inversify'
+import { inject, injectable } from 'inversify'
 import { UpdateProfilePayload } from '../entities/payload/updateProfilePayload'
-import type { ProfileRepository } from '../repositories/profileRepository'
-import { TYPES } from '@/application/@shared/container/types'
+import { ProfileRepository } from '../repositories/profileRepository'
 
+@injectable()
 export class UpdateProfileUseCase {
   constructor (
-    @inject(TYPES.ProfileRepository)
+    @inject(ProfileRepository)
     private readonly profileRepository: ProfileRepository
   ) {}
 

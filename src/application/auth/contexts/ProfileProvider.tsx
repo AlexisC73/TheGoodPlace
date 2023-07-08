@@ -2,11 +2,11 @@
 
 import { FetchStatus } from '@/application/@shared/FetchStatus'
 import { appContainer } from '@/application/@shared/container/container'
-import { TYPES } from '@/application/@shared/container/types'
 import { createContext, useContext, useEffect, useState } from 'react'
-import { AuthService } from '../services/AuthService'
 import { Profile } from '@/domain/profile/entities/profile'
 import { AuthProviderContext } from './AuthProvider'
+import { GetProfileUseCase } from '@/domain/auth/usecases/getProfile'
+import { SignOutUseCase } from '@/domain/auth/usecases/signOutUseCase'
 
 export const ProfileProviderContext = createContext({
   profile: undefined as Profile | undefined,
@@ -20,9 +20,8 @@ export const ProfileContext: React.FC<{ children: React.ReactNode }> = ({
   const { auth, state: authState } = useContext(AuthProviderContext)
   const [profile, setProfile] = useState<Profile>()
   const [state, setState] = useState<FetchStatus>(FetchStatus.INITIAL)
-  const authService = appContainer.get(TYPES.AuthService) as AuthService
-  const getProfileUseCase = authService.GetGetProfileUseCase()
-  const signOutUseCase = authService.GetSignOutUseCase()
+  const getProfileUseCase = appContainer.get(GetProfileUseCase)
+  const signOutUseCase = appContainer.get(SignOutUseCase)
 
   useEffect(() => {
     if (authState === FetchStatus.SUCCESS && auth) {

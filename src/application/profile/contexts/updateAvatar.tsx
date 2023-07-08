@@ -2,12 +2,10 @@
 
 import { createContext, useContext, useState } from 'react'
 import { FetchStatus } from '@/application/@shared/FetchStatus'
-import { ProfileService } from '../services/profileService'
 import { appContainer } from '@/application/@shared/container/container'
-import { TYPES } from '@/application/@shared/container/types'
 import { UpdateAvatarPayload } from '@/domain/profile/entities/payload/updateAvatarPayload'
-import { AuthProviderContext } from '@/application/auth/contexts/AuthProvider'
 import { ProfileProviderContext } from '@/application/auth/contexts/ProfileProvider'
+import { UpdateAvatarUseCase } from '@/domain/profile/usecases/updateAvatar'
 
 export const UpdateAvatarProviderContext = createContext({
   state: FetchStatus.INITIAL,
@@ -22,11 +20,7 @@ export const UpdateAvatarContext: React.FC<{ children: React.ReactNode }> = ({
   const [error, setError] = useState<string>('')
   const { setProfile } = useContext(ProfileProviderContext)
 
-  const profileService = appContainer.get(
-    TYPES.ProfileService
-  ) as ProfileService
-
-  const updateAvatarUseCase = profileService.GetUpdateAvatarUseCase()
+  const updateAvatarUseCase = appContainer.get(UpdateAvatarUseCase)
 
   const updateAvatar = async (payload: UpdateAvatarPayload): Promise<void> => {
     setState(FetchStatus.LOADING)

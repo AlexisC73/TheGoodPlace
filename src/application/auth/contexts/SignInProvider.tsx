@@ -1,12 +1,11 @@
 'use client'
 
-import type { AuthService } from '@/application/auth/services/AuthService'
 import { SignInPayload } from '@/domain/auth/entities/payload/signInPayload'
 import { createContext, useContext, useState } from 'react'
 import { AuthProviderContext } from './AuthProvider'
 import { FetchStatus } from '@/application/@shared/FetchStatus'
 import { appContainer } from '@/application/@shared/container/container'
-import { TYPES } from '@/application/@shared/container/types'
+import { SignInUseCase } from '@/domain/auth/usecases/signIn'
 
 export const SignInProviderContext = createContext({
   state: FetchStatus.INITIAL,
@@ -21,9 +20,7 @@ export const SignInContext: React.FC<{ children: React.ReactNode }> = ({
   const [state, setState] = useState<FetchStatus>(FetchStatus.INITIAL)
   const [error, setError] = useState<string>('')
 
-  const authService = appContainer.get(TYPES.AuthService) as AuthService
-
-  const signInUseCase = authService.GetSignInUseCase()
+  const signInUseCase = appContainer.get(SignInUseCase)
 
   const signIn = async (payload: SignInPayload): Promise<void> => {
     setState(FetchStatus.LOADING)

@@ -2,10 +2,9 @@
 
 import { FetchStatus } from '@/application/@shared/FetchStatus'
 import { appContainer } from '@/application/@shared/container/container'
-import { TYPES } from '@/application/@shared/container/types'
 import { Auth } from '@/domain/auth/entities/auth'
+import { GetCachedAuthUseCase } from '@/domain/auth/usecases/getCachedAuth'
 import { createContext, useEffect, useState } from 'react'
-import { AuthService } from '../services/AuthService'
 
 export const AuthProviderContext = createContext({
   auth: undefined as Auth | undefined,
@@ -18,8 +17,7 @@ export const AuthContext: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [auth, setAuth] = useState<Auth>()
   const [state, setState] = useState<FetchStatus>(FetchStatus.INITIAL)
-  const authService = appContainer.get(TYPES.AuthService) as AuthService
-  const lookForCachedAuthUseCase = authService.GetLookForCachedAuthUseCase()
+  const lookForCachedAuthUseCase = appContainer.get(GetCachedAuthUseCase)
 
   useEffect(() => {
     if (state === FetchStatus.INITIAL) {

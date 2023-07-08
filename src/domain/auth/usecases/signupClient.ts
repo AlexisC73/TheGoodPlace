@@ -1,13 +1,12 @@
 import { inject, injectable } from 'inversify'
 import { SignUpClientPayload } from '../entities/payload/signUpClientPayload'
-import type { AuthRepository } from '../repositories/authRepository'
+import { AuthRepository } from '../repositories/authRepository'
 import { PayloadError } from '../error/errors'
-import { TYPES } from '@/application/@shared/container/types'
 
 @injectable()
 export class SignupClientUseCase {
   constructor (
-    @inject(TYPES.AuthRepository)
+    @inject(AuthRepository)
     private readonly authRepository: AuthRepository
   ) {}
 

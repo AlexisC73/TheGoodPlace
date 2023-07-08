@@ -1,11 +1,11 @@
-import { inject } from 'inversify'
+import { inject, injectable } from 'inversify'
 import { Book } from '../entities/book'
-import type { BookRepository } from '../repositories/book'
-import { TYPES } from '@/application/@shared/container/types'
+import { BookRepository } from '../repositories/book'
 
+@injectable()
 export class GetForSaleBooksUseCase {
   constructor (
-    @inject(TYPES.BookRepository)
+    @inject(BookRepository)
     private readonly bookRepository: BookRepository
   ) {}
 

@@ -4,7 +4,6 @@ import { UpdatePasswordPayload } from '@/domain/auth/entities/payload/updatePass
 import { Id } from '@/domain/@shared/valueObject/id'
 import { Password } from '@/domain/@shared/valueObject/password'
 import { Role } from '@/domain/auth/entities/role'
-import { PayloadError } from '@/domain/auth/error/errors'
 
 describe('When user update his password', () => {
   let authFixture: AuthFixture

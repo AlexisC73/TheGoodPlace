@@ -1,27 +1,26 @@
+import { createTestAppContainer } from '@tests/application/@shared/container/container'
 import { BookDto } from '@/infrastructure/catalog/dtos/bookDto'
 import { Book } from '@/domain/catalog/entities/book'
-import { GetForSaleBookCommand } from '@/domain/catalog/usecases/get-for-sale-book'
-import { CatalogService } from '@/application/catalog/services/catalogService'
-import { TYPES } from '@/application/@shared/container/types'
-import { createTestAppContainer } from '@tests/application/@shared/container/container'
+import {
+  GetForSaleBookCommand,
+  GetForSaleBookUseCase
+} from '@/domain/catalog/usecases/get-for-sale-book'
 import { BookRepositoryImpl } from '@/infrastructure/catalog/repositories/BookRepositoryImpl'
+import { GetForSaleBooksUseCase } from '@/domain/catalog/usecases/get-for-sale-books'
+import { BookRepository } from '@/domain/catalog/repositories/book'
 
 export const createBookFixture = () => {
   let book: Book
   let books: Book[]
 
-  const catalogContainer = createTestAppContainer()
-  const catalogService = catalogContainer.get(
-    TYPES.CatalogService
-  ) as CatalogService
+  const appContainer = createTestAppContainer()
 
-  const bookRepository = catalogContainer.get(
-    TYPES.BookRepository
-  ) as BookRepositoryImpl
+  const bookRepository = appContainer.get(BookRepository) as BookRepositoryImpl
+
   const bookRemoteDataSource = bookRepository.bookRemoteDataSource
   const bookLocalDataSource = bookRepository.bookLocalDataSource
-  const getForSaleBooksUseCase = catalogService.FetchForSaleBooksUseCase()
-  const getSpecificForSaleBookUseCase = catalogService.FetchForSaleBookUseCase()
+  const getForSaleBooksUseCase = appContainer.get(GetForSaleBooksUseCase)
+  const getForSaleBookUseCase = appContainer.get(GetForSaleBookUseCase)
 
   return {
     whenBooksExistInRemote (books: Book[]) {
@@ -36,7 +35,7 @@ export const createBookFixture = () => {
       )
     },
     async whenUserAskForASpecificSaleBook (command: GetForSaleBookCommand) {
-      book = await getSpecificForSaleBookUseCase.handle(command)
+      book = await getForSaleBookUseCase.handle(command)
     },
     async whenUserAskForSaleBooks () {
       books = await getForSaleBooksUseCase.handle()

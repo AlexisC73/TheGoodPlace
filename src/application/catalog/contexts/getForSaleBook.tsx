@@ -3,10 +3,9 @@
 import { useState } from 'react'
 import { BookModel } from '../models/bookModel'
 import { createContext } from 'react'
-import { CatalogService } from '../services/catalogService'
 import { FetchStatus } from '@/application/@shared/FetchStatus'
 import { appContainer } from '@/application/@shared/container/container'
-import { TYPES } from '@/application/@shared/container/types'
+import { GetForSaleBookUseCase } from '@/domain/catalog/usecases/get-for-sale-book'
 
 const BookFetcherContext = createContext({
   book: null as BookModel | null,
@@ -19,16 +18,12 @@ export const BookFetcherProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [book, setBook] = useState<BookModel | null>(null)
   const [state, setState] = useState<FetchStatus>(FetchStatus.INITIAL)
-  const catalogService = appContainer.get(
-    TYPES.CatalogService
-  ) as CatalogService
+  const getForSaleBookUseCase = appContainer.get(GetForSaleBookUseCase)
 
   const getBook = async (id: string) => {
     setState(FetchStatus.LOADING)
     try {
-      const usecase = catalogService.FetchForSaleBookUseCase()
-
-      const book = await usecase.handle({ bookId: id })
+      const book = await getForSaleBookUseCase.handle({ bookId: id })
       const bookModel = BookModel.fromDomain(book)
       setBook(bookModel)
       setState(FetchStatus.SUCCESS)
