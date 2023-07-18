@@ -15,11 +15,22 @@ module.exports = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))'
       },
+      textColor: {
+        dark: '#1B2137',
+        light: '#9199A5'
+      },
       colors: {
-        primary: '#085EC4'
+        primary: '#085EC4',
+        light: '#C6CCD4'
+      },
+      fontSize: {
+        alt: '0.8125rem',
+        'default-desktop': '0.9375rem',
+        'section-title': '1.5rem'
       },
       gridTemplateColumns: {
-        'header:': '1fr 130px'
+        'header:': '1fr 130px',
+        cart: '1fr 6fr 3fr 2fr'
       },
       backgroundColor: {
         primary: '#085EC4'

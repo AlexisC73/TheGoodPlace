@@ -10,7 +10,9 @@ import { ProfileProviderContext } from '@/application/auth/contexts/ProfileProvi
 function UserInfo () {
   return (
     <div className='flex items-center gap-8 min-w-[124px] justify-end max-xl:pr-3'>
-      <CartLogo className='text-[22px] text-primary' />
+      <Link href='/cart'>
+        <CartLogo className='text-[22px] text-primary' />
+      </Link>
       <SignOutButton />
       <div className='separator h-7 w-[2px] hidden sm:block bg-[#E9EDF3]'></div>
       <AvatarImage />
